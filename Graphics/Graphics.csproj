@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{73F4E39C-6980-48AB-88EF-86CA4F648E39}</ProjectGuid>
+    <ProjectGuid>{E79C441E-8795-4ED6-AC94-12D189613D0D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core</RootNamespace>
-    <AssemblyName>Core</AssemblyName>
+    <RootNamespace>Graphics</RootNamespace>
+    <AssemblyName>Graphics</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,17 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="ComponentModel\Component.cs" />
-    <Compile Include="DisposeCollector.cs" />
-    <Compile Include="IO\ButtonState.cs" />
-    <Compile Include="IO\Mouse.cs" />
-    <Compile Include="IO\MouseButtons.cs" />
-    <Compile Include="IO\MouseState.cs" />
+    <Compile Include="Animation\Frame.cs" />
+    <Compile Include="Animation\TilesetAnimation.cs" />
+    <Compile Include="Camera2D.cs" />
+    <Compile Include="Geometry\Rectangle2D.cs" />
+    <Compile Include="Interaction\MouseInputManager.cs" />
+    <Compile Include="RenderableObject2D.cs" />
+    <Compile Include="Texture2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VerticeInterpretation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{73f4e39c-6980-48ab-88ef-86ca4f648e39}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

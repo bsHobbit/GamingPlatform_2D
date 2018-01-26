@@ -6,25 +6,29 @@ namespace Graphics
     public class Texture2D : Component 
     {
         Bitmap Bitmap;
-        public RectangleF Segment;
         public int Width;
         public int Height;
 
-        Texture2D(Bitmap Bitmap, RectangleF Segment)
+        Texture2D(Bitmap Bitmap)
         {
             this.Bitmap = ToDispose(Bitmap);
-            this.Segment = Segment;
             Width = Bitmap.Width;
             Height = Bitmap.Height;
         }
 
-        public void Draw(System.Drawing.Graphics g, float X, float Y, float TargetWidth, float TargetHeight)
+        public void Draw(System.Drawing.Graphics g, float X, float Y, float TargetWidth, float TargetHeight, RectangleF Segment)
         {
             /*Render*/
-            g.DrawImage(Bitmap,
-                        new RectangleF(X, Y, TargetWidth, TargetHeight),
-                        Segment,
-                        GraphicsUnit.Pixel);
+            if (Segment.IsEmpty)
+                g.DrawImage(Bitmap,
+                            new RectangleF(X, Y, TargetWidth, TargetHeight),
+                            new RectangleF(0, 0, Bitmap.Width, Bitmap.Height),
+                            GraphicsUnit.Pixel);
+            else
+                g.DrawImage(Bitmap,
+                            new RectangleF(X, Y, TargetWidth, TargetHeight),
+                            Segment,
+                            GraphicsUnit.Pixel);
         }
 
 
@@ -39,7 +43,7 @@ namespace Graphics
                         throw new System.Exception("Unsupported image format :(");
                     else
                     {
-                        return new Texture2D(bitmap, new RectangleF(0, 0, bitmap.Width, bitmap.Height));
+                        return new Texture2D(bitmap);
                     }
                 }
                 catch (System.Exception e)

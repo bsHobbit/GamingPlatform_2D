@@ -68,17 +68,38 @@ namespace Graphics
         public Color OutlineColor { get; set; }
         public float OutlineWidth { get; set; }
 
-        public List<Vec2> Vertices { get; protected set; }
+
+        List<Vec2> vertices;
+        public List<Vec2> Vertices
+        {
+            get => vertices;
+            protected set
+            {
+                vertices = value;
+                UpdateBoundingBox();
+            }
+        }
         public VerticeInterpretation VerticeInterpretation;
 
         RectangleF BoundingBox;
 
         public Texture2D Texture { get; set; }
+        public RectangleF TextureSegment { get; set; }
 
         public Matrix WorldMatrix { get; set; }
 
 
-        protected void Initialize(Vec2 Location, int Z, List<Vec2> Vertices, Color Color, Color OutlineColor, Texture2D Texture = null, float OutlineWidth = 1, float Scale = 1, float Rotation = 0, VerticeInterpretation Interpretation = VerticeInterpretation.Solid)
+        protected void Initialize(Vec2 Location,
+                                  int Z,
+                                  List<Vec2> Vertices,
+                                  Color Color,
+                                  Color OutlineColor,
+                                  RectangleF? TextureSegment = null,
+                                  Texture2D Texture = null,
+                                  float OutlineWidth = 1, 
+                                  float Scale = 1, 
+                                  float Rotation = 0,
+                                  VerticeInterpretation Interpretation = VerticeInterpretation.Solid)
         {
             scale = Scale >= 1 && Scale <= 100 ? Scale : 1;
             VerticeInterpretation = Interpretation;
@@ -90,6 +111,10 @@ namespace Graphics
             rotation = Rotation;
             location = Location;
             this.Z = Z;
+            if (TextureSegment != null)
+                this.TextureSegment = (RectangleF)TextureSegment;
+            else
+                this.TextureSegment = RectangleF.Empty;
             
             UpdateWorldMatrix();
             UpdateBoundingBox();
@@ -113,16 +138,21 @@ namespace Graphics
 
         void UpdateBoundingBox()
         {
-            float minX = float.MaxValue, minY = float.MaxValue;
-            float maxX = float.MinValue, maxY = float.MinValue;
-            for (int i = 0; i < Vertices.Count; i++)
+            if (vertices != null)
             {
-                if (Vertices[i].X < minX) minX = Vertices[i].X;
-                if (Vertices[i].Y < minY) minY = Vertices[i].Y;
-                if (Vertices[i].X > maxX) maxX = Vertices[i].X;
-                if (Vertices[i].Y > maxY) maxY = Vertices[i].Y;
+                float minX = float.MaxValue, minY = float.MaxValue;
+                float maxX = float.MinValue, maxY = float.MinValue;
+                for (int i = 0; i < Vertices.Count; i++)
+                {
+                    if (Vertices[i].X < minX) minX = Vertices[i].X;
+                    if (Vertices[i].Y < minY) minY = Vertices[i].Y;
+                    if (Vertices[i].X > maxX) maxX = Vertices[i].X;
+                    if (Vertices[i].Y > maxY) maxY = Vertices[i].Y;
+                }
+                BoundingBox = new RectangleF(minX, minY, maxX - minX, maxY - minY);
             }
-            BoundingBox = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+            else
+                BoundingBox = RectangleF.Empty;
         }
 
         public virtual void Update(float Elapsed) { }
@@ -139,11 +169,15 @@ namespace Graphics
         public List<Vec2> TransformedVertices()
         {
             List<Vec2> result = new List<Vec2>();
-            for (int i = 0; i < Vertices.Count; i++)
+
+            if (vertices != null)
             {
-                PointF[] tmpPoints = new PointF[] { new PointF(Vertices[i].X, Vertices[i].Y) };
-                WorldMatrix.TransformPoints(tmpPoints);
-                result.Add(new Vec2(tmpPoints[0].X, tmpPoints[0].Y));
+                for (int i = 0; i < Vertices.Count; i++)
+                {
+                    PointF[] tmpPoints = new PointF[] { new PointF(Vertices[i].X, Vertices[i].Y) };
+                    WorldMatrix.TransformPoints(tmpPoints);
+                    result.Add(new Vec2(tmpPoints[0].X, tmpPoints[0].Y));
+                }
             }
             return result;
         }
@@ -178,6 +212,9 @@ namespace Graphics
             return (x - a) * (x - b) < 0;
         }
 
+        /*helping stuff*/
+        public static List<Vec2> CreateRectangle2D(int Width, int Height) => new List<Vec2>() { new Vec2(0, 0), new Vec2(Width, 0), new Vec2(Width, Height), new Vec2(0, Height) };
+
 
         /*GDI Only-Stuff*/
 
@@ -197,35 +234,37 @@ namespace Graphics
             world_view_projection.Multiply(camera.ViewMatrix, MatrixOrder.Append);
             g.Transform = world_view_projection;
 
-            /*Create Path*/
             if (VerticeInterpretation == VerticeInterpretation.Solid || VerticeInterpretation == VerticeInterpretation.Wireframe)
             {
-                GraphicsPath path = new GraphicsPath();
-                path.StartFigure();
-                path.AddPolygon(ToPointFArray(Vertices));
-                path.CloseFigure();
-
-                /*Draw Object*/
-                if (VerticeInterpretation == VerticeInterpretation.Solid)
-                    g.FillPath(new SolidBrush(Color), path);
-
-                if (!OutlineColor.IsEmpty)
-                    g.DrawPath(new Pen(new SolidBrush(OutlineColor), OutlineWidth), path);
-
-
-                /*Draw Texture*/
-                if (Texture != null && VerticeInterpretation == VerticeInterpretation.Solid)
+                /*only draw if it's realy visible*/
+                if (vertices != null && vertices.Count >= 3)
                 {
-                    g.SetClip(path);
-                    Texture.Draw(g, BoundingBox.X, BoundingBox.Y, BoundingBox.Width, BoundingBox.Height);
-                    g.ResetClip();
+                    /*Create Path*/
+                    GraphicsPath path = new GraphicsPath();
+                    path.StartFigure();
+                    path.AddPolygon(ToPointFArray(Vertices));
+                    path.CloseFigure();
+
+                    /*Draw Object*/
+                    if (VerticeInterpretation == VerticeInterpretation.Solid)
+                        g.FillPath(new SolidBrush(Color), path);
+
+                    if (!OutlineColor.IsEmpty)
+                        g.DrawPath(new Pen(new SolidBrush(OutlineColor), OutlineWidth), path);
+
+
+                    /*Draw Texture*/
+                    if (Texture != null && VerticeInterpretation == VerticeInterpretation.Solid)
+                    {
+                        g.SetClip(path);
+                        Texture.Draw(g, BoundingBox.X, BoundingBox.Y, BoundingBox.Width, BoundingBox.Height, TextureSegment);
+                        g.ResetClip();
+                    }
                 }
             }
             else if (VerticeInterpretation == VerticeInterpretation.Lines)
             {
-                int count = Vertices.Count / 2;
-
-                for (int i = 0; i < count; i += 2)
+                for (int i = 0; i < Vertices.Count; i += 2)
                 {
                     Vec2 v1 = Vertices[i];
                     Vec2 v2 = Vertices[i + 1];

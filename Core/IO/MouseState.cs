@@ -4,7 +4,7 @@ namespace Core.IO
 {
     public struct MouseState
     {
-        public Vec2 Location { get; internal set; }
+        public Vec2 Location { get; set; }
         public ButtonState[] ButtonStates { get; private set; }
         public int Delta { get; internal set; }
 

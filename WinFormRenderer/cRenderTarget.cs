@@ -20,7 +20,12 @@ namespace WinFormRenderer
         Core.IO.ButtonState[] device_Mouse_ButtonStates;
         int device_Mouse_Delta = 0;
 
-        public Camera2D Camera { get; set; }
+        Camera2D camera;
+        public Camera2D Camera
+        {
+            get => camera;
+            set { camera = value; }
+        }
         public float W => renderTarget.Width;
         public float H => renderTarget.Height;
         
@@ -81,7 +86,8 @@ namespace WinFormRenderer
         public void Initialize()
         {
             Camera = disposeCollector.ToDispose(new Camera2D());
-            Camera.LookAt = new Box2DX.Common.Vec2(250, 250);
+            Camera.LookAt = new Box2DX.Common.Vec2(0, 0);
+            
 
             /*Einfacher Timer zum Rendern*/
             Timer timer = new Timer()
@@ -96,7 +102,7 @@ namespace WinFormRenderer
                 /*Update User-Input*/
                 device_Mouse.Update(GetMouseState(device_Mouse_Location), elapsed);
                 ResetDevice_Mouse();
-                mouseInputManager?.Update(elapsed);
+                mouseInputManager?.Update(elapsed, ref camera);
 
                 /*call the update event for other stuff to update*/
                 OnUpdate?.Invoke(elapsed);
@@ -112,11 +118,6 @@ namespace WinFormRenderer
                 /*make sure a new image is rendered*/
                 renderTarget.Invalidate();
 
-                /*reset mouse*/
-                Mouse.Reset();
-
-                Camera.Rotation++;
-                
                 Timer = Stopwatch.StartNew();
             };
 
@@ -142,6 +143,18 @@ namespace WinFormRenderer
         public void DisableMouseInput()
         {
             mouseInputManager = null;
+        }
+
+        public void EnableCameraControl(bool Always)
+        {
+            if (mouseInputManager == null)
+                EnableMouseInput();
+            mouseInputManager.SetCameraMovement(Always ? Graphics.Interaction.CameraMovementStyle.Always : Graphics.Interaction.CameraMovementStyle.NoObject);
+        }
+
+        public void DisableCameraControl ()
+        {
+            mouseInputManager?.SetCameraMovement(Graphics.Interaction.CameraMovementStyle.None);
         }
 
 

@@ -10,7 +10,6 @@ namespace Core.IO
         MouseState currentState;
         public MouseState CurrentState { get => currentState; }
         public Vec2 Diff { get; private set; }
-        public int Delta { get; private set; }
         float[] clickTimer;
 
         int ButtonCount { get => System.Enum.GetNames(typeof(MouseButtons)).Length; }
@@ -44,7 +43,7 @@ namespace Core.IO
             }
 
             /*Update location stuff*/
-            Diff = Mouse.Location - currentState.Location;
+            Diff = currentState.Location - Mouse.Location;
             currentState.Location = Mouse.Location;
             currentState.Delta = Mouse.Delta;
         }
@@ -58,11 +57,10 @@ namespace Core.IO
             return false;
         }
 
-        public void Reset()
+        /*need this for camera movement otherwise the diff will change with the lookat change of the camera because of the input transformation*/
+        public void OffsetLocation(Vec2 Offset)
         {
-            //Delta = 0;
-            //for (int i = 0; i < ButtonCount; i++)
-            //    currentState[i] = ButtonState.Released;
+            currentState.Location += Offset;
         }
 
     }

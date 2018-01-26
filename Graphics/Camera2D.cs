@@ -58,5 +58,14 @@ namespace Graphics
             InverseViewMatrix = ViewMatrix.Clone();
             InverseViewMatrix.Invert();
         }
+
+        public void ZoomAt(Vec2 Location, bool ZoomIn)
+        {
+            float newScale = ZoomIn ? scale + .1f * scale : scale - .1f * scale;
+            if (newScale >= .1f && newScale < 100f)
+            {
+                Scale = newScale;
+            }
+        }
     }
 }

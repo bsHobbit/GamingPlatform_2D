@@ -8,13 +8,9 @@ namespace Graphics.Geometry
     {
         public Rectangle2D(int Widht, int Height, Vec2 Location, int Z, Color Color, Color OutlineColor, Texture2D Texture = null, float OutlineWidth = 1, float Scale = 1, float Rotation = 0, VerticeInterpretation Interpretation = VerticeInterpretation.Solid)
         {
-            List<Vec2> vertices = new List<Vec2>() { new Vec2(0, 0), new Vec2(Widht, 0), new Vec2(Widht, Height), new Vec2(0, Height) };
-            Initialize(Location, Z, vertices, Color, OutlineColor, Texture, OutlineWidth, Scale, Rotation, Interpretation);
+            
+            Initialize(Location, Z, CreateRectangle2D(Widht, Height), Color, OutlineColor, null, Texture, OutlineWidth, Scale, Rotation, Interpretation);
             RotationOffset = new Vec2(Widht / 2, Height / 2);
-        }
-
-        public override void Update(float Elapsed)
-        {
         }
     }
 }

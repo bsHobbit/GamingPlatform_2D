@@ -8,7 +8,9 @@ namespace Graphics.Interaction
     {
         /*constants*/
         const float DOUBLECLICK_TIME_MS = 150;
-
+        const float CAMERA_TIME_MS = 500;
+        const float CAMERA_MOVEMENT_VALID_DISTANCE = 10;
+        const MouseButtons CAMERA_MOVEMENT_BUTTON = MouseButtons.Right;
 
         /*Members*/
         List<RenderableObject2D> Items;
@@ -17,6 +19,15 @@ namespace Graphics.Interaction
         bool checkForDoubleClick = false;
         bool callMouseUp = false;
         float doubleClickTimer = 0;
+
+        CameraMovementStyle cameraMovementStyle;
+        float cameraMovementTimer = 0;
+        bool MovingCamera;
+        bool CheckCameraMovement = false;
+        Vec2 mouseDownCameraMovementStart; /*i need this to check movement distance for camera movement check*/
+        
+
+        
 
         
         /*ctor*/
@@ -27,6 +38,13 @@ namespace Graphics.Interaction
             ItemAtMouse = null;
         }
 
+
+        /*camera settings*/
+        public void SetCameraMovement(CameraMovementStyle Style)
+        {
+            cameraMovementStyle = Style;
+        }
+            
 
         /*logic*/
 
@@ -43,96 +61,158 @@ namespace Graphics.Interaction
 
         /*Input handling - it's just a big state machine dont bother looking into it as long as it's working ;)
          * this most likely wont work when the user is pressing multiple mousebuttons at once ... who cares what the user wants anyway*/
-        public void Update(float Elapsed)
+        public void Update(float Elapsed, ref Camera2D Camera)
         {
 
             if (checkForDoubleClick)
                 doubleClickTimer += Elapsed;
 
-            /*Get the current object the mouse is hovering over*/
-            RenderableObject2D newItemAtMouse = GetItemAtMouse();
+            bool cameraMovementPossible = MovingCamera || ((cameraMovementStyle != CameraMovementStyle.None) && 
+                                                           (cameraMovementStyle == CameraMovementStyle.Always || (cameraMovementStyle == CameraMovementStyle.NoObject && ItemAtMouse == null)));
 
-            /*checking for alle the enter,leave and move action*/
-            if (ItemAtMouse == null) 
+            if (cameraMovementPossible)
             {
-                if (newItemAtMouse != null)
-                {
-                    /*hello new item*/
-                    newItemAtMouse.OnMouseEnter(Input);
-                    checkForDoubleClick = false;
-                }
-            }
-            /*mouse already is over an item*/
-            else
-            {
-                /*The mouse changed items*/
-                if (newItemAtMouse != ItemAtMouse)
-                {
-                    /*goodbye old item*/
-                    ItemAtMouse.OnMouseLeave(Input);
-                    /*hello new item*/
-                    if (newItemAtMouse != null)
-                        newItemAtMouse.OnMouseEnter(Input);
+                /*check for scaling*/
+                if (Input.CurrentState.Delta > 0) Camera.ZoomAt(Input.CurrentState.Location, true);
+                else if (Input.CurrentState.Delta < 0) Camera.ZoomAt(Input.CurrentState.Location, false);
 
-                    /*double click is impossible now!*/
-                    checkForDoubleClick = false;
-                }
-                /*the mouse stayed on the same item*/
-                else 
+                /*if no mousebutton is pressed right now, no movement is possible*/
+                if (Input.CurrentState[CAMERA_MOVEMENT_BUTTON] == ButtonState.Released)
                 {
-                    ItemAtMouse.OnMouseMove(Input);
+                    cameraMovementTimer = 0;
+                    MovingCamera = false;
+                    CheckCameraMovement = false;
                 }
-            }
 
-            /*Make sure the next time we check we are on the right path*/
-            ItemAtMouse = newItemAtMouse;
-
-            /*check all the clicking stuff that could have happened*/
-            if (ItemAtMouse != null)
-            {
-                if (Input.AnyKeyWithState(ButtonState.Triggered))
+                /*if left mousebutton is pressed we might need to check if the user just wants to move the camera*/
+                if (!CheckCameraMovement && !MovingCamera && Input.CurrentState[CAMERA_MOVEMENT_BUTTON] == ButtonState.Pressed && cameraMovementTimer == 0f)
                 {
-                    /*user did doubleclick*/
-                    if (checkForDoubleClick) 
+                    CheckCameraMovement = true;
+                    mouseDownCameraMovementStart = Input.CurrentState.Location;
+                }
+
+                /*check if the user most likely wants to move the camera*/
+                if (CheckCameraMovement)
+                {
+
+                    cameraMovementTimer += Elapsed;
+
+                    /*timeout user didn't want to move the camera?*/
+                    if (cameraMovementTimer >= CAMERA_TIME_MS)
                     {
-                        ItemAtMouse.OnDoubleClick(Input);
+                        MovingCamera = false;
+                        CheckCameraMovement = false;
+                    }
+                    /*Camera-Movement detected*/
+                    else if ((mouseDownCameraMovementStart - Input.CurrentState.Location).Length() > (CAMERA_MOVEMENT_VALID_DISTANCE / Camera.Scale))
+                    {
+                        cameraMovementTimer = 0;
+                        MovingCamera = true;
+                        CheckCameraMovement = false;
+                    }
+                }
+            }
+            else
+                MovingCamera = false;
+
+            if ((!MovingCamera && !CheckCameraMovement) || !cameraMovementPossible)
+            {
+                /*Get the current object the mouse is hovering over*/
+                RenderableObject2D newItemAtMouse = GetItemAtMouse();
+
+                /*checking for alle the enter,leave and move action*/
+                if (ItemAtMouse == null)
+                {
+                    if (newItemAtMouse != null)
+                    {
+                        /*hello new item*/
+                        newItemAtMouse.OnMouseEnter(Input);
                         checkForDoubleClick = false;
                     }
-                    /*user might double click*/
+                }
+                /*mouse already is over an item*/
+                else
+                {
+                    /*The mouse changed items*/
+                    if (newItemAtMouse != ItemAtMouse)
+                    {
+                        /*goodbye old item*/
+                        ItemAtMouse.OnMouseLeave(Input);
+                        /*hello new item*/
+                        if (newItemAtMouse != null)
+                            newItemAtMouse.OnMouseEnter(Input);
+
+                        /*double click is impossible now!*/
+                        checkForDoubleClick = false;
+                    }
+                    /*the mouse stayed on the same item*/
                     else
                     {
-                        doubleClickTimer = 0;
-                        checkForDoubleClick = true;
-                    }
-                }
-                else if (Input.AnyKeyWithState(ButtonState.Pressed))
-                {
-                    /*Mousedown-event, if user is up to a click or double click we dont want to call mousedown every single time*/
-                    if (!checkForDoubleClick)
-                    {
-                        ItemAtMouse.OnMouseDown(Input);
-                        callMouseUp = true;
-                    }
-                }
-                else if (Input.AnyKeyWithState(ButtonState.Released))
-                {
-                    if (callMouseUp )
-                    {
-                        ItemAtMouse.OnMouseUp(Input);
-                        callMouseUp = false;
-                    }
-                    /*user did not doubleclick but single-click*/
-                    if (checkForDoubleClick && doubleClickTimer >= DOUBLECLICK_TIME_MS)
-                    {
-                        ItemAtMouse.OnClick(Input);
-                        checkForDoubleClick = false;
-                    }
-                    /*mousemove-event*/
-                    else if (!checkForDoubleClick)
                         ItemAtMouse.OnMouseMove(Input);
+                    }
+                }
 
+                /*Make sure the next time we check we are on the right path*/
+                ItemAtMouse = newItemAtMouse;
+
+                /*check all the clicking stuff that could have happened*/
+                if (ItemAtMouse != null)
+                {
+                    if (Input.AnyKeyWithState(ButtonState.Triggered))
+                    {
+                        /*user did doubleclick*/
+                        if (checkForDoubleClick)
+                        {
+                            ItemAtMouse.OnDoubleClick(Input);
+                            checkForDoubleClick = false;
+                        }
+                        /*user might double click*/
+                        else
+                        {
+                            doubleClickTimer = 0;
+                            checkForDoubleClick = true;
+                        }
+                    }
+                    else if (Input.AnyKeyWithState(ButtonState.Pressed))
+                    {
+                        /*Mousedown-event, if user is up to a click or double click we dont want to call mousedown every single time*/
+                        if (!checkForDoubleClick)
+                        {
+                            ItemAtMouse.OnMouseDown(Input);
+                            callMouseUp = true;
+                        }
+                    }
+                    else if (Input.AnyKeyWithState(ButtonState.Released))
+                    {
+                        if (callMouseUp)
+                        {
+                            ItemAtMouse.OnMouseUp(Input);
+                            callMouseUp = false;
+                        }
+                        /*user did not doubleclick but single-click*/
+                        if (checkForDoubleClick && doubleClickTimer >= DOUBLECLICK_TIME_MS)
+                        {
+                            ItemAtMouse.OnClick(Input);
+                            checkForDoubleClick = false;
+                        }
+                        /*mousemove-event*/
+                        else if (!checkForDoubleClick)
+                            ItemAtMouse.OnMouseMove(Input);
+
+                    }
                 }
             }
+
+            /*Update Camera movement by user-input*/
+            else if (MovingCamera)
+                    UpdateCamera(ref Camera);
+        }
+
+        /*Update Camera*/
+        void UpdateCamera(ref Camera2D Camera)
+        {
+            Camera.LookAt += Input.Diff;
+            Input.OffsetLocation(Input.Diff);
         }
     }
 }

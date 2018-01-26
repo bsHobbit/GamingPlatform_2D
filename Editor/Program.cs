@@ -16,7 +16,7 @@ namespace Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AnimationEditor(new Graphics.Animation.TilesetAnimation(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"), 10)));
+            Application.Run(new AnimationEditor(new Graphics.Animation.TilesetAnimation(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"), 10, 0)));
         }
     }
 }

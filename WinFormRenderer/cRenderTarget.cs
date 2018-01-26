@@ -78,7 +78,8 @@ namespace WinFormRenderer
 
             /*Draw stuff*/
             for (int i = 0; i < ObjectsToRender.Count; i++)
-                ObjectsToRender[i].Draw(e.Graphics, Camera);
+                if (ObjectsToRender[i].Visible)
+                    ObjectsToRender[i].Draw(e.Graphics, Camera);
         }
 
 

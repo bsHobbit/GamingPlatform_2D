@@ -68,6 +68,9 @@ namespace Graphics
         public Color OutlineColor { get; set; }
         public float OutlineWidth { get; set; }
 
+        public bool Visible { get; set; }
+        public bool Enabled { get; set; }
+
 
         List<Vec2> vertices;
         public List<Vec2> Vertices
@@ -87,6 +90,7 @@ namespace Graphics
         public RectangleF TextureSegment { get; set; }
 
         public Matrix WorldMatrix { get; set; }
+        Matrix InverseWorldMatrix;
 
 
         protected void Initialize(Vec2 Location,
@@ -115,6 +119,9 @@ namespace Graphics
                 this.TextureSegment = (RectangleF)TextureSegment;
             else
                 this.TextureSegment = RectangleF.Empty;
+
+            Visible = true;
+            Enabled = true;
             
             UpdateWorldMatrix();
             UpdateBoundingBox();
@@ -134,25 +141,33 @@ namespace Graphics
 
             /*Translate to location*/
             WorldMatrix.Translate(Location.X, location.Y, MatrixOrder.Append);
+
+            InverseWorldMatrix = WorldMatrix.Clone();
+            InverseWorldMatrix.Invert();
         }
 
-        void UpdateBoundingBox()
+        public static RectangleF GetBoundingBox(List<Vec2> vertices)
         {
             if (vertices != null)
             {
                 float minX = float.MaxValue, minY = float.MaxValue;
                 float maxX = float.MinValue, maxY = float.MinValue;
-                for (int i = 0; i < Vertices.Count; i++)
+                for (int i = 0; i < vertices.Count; i++)
                 {
-                    if (Vertices[i].X < minX) minX = Vertices[i].X;
-                    if (Vertices[i].Y < minY) minY = Vertices[i].Y;
-                    if (Vertices[i].X > maxX) maxX = Vertices[i].X;
-                    if (Vertices[i].Y > maxY) maxY = Vertices[i].Y;
+                    if (vertices[i].X < minX) minX = vertices[i].X;
+                    if (vertices[i].Y < minY) minY = vertices[i].Y;
+                    if (vertices[i].X > maxX) maxX = vertices[i].X;
+                    if (vertices[i].Y > maxY) maxY = vertices[i].Y;
                 }
-                BoundingBox = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+                return new RectangleF(minX, minY, maxX - minX, maxY - minY);
             }
             else
-                BoundingBox = RectangleF.Empty;
+                return RectangleF.Empty;
+        }
+
+        void UpdateBoundingBox()
+        {
+            BoundingBox = GetBoundingBox(vertices);
         }
 
         public virtual void Update(float Elapsed) { }
@@ -163,6 +178,14 @@ namespace Graphics
                 Draw(g as System.Drawing.Graphics, Camera);
         }
 
+
+        /*transformation*/
+        public Vec2 TransformIntoLocalSpace(Vec2 WorldSpaceCoordinate)
+        {
+            PointF[] tmp = new PointF[] { new PointF(WorldSpaceCoordinate.X, WorldSpaceCoordinate.Y) };
+            InverseWorldMatrix.TransformPoints(tmp);
+            return new Vec2(tmp[0].X, tmp[0].Y);
+        }
 
         /*Check stuff*/
 

@@ -54,7 +54,7 @@ namespace Graphics.Interaction
         {
             if (Items != null && Items.Count > 0)
                 for (int i = Items.Count - 1; i >= 0; i--)
-                    if (IsMouseOverItem(Items[i]))
+                    if (Items[i].Visible && Items[i].Enabled && IsMouseOverItem(Items[i]))
                         return Items[i];
             return null;
         }
@@ -176,7 +176,7 @@ namespace Graphics.Interaction
                     else if (Input.AnyKeyWithState(ButtonState.Pressed))
                     {
                         /*Mousedown-event, if user is up to a click or double click we dont want to call mousedown every single time*/
-                        if (!checkForDoubleClick)
+                        if (!checkForDoubleClick && !callMouseUp)
                         {
                             ItemAtMouse.OnMouseDown(Input);
                             callMouseUp = true;

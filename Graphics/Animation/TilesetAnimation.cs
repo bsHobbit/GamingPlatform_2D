@@ -6,7 +6,8 @@ namespace Graphics.Animation
     public class TilesetAnimation : RenderableObject2D
     {
         public Texture2D Tileset { get; private set; }
-        List<Frame> Frames = new List<Frame>();
+        List<Frame> frames = new List<Frame>();
+        public List<Frame> Frames { get => frames; }
         int CurrentFrame;
 
         public float Speed;
@@ -21,7 +22,7 @@ namespace Graphics.Animation
         {
             this.Tileset = Tileset;
             Speed = SpeedFromFPS(FPS);
-            IsReverseLoop = false;
+            IsReverseLoop = true;
             Loop = true;
             Initialize(new Vec2(), Z, null, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, null, Tileset);
         }
@@ -49,7 +50,7 @@ namespace Graphics.Animation
         void UpdateCurrentFrame()
         {
             CurrentFrame += Reverse ? -1 : 1;
-            if (CurrentFrame == Frames.Count || CurrentFrame == -1)
+            if (CurrentFrame == frames.Count || CurrentFrame == -1)
             {
                 if (Loop && IsReverseLoop)
                 {
@@ -60,7 +61,7 @@ namespace Graphics.Animation
                     CurrentFrame = 0;
                 else if (!Loop)
                 {
-                    CurrentFrame = Frames.Count - 1;
+                    CurrentFrame = frames.Count - 1;
                     AnimationInProgress = false;
                 }
             }
@@ -70,10 +71,10 @@ namespace Graphics.Animation
         void UpdateRenderParameter()
         {
             /*make sure the frame is valid*/
-            if (CurrentFrame >= 0 && CurrentFrame < Frames.Count)
+            if (CurrentFrame >= 0 && CurrentFrame < frames.Count)
             {
-                Vertices = CreateRectangle2D(Frames[CurrentFrame].Width, Frames[CurrentFrame].Height);
-                TextureSegment = new System.Drawing.RectangleF(Frames[CurrentFrame].StartX, Frames[CurrentFrame].StartY, Frames[CurrentFrame].Width, Frames[CurrentFrame].Height);
+                Vertices = CreateRectangle2D(frames[CurrentFrame].Width, frames[CurrentFrame].Height);
+                TextureSegment = new System.Drawing.RectangleF(frames[CurrentFrame].StartX, frames[CurrentFrame].StartY, frames[CurrentFrame].Width, frames[CurrentFrame].Height);
             }
             else
             {
@@ -81,7 +82,7 @@ namespace Graphics.Animation
                 Vertices = null;
 
                 /*display in console for debug, only needed if a animation is not displayed corret and i wanted to know if it's cause of the update*/
-                System.Console.WriteLine(string.Format("Error in animation frame count you should go check it.\nFrame: {0}\nTotal frames: {1}", CurrentFrame, Frames.Count));
+                System.Console.WriteLine(string.Format("Error in animation frame count you should go check it.\nFrame: {0}\nTotal frames: {1}", CurrentFrame, frames.Count));
             }
         }
         
@@ -101,25 +102,26 @@ namespace Graphics.Animation
         public Frame AddFrame(int X, int Y, int Width, int Height)
         {
             Frame frame = new Frame(X, Y, Width, Height);
-            Frames.Add(frame);
+            frames.Add(frame);
             return frame;
         }
 
         public void RemoveFrame(Frame frame)
         {
-            if (Frames.Contains(frame))
-                Frames.Remove(frame);
+            if (frames.Contains(frame))
+                frames.Remove(frame);
         }
 
-        public void AutoCut(int TileWidht, int TileHeight)
+        public void AutoCut(int StartX, int StartY, int Widht, int Height, int TileWidht, int TileHeight)
         {
-            Frames.Clear();
+            frames.Clear();
 
-            int cx = (int)(Tileset.Width / TileWidht);
-            int cy = (int)(Tileset.Height / TileHeight);
+            /*Create all the frames the user didnt want to create by himself*/
+            int cx = (Widht / TileWidht);
+            int cy = (Height / TileHeight);
             for (int y = 0; y < cy; y++)
                 for (int x = 0; x < cx; x++)
-                    AddFrame(x * TileWidht, y * TileHeight, TileWidht, TileHeight);
+                    AddFrame(StartX + x * TileWidht, StartY + y * TileHeight, TileWidht, TileHeight);
             Reset();
         }
 

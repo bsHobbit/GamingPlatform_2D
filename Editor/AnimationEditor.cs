@@ -45,13 +45,18 @@ namespace Editor
 
             /*allow the user to select stuff in the tileset*/
             TilesetRect.MouseDown += (s, e) => { UserIsSelectingInTileset = true; selectionMouseDownLocation = ApplyGrid(s.TransformIntoLocalSpace(e.CurrentState.Location), true); };
-            TilesetRect.MouseUp += (s, e) => { UserIsSelectingInTileset = false; };
+            TilesetRect.MouseUp += (s, e) => { UserIsSelectingInTileset = false; UpdateFrame(); };
             TilesetRect.MouseMove += TilesetRect_MouseMove;
 
             /*visualize the user selection*/
             SelectionRect = new Rectangle2D(10, 10, new Vec2(), 1, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Green), System.Drawing.Color.Black);
             SelectionRect.Visible = false;
             SelectionRect.Enabled = false;
+
+            /*Visualize the selected tilesetpart*/
+            FrameRect = new Rectangle2D(10, 10, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Tileset);
+            FrameRect.Visible = false;
+            renderTargetCurrentFrame.AddRenderObject(FrameRect);
             
             /*add the renderobject to the renderpipeline*/
             rendertargetTileset.AddRenderObject(TilesetRect);
@@ -84,7 +89,8 @@ namespace Editor
 
             renderTargetAnimation.Initialize();
             renderTargetAnimation.EnableCameraControl(true);
-            //renderTargetCurrentFrame.Initialize();
+            renderTargetCurrentFrame.Initialize();
+            renderTargetCurrentFrame.EnableCameraControl(true);
         }
 
         void UpdateTilesetCamera()
@@ -127,6 +133,7 @@ namespace Editor
                 Vec2 bottomRight = new Vec2(selectionMouseDownLocation.X > location.X ? selectionMouseDownLocation.X : location.X, selectionMouseDownLocation.Y > location.Y ? selectionMouseDownLocation.Y : location.Y);
                 SelectionRect.Update(topLeft, (int)(bottomRight.X - topLeft.X), (int)(bottomRight.Y - topLeft.Y));
                 SelectionRect.Visible = true;
+                UpdateFrame();
             }
         }
 
@@ -138,7 +145,7 @@ namespace Editor
             int currentSelectedFrame = SelectedFrame;
             trackBarFrameSelection.Value = 0;
             trackBarFrameSelection.Maximum = Animation.Frames.Count - 1;
-            if (trackBarFrameSelection.Maximum <= currentSelectedFrame)
+            if (trackBarFrameSelection.Maximum >= currentSelectedFrame)
                 trackBarFrameSelection.Value = currentSelectedFrame;
         }
 
@@ -150,7 +157,75 @@ namespace Editor
             {
                 Animation.AutoCut((int)SelectionRect.Location.X, (int)SelectionRect.Location.Y, SelectionRect.Width, SelectionRect.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value);
                 UpdateGUI();
+                UpdateFrameDisplay();
             }
+        }
+
+        /*Update the frame by user description*/
+        void UpdateFrame()
+        {
+            if (SelectedFrame >= 0 && SelectedFrame < Animation.Frames.Count)
+            {
+                Animation.Frames[SelectedFrame].StartX = (int)SelectionRect.Location.X;
+                Animation.Frames[SelectedFrame].StartY = (int)SelectionRect.Location.Y;
+                Animation.Frames[SelectedFrame].Width = SelectionRect.Width;
+                Animation.Frames[SelectedFrame].Height = SelectionRect.Height;
+                UpdateFrameDisplay();
+            }
+
+        }
+
+        /*update the user-selected frame so it's displayed correctly*/
+        void UpdateFrameDisplay()
+        {
+            if (SelectedFrame >= 0 && SelectedFrame < Animation.Frames.Count)
+            {
+                FrameRect.Update(new Vec2(), Animation.Frames[SelectedFrame].Width, Animation.Frames[SelectedFrame].Height);
+                FrameRect.TextureSegment = new System.Drawing.RectangleF(Animation.Frames[SelectedFrame].StartX, Animation.Frames[SelectedFrame].StartY, Animation.Frames[SelectedFrame].Width, Animation.Frames[SelectedFrame].Height);
+                FrameRect.Visible = true;
+            }
+        }
+
+        /*select a new frame*/
+        private void trackBarFrameSelection_ValueChanged(object sender, System.EventArgs e)
+        {
+            UpdateFrameDisplay();
+        }
+
+        /*remove current frame*/
+        private void buttonRemoveFrame_Click(object sender, System.EventArgs e)
+        {
+            /*there has to be at least 1 frame for the animation to exist*/
+            if (Animation.Frames.Count > 1)
+            {
+                Animation.RemoveFrame(Animation.Frames[SelectedFrame]);
+                Animation.Reset();
+                UpdateGUI();
+                UpdateFrameDisplay();
+            }
+        }
+
+        /*moving frames in order*/
+        private void buttonMoveFrameTop_Click(object sender, System.EventArgs e)
+        {
+            if (Animation.SwapFrames(SelectedFrame, SelectedFrame - 1))
+                trackBarFrameSelection.Value--;
+        }
+
+        private void buttonMoveFrameBottom_Click(object sender, System.EventArgs e)
+        {
+            if (Animation.SwapFrames(SelectedFrame, SelectedFrame + 1))
+                trackBarFrameSelection.Value++;
+        }
+
+
+        /*add empty frame*/
+        private void buttonAddFrame_Click(object sender, System.EventArgs e)
+        {
+            Animation.AddFrame(0, 0, 0, 0);
+            UpdateGUI();
+            trackBarFrameSelection.Value++;
+            Animation.Reset();
         }
     }
 }

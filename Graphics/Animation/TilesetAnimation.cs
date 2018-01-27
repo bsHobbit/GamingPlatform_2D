@@ -125,6 +125,18 @@ namespace Graphics.Animation
             Reset();
         }
 
+        public bool SwapFrames(int a, int b)
+        {
+            if (a >= 0 && a < frames.Count && b >= 0 && b < frames.Count)
+            {
+                Frame fa = frames[a];
+                Frame fb = frames[b];
+                frames[a] = fb;
+                frames[b] = fa;
+                return true;
+            }
+            return false;
+        }
         /*helper*/
         public static float SpeedFromFPS(float FPS) => 1000f / FPS; 
 

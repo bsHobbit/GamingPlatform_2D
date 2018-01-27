@@ -136,6 +136,7 @@
             this.trackBarFrameSelection.Name = "trackBarFrameSelection";
             this.trackBarFrameSelection.Size = new System.Drawing.Size(326, 24);
             this.trackBarFrameSelection.TabIndex = 3;
+            this.trackBarFrameSelection.ValueChanged += new System.EventHandler(this.trackBarFrameSelection_ValueChanged);
             // 
             // renderTargetCurrentFrame
             // 
@@ -324,6 +325,7 @@
             this.buttonRemoveFrame.TabIndex = 3;
             this.buttonRemoveFrame.Text = "Remove Frame";
             this.buttonRemoveFrame.UseVisualStyleBackColor = true;
+            this.buttonRemoveFrame.Click += new System.EventHandler(this.buttonRemoveFrame_Click);
             // 
             // buttonMoveFrameBottom
             // 
@@ -333,6 +335,7 @@
             this.buttonMoveFrameBottom.TabIndex = 2;
             this.buttonMoveFrameBottom.Text = "Move Frame (->)";
             this.buttonMoveFrameBottom.UseVisualStyleBackColor = true;
+            this.buttonMoveFrameBottom.Click += new System.EventHandler(this.buttonMoveFrameBottom_Click);
             // 
             // buttonMoveFrameTop
             // 
@@ -342,6 +345,7 @@
             this.buttonMoveFrameTop.TabIndex = 1;
             this.buttonMoveFrameTop.Text = "Move Frame (<-)";
             this.buttonMoveFrameTop.UseVisualStyleBackColor = true;
+            this.buttonMoveFrameTop.Click += new System.EventHandler(this.buttonMoveFrameTop_Click);
             // 
             // buttonAddFrame
             // 
@@ -351,6 +355,7 @@
             this.buttonAddFrame.TabIndex = 0;
             this.buttonAddFrame.Text = "Add Frame";
             this.buttonAddFrame.UseVisualStyleBackColor = true;
+            this.buttonAddFrame.Click += new System.EventHandler(this.buttonAddFrame_Click);
             // 
             // AnimationEditor
             // 

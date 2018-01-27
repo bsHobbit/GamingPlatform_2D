@@ -76,6 +76,11 @@ namespace Editor
             numericUpDownGridWidth.ValueChanged +=(s,e) => { UpdateGrid(); };
             numericUpDownGridHeight.ValueChanged += (s, e) => { UpdateGrid(); };
 
+            /*Update Animation properties if the user so desires*/
+            numericUpDownAnimationFPS.ValueChanged += (s, e) => { Animation.Speed = Animation.SpeedFromFPS((float)numericUpDownAnimationFPS.Value); Animation.Reset(); };
+            checkBoxLoopAnimation.CheckedChanged += (s, e) => { Animation.Loop = checkBoxLoopAnimation.Checked; Animation.Reset(); };
+            checkBoxReverse.CheckedChanged += (s, e) => { Animation.IsReverseLoop = checkBoxReverse.Checked; Animation.Reset(); };
+
             /*update the windows controls*/
             UpdateGUI();
         }

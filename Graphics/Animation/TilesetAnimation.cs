@@ -14,7 +14,12 @@ namespace Graphics.Animation
         float FrameTimer;
 
         public bool Loop { get; set; }
-        public bool IsReverseLoop { get; set; }
+        bool isReverseLoop;
+        public bool IsReverseLoop
+        {
+            get => isReverseLoop;
+            set { isReverseLoop = value; Reverse = false; }
+        }
         bool Reverse;
         public bool AnimationInProgress { get; private set; }
 
@@ -55,7 +60,7 @@ namespace Graphics.Animation
                 if (Loop && IsReverseLoop)
                 {
                     Reverse = !Reverse;
-                    CurrentFrame += Reverse ? -1 : 1;
+                    CurrentFrame += Reverse ? -2 : 2;
                 }
                 else if (Loop && !IsReverseLoop)
                     CurrentFrame = 0;

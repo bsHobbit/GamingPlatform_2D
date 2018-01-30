@@ -80,6 +80,10 @@ namespace Editor
             numericUpDownAnimationFPS.ValueChanged += (s, e) => { Animation.Speed = Animation.SpeedFromFPS((float)numericUpDownAnimationFPS.Value); Animation.Reset(); };
             checkBoxLoopAnimation.CheckedChanged += (s, e) => { Animation.Loop = checkBoxLoopAnimation.Checked; Animation.Reset(); };
             checkBoxReverse.CheckedChanged += (s, e) => { Animation.IsReverseLoop = checkBoxReverse.Checked; Animation.Reset(); };
+            numericUpDownScale.ValueChanged += (s, e) => { Animation.Scale = (float)numericUpDownScale.Value; };
+            numericUpDownRotation.ValueChanged += (s, e) => { Animation.Rotation = (float)numericUpDownRotation.Value; };
+            numericUpDownRotationX.ValueChanged += (s, e) => { Animation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
+            numericUpDownRotationY.ValueChanged += (s, e) => { Animation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
 
             /*update the windows controls*/
             UpdateGUI();

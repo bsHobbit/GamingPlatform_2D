@@ -6,10 +6,11 @@ namespace Graphics
     public class Texture2D : Component 
     {
         Bitmap Bitmap;
+        Bitmap Thumbnail;
         public int Width;
         public int Height;
 
-        Texture2D(Bitmap Bitmap)
+        public Texture2D(Bitmap Bitmap)
         {
             this.Bitmap = ToDispose(Bitmap);
             Width = Bitmap.Width;
@@ -29,6 +30,64 @@ namespace Graphics
                             new RectangleF(X, Y, TargetWidth, TargetHeight),
                             Segment,
                             GraphicsUnit.Pixel);
+        }
+
+
+
+        /*thumbnail creation*/
+        public Bitmap GetThumbnail(int ThumbnailWidth, int ThumbnailHeight)
+        {
+            /*check if the current thumbnail is valid, if not create a valid one*/
+            if (Thumbnail == null || Thumbnail.Width != ThumbnailWidth || Thumbnail.Height != ThumbnailHeight)
+            {
+                RemoveAndDispose(Thumbnail);
+                Thumbnail = ToDispose(CreateThumbnail(ThumbnailHeight, ThumbnailHeight));
+            }
+
+            return Thumbnail;
+        }
+
+        Bitmap CreateThumbnail(int Width, int Height)
+        {
+            Bitmap result = new Bitmap(Width, Height);
+            
+
+            if (Bitmap != null)
+            {
+                /*create the graphics to object to render the bitmap in*/
+                System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(result);
+
+                /*size for the image*/
+                int targetX = 0, targetY = 0;
+                int targetWidth = 0, targetHeight = 0;
+
+                /*check wich aspec ratio fits the thumbnail and create the thumbnail*/
+                float aspect = this.Height / (float)this.Width;
+                if (Width * aspect < Height)
+                {
+                    targetWidth = Width;
+                    targetHeight = (int)(Height * aspect);
+                    targetY = Width / 2 - targetHeight / 2;
+                }
+                else
+                {
+                    aspect = this.Width / (float)this.Height; /*ofc... it's the other that fits better*/
+                    targetHeight = Height;
+                    targetWidth = (int)(Width * aspect);
+                    targetX = Height / 2 - targetWidth / 2;
+                }
+
+                /*scale the original image down to the best size to fit in the thumbnail*/
+                g.DrawImage(Bitmap,
+                            new RectangleF(targetX, targetY, targetWidth, targetHeight),
+                            new RectangleF(0, 0, Bitmap.Width, Bitmap.Height),
+                            GraphicsUnit.Pixel);
+
+                /*free the graphics object*/
+                g.Dispose();
+
+            }
+            return result;
         }
 
 

@@ -136,6 +136,7 @@ namespace Graphics
             WorldMatrix.Rotate(Rotation, MatrixOrder.Append);
             WorldMatrix.Translate(rotationOffset.X, rotationOffset.Y, MatrixOrder.Append);
 
+
             /*Scale Object*/
             WorldMatrix.Scale(Scale, Scale, MatrixOrder.Append);
 

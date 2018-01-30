@@ -41,12 +41,12 @@ namespace Editor
             UserIsSelectingInTileset = false;
 
             /*render the tileset into this rectangle*/
-            TilesetRect = new Rectangle2D(Animation.Tileset.Width, Animation.Tileset.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Tileset) { Scale = 1f };
+            //TilesetRect = new Rectangle2D(Animation.Tileset.Width, Animation.Tileset.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Tileset) { Scale = 1f };
 
             /*allow the user to select stuff in the tileset*/
-            TilesetRect.MouseDown += (s, e) => { UserIsSelectingInTileset = true; selectionMouseDownLocation = ApplyGrid(s.TransformIntoLocalSpace(e.CurrentState.Location), true); };
-            TilesetRect.MouseUp += (s, e) => { UserIsSelectingInTileset = false; UpdateFrame(); };
-            TilesetRect.MouseMove += TilesetRect_MouseMove;
+            //TilesetRect.MouseDown += (s, e) => { UserIsSelectingInTileset = true; selectionMouseDownLocation = ApplyGrid(s.TransformIntoLocalSpace(e.CurrentState.Location), true); };
+            //TilesetRect.MouseUp += (s, e) => { UserIsSelectingInTileset = false; UpdateFrame(); };
+            //TilesetRect.MouseMove += TilesetRect_MouseMove;
 
             /*visualize the user selection*/
             SelectionRect = new Rectangle2D(10, 10, new Vec2(), 1, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Green), System.Drawing.Color.Black);
@@ -57,8 +57,10 @@ namespace Editor
             FrameRect = new Rectangle2D(10, 10, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Tileset);
             FrameRect.Visible = false;
             renderTargetCurrentFrame.AddRenderObject(FrameRect);
-            
+
             /*add the renderobject to the renderpipeline*/
+            Graphics.Texture2D tmpTexture = new Graphics.Texture2D(Animation.Tileset.GetThumbnail(100,100));
+            TilesetRect = new Rectangle2D(100, 100, new Vec2(), 0, System.Drawing.Color.Pink, System.Drawing.Color.Empty, tmpTexture);
             rendertargetTileset.AddRenderObject(TilesetRect);
             rendertargetTileset.AddRenderObject(SelectionRect);
 

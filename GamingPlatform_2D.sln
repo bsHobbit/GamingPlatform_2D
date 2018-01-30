@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{73F4E39C-6980-48AB-88EF-86CA4F648E39}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormRenderer", "WinFormRenderer\WinFormRenderer.csproj", "{5367988F-A5B8-4C40-A9BA-05ED1C7EA0A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor\Editor.csproj", "{BA92D081-C8C8-4C86-96E2-2290C11FB8B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCore", "GameCore\GameCore.csproj", "{C2C5D93D-5812-4DCF-BF98-FE1307B9A98B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BA92D081-C8C8-4C86-96E2-2290C11FB8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA92D081-C8C8-4C86-96E2-2290C11FB8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA92D081-C8C8-4C86-96E2-2290C11FB8B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C5D93D-5812-4DCF-BF98-FE1307B9A98B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C5D93D-5812-4DCF-BF98-FE1307B9A98B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C5D93D-5812-4DCF-BF98-FE1307B9A98B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C5D93D-5812-4DCF-BF98-FE1307B9A98B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,12 +9,17 @@ namespace Graphics
         Bitmap Thumbnail;
         public int Width;
         public int Height;
+        public bool IsValid { get; private set; }
 
         public Texture2D(Bitmap Bitmap)
         {
-            this.Bitmap = ToDispose(Bitmap);
-            Width = Bitmap.Width;
-            Height = Bitmap.Height;
+            IsValid = Bitmap != null;
+            if (IsValid)
+            {
+                this.Bitmap = ToDispose(Bitmap);
+                Width = Bitmap.Width;
+                Height = Bitmap.Height;
+            }
         }
 
         public void Draw(System.Drawing.Graphics g, float X, float Y, float TargetWidth, float TargetHeight, RectangleF Segment)

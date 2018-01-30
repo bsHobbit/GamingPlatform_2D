@@ -54,6 +54,12 @@
     <Compile Include="AnimationEditor.Designer.cs">
       <DependentUpon>AnimationEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollectionDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CollectionDisplay.Designer.cs">
+      <DependentUpon>CollectionDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="fMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AnimationEditor.resx">
       <DependentUpon>AnimationEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollectionDisplay.resx">
+      <DependentUpon>CollectionDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

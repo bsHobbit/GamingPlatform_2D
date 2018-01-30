@@ -64,6 +64,7 @@ namespace Editor
             {
                 Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight));
                 Items.Add(Texture, new Rectangle2D(ItemWidth, ItemHeight, new Vec2(), 0, System.Drawing.Color.Black, System.Drawing.Color.Gray, thumbnail));
+                /*@ToDo: Events wegen des auswählesn hinzufügen*/
                 UpdateItems();
             }
         }
@@ -113,6 +114,7 @@ namespace Editor
                     Rectangle2D rect = item.Value;
                     rect.Location = new Vec2(currentCol * ItemWidth, currentRow * itemHeight);
 
+                    /*make sure the next item is positioned properly*/
                     currentCol++;
                     if (currentCol == ItemsPerRow)
                     {

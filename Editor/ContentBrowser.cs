@@ -1,4 +1,5 @@
 ﻿using GameCore;
+using Graphics;
 using System.Windows.Forms;
 
 namespace Editor
@@ -10,6 +11,17 @@ namespace Editor
 
         /*member*/
         ContentManager GameContent;
+        bool CloseOnSelection;
+
+        Texture2D selectedTexture;
+        public Texture2D SelectedTexture
+        {
+            get => selectedTexture;
+            set { selectedTexture = value; }
+        }
+
+
+        
 
         /*ctor*/
         public ContentBrowser()
@@ -18,15 +30,32 @@ namespace Editor
         }
 
         /*init*/
-        public void Initialize(ContentManager GameContent)
+        public void Initialize(ContentManager GameContent, bool CloseOnSelection)
         {
             this.GameContent = GameContent;
+            this.CloseOnSelection = CloseOnSelection;
 
             /*Init collection displays*/
             collectionDisplayTextures.Initialize(TEXTURES_PER_ROW);
 
+
+            /*Register events*/
+            collectionDisplayTextures.TextureSelected += (s, e) => { selectedTexture = e;  SomethingGotSelected(); };
             UpdateTextures();
         }
+
+
+        /*Close on selection?*/
+        void SomethingGotSelected()
+        {
+            if (CloseOnSelection )
+            {
+                DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
+
+
 
 
         /*Make sure every available texture is displayed in the collecttion Display*/

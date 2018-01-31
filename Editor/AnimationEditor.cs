@@ -114,7 +114,7 @@ namespace Editor
         private void buttonSelectTexture_Click(object sender, System.EventArgs e)
         {
             ContentBrowser browser = new ContentBrowser();
-            browser.Initialize(GameContent);
+            browser.Initialize(GameContent, true);
             browser.ShowDialog();
         }
 

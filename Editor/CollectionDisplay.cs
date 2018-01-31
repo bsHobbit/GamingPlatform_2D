@@ -9,6 +9,11 @@ namespace Editor
 {
     public partial class CollectionDisplay : UserControl
     {
+
+        /*events*/
+        public delegate void CollectionDisplaySelectionEventHandler(CollectionDisplay Sender, Texture2D Texture);
+        public event CollectionDisplaySelectionEventHandler TextureSelected;
+
         /*nested types*/
         struct TextureInfo
         {
@@ -96,10 +101,23 @@ namespace Editor
                 renderRect.MouseEnter += (s, e) => { s.OutlineColor = System.Drawing.Color.White; s.ZLocation = 1; };
                 renderRect.MouseLeave += (s, e) => { s.OutlineColor = System.Drawing.Color.Gray; s.ZLocation = 0; };
 
-                /*@ToDo: Events wegen des auswählesn hinzufügen*/
+                /*Auswahl durch den Benutzer*/
+                renderRect.DoubleClick += (s, e) => { TextureSelected?.Invoke(this, GetTexture((Rectangle2D)s)); };
                 UpdateItems();
                 UpdateCamera();
             }
+        }
+
+        /*Get the texture by it's renderobject for the event ;)*/
+        Texture2D GetTexture(Rectangle2D RenderRect)
+        {
+            foreach (var item in Items)
+            {
+                if (item.Value.RenderRect == RenderRect)
+                    return item.Key;
+            }
+
+            return null;
         }
 
         public void RemoveItem(Texture2D Texture)

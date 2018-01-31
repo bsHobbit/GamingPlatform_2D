@@ -45,7 +45,7 @@ namespace Editor
             UserIsSelectingInTileset = false;
 
             /*render the tileset into this rectangle*/
-            TilesetRect = new Rectangle2D(Animation.Tileset.Width, Animation.Tileset.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Tileset);
+            TilesetRect = new Rectangle2D(Animation.Texture.Width, Animation.Texture.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Texture);
 
             /*visualize the user selection*/
             SelectionRect = new Rectangle2D(10, 10, new Vec2(), 1, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Green), System.Drawing.Color.Black);
@@ -53,7 +53,7 @@ namespace Editor
             SelectionRect.Enabled = false;
 
             /*Visualize the selected tilesetpart*/
-            FrameRect = new Rectangle2D(10, 10, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Tileset);
+            FrameRect = new Rectangle2D(10, 10, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Texture);
             FrameRect.Visible = false;
 
             /*add the renderobject to the renderpipeline*/
@@ -106,7 +106,7 @@ namespace Editor
 
         void UpdateTilesetCamera()
         {
-            rendertargetTileset.Camera.LookAt = new Box2DX.Common.Vec2(Animation.Tileset.Width / 2f, Animation.Tileset.Height / 2f);
+            rendertargetTileset.Camera.LookAt = new Vec2(Animation.Texture.Width / 2f, Animation.Texture.Height / 2f);
         }
 
 
@@ -115,7 +115,22 @@ namespace Editor
         {
             ContentBrowser browser = new ContentBrowser();
             browser.Initialize(GameContent, true);
-            browser.ShowDialog();
+
+            /*Update the texture if the user really wants to...*/
+            if (browser.ShowDialog() == DialogResult.OK )
+            {
+                if (browser.SelectedTexture != null)
+                {
+                    Animation.Texture = browser.SelectedTexture;
+
+                    /*Update the visuals for this editor too*/
+                    TilesetRect.Update(new Vec2(), browser.SelectedTexture.Width, browser.SelectedTexture.Height);
+                    TilesetRect.Texture = browser.SelectedTexture;
+                    FrameRect.Texture = browser.SelectedTexture;
+                    UpdateGrid();
+                    UpdateTilesetCamera();
+                }
+            }
         }
 
         /*Update the grid*/
@@ -124,7 +139,7 @@ namespace Editor
             rendertargetTileset.RemoveRenderObject(TilesetGrid);
             if (checkBoxGrid.Checked)
             {
-                TilesetGrid = new Grid2D(new Box2DX.Common.Vec2(), Animation.Tileset.Width, Animation.Tileset.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value, 0, System.Drawing.Color.Red);
+                TilesetGrid = new Grid2D(new Box2DX.Common.Vec2(), Animation.Texture.Width, Animation.Texture.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value, 0, System.Drawing.Color.Red);
                 TilesetGrid.Enabled = false;
                 rendertargetTileset.AddRenderObject(TilesetGrid);
             }

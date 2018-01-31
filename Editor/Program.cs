@@ -31,7 +31,31 @@ namespace Editor
             Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
             Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
             Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
-
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest2.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest2.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest2.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest2.png"));
+            
 
             Application.Run(new AnimationEditor(new Graphics.Animation.TilesetAnimation(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"), 10, 0), Game.ContentManager));
         }

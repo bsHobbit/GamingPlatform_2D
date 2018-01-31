@@ -5,7 +5,6 @@ namespace Graphics.Animation
 {
     public class TilesetAnimation : RenderableObject2D
     {
-        public Texture2D Tileset { get; private set; }
         List<Frame> frames = new List<Frame>();
         public List<Frame> Frames { get => frames; }
         int CurrentFrame;
@@ -23,13 +22,13 @@ namespace Graphics.Animation
         bool Reverse;
         public bool AnimationInProgress { get; private set; }
 
-        public TilesetAnimation(Texture2D Tileset, int FPS, int Z)
+        public TilesetAnimation(Texture2D Texture, int FPS, int Z)
         {
-            this.Tileset = Tileset;
+            this.Texture = Texture;
             Speed = SpeedFromFPS(FPS);
             IsReverseLoop = true;
             Loop = true;
-            Initialize(new Vec2(), Z, null, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, null, Tileset);
+            Initialize(new Vec2(), Z, null, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, null, Texture);
         }
 
 

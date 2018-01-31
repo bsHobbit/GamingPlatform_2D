@@ -16,6 +16,7 @@
 
         /*member*/
         ContentManager contentManager;
+        public ContentManager ContentManager { get => contentManager; }
         ELoopState LoopState;
         System.Timers.Timer timerGameLoop;
         System.Diagnostics.Stopwatch elapsedTimeTimer;
@@ -27,7 +28,7 @@
             contentManager = new ContentManager();
             LoopState = ELoopState.Paused;
             elapsedTimeTimer = System.Diagnostics.Stopwatch.StartNew();
-
+            timerGameLoop = new System.Timers.Timer();
             timerGameLoop.Interval = 1;
             timerGameLoop.AutoReset = true;
             timerGameLoop.Elapsed += TimerGameLoop_Elapsed;
@@ -73,7 +74,7 @@
             }
             elapsedTimeTimer = System.Diagnostics.Stopwatch.StartNew();
         }
-        
+
 
 
         /*save and load content*/

@@ -34,7 +34,17 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.trackBarFrameSelection = new System.Windows.Forms.TrackBar();
+            this.renderTargetCurrentFrame = new WinFormRenderer.cRenderTarget();
+            this.renderTargetAnimation = new WinFormRenderer.cRenderTarget();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numericUpDownRotationY = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numericUpDownRotationX = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDownRotation = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDownScale = new System.Windows.Forms.NumericUpDown();
             this.checkBoxGrid = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDownGridHeight = new System.Windows.Forms.NumericUpDown();
@@ -44,6 +54,7 @@
             this.checkBoxLoopAnimation = new System.Windows.Forms.CheckBox();
             this.labelAnimationFPS = new System.Windows.Forms.Label();
             this.numericUpDownAnimationFPS = new System.Windows.Forms.NumericUpDown();
+            this.rendertargetTileset = new WinFormRenderer.cRenderTarget();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonAutoFrame = new System.Windows.Forms.Button();
             this.buttonResetAnimation = new System.Windows.Forms.Button();
@@ -51,30 +62,20 @@
             this.buttonMoveFrameBottom = new System.Windows.Forms.Button();
             this.buttonMoveFrameTop = new System.Windows.Forms.Button();
             this.buttonAddFrame = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDownScale = new System.Windows.Forms.NumericUpDown();
-            this.renderTargetCurrentFrame = new WinFormRenderer.cRenderTarget();
-            this.renderTargetAnimation = new WinFormRenderer.cRenderTarget();
-            this.rendertargetTileset = new WinFormRenderer.cRenderTarget();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDownRotation = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDownRotationX = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.numericUpDownRotationY = new System.Windows.Forms.NumericUpDown();
+            this.buttonSelectTexture = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFrameSelection)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGridHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGridWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAnimationFPS)).BeginInit();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotation)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationY)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -150,8 +151,27 @@
             this.trackBarFrameSelection.TabIndex = 3;
             this.trackBarFrameSelection.ValueChanged += new System.EventHandler(this.trackBarFrameSelection_ValueChanged);
             // 
+            // renderTargetCurrentFrame
+            // 
+            this.renderTargetCurrentFrame.Camera = null;
+            this.renderTargetCurrentFrame.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.renderTargetCurrentFrame.Location = new System.Drawing.Point(3, 33);
+            this.renderTargetCurrentFrame.Name = "renderTargetCurrentFrame";
+            this.renderTargetCurrentFrame.Size = new System.Drawing.Size(326, 252);
+            this.renderTargetCurrentFrame.TabIndex = 3;
+            // 
+            // renderTargetAnimation
+            // 
+            this.renderTargetAnimation.Camera = null;
+            this.renderTargetAnimation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.renderTargetAnimation.Location = new System.Drawing.Point(341, 3);
+            this.renderTargetAnimation.Name = "renderTargetAnimation";
+            this.renderTargetAnimation.Size = new System.Drawing.Size(332, 288);
+            this.renderTargetAnimation.TabIndex = 4;
+            // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonSelectTexture);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.numericUpDownRotationY);
             this.panel1.Controls.Add(this.label5);
@@ -176,6 +196,101 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(164, 410);
             this.panel1.TabIndex = 6;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 227);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Rotation Y";
+            // 
+            // numericUpDownRotationY
+            // 
+            this.numericUpDownRotationY.Location = new System.Drawing.Point(78, 225);
+            this.numericUpDownRotationY.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownRotationY.Name = "numericUpDownRotationY";
+            this.numericUpDownRotationY.Size = new System.Drawing.Size(66, 20);
+            this.numericUpDownRotationY.TabIndex = 18;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 201);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Rotation X";
+            // 
+            // numericUpDownRotationX
+            // 
+            this.numericUpDownRotationX.Location = new System.Drawing.Point(78, 199);
+            this.numericUpDownRotationX.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownRotationX.Name = "numericUpDownRotationX";
+            this.numericUpDownRotationX.Size = new System.Drawing.Size(66, 20);
+            this.numericUpDownRotationX.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 175);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Rotation";
+            // 
+            // numericUpDownRotation
+            // 
+            this.numericUpDownRotation.Location = new System.Drawing.Point(78, 173);
+            this.numericUpDownRotation.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownRotation.Name = "numericUpDownRotation";
+            this.numericUpDownRotation.Size = new System.Drawing.Size(66, 20);
+            this.numericUpDownRotation.TabIndex = 14;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 149);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(34, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Scale";
+            // 
+            // numericUpDownScale
+            // 
+            this.numericUpDownScale.DecimalPlaces = 1;
+            this.numericUpDownScale.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.numericUpDownScale.Location = new System.Drawing.Point(78, 147);
+            this.numericUpDownScale.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownScale.Name = "numericUpDownScale";
+            this.numericUpDownScale.Size = new System.Drawing.Size(66, 20);
+            this.numericUpDownScale.TabIndex = 12;
+            this.numericUpDownScale.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // checkBoxGrid
             // 
@@ -244,7 +359,7 @@
             // checkBoxReverse
             // 
             this.checkBoxReverse.AutoSize = true;
-            this.checkBoxReverse.Location = new System.Drawing.Point(6, 81);
+            this.checkBoxReverse.Location = new System.Drawing.Point(6, 124);
             this.checkBoxReverse.Name = "checkBoxReverse";
             this.checkBoxReverse.Size = new System.Drawing.Size(93, 17);
             this.checkBoxReverse.TabIndex = 6;
@@ -254,7 +369,7 @@
             // checkBoxLoopAnimation
             // 
             this.checkBoxLoopAnimation.AutoSize = true;
-            this.checkBoxLoopAnimation.Location = new System.Drawing.Point(6, 58);
+            this.checkBoxLoopAnimation.Location = new System.Drawing.Point(6, 101);
             this.checkBoxLoopAnimation.Name = "checkBoxLoopAnimation";
             this.checkBoxLoopAnimation.Size = new System.Drawing.Size(99, 17);
             this.checkBoxLoopAnimation.TabIndex = 5;
@@ -264,7 +379,7 @@
             // labelAnimationFPS
             // 
             this.labelAnimationFPS.AutoSize = true;
-            this.labelAnimationFPS.Location = new System.Drawing.Point(3, 34);
+            this.labelAnimationFPS.Location = new System.Drawing.Point(3, 77);
             this.labelAnimationFPS.Name = "labelAnimationFPS";
             this.labelAnimationFPS.Size = new System.Drawing.Size(27, 13);
             this.labelAnimationFPS.TabIndex = 4;
@@ -272,10 +387,19 @@
             // 
             // numericUpDownAnimationFPS
             // 
-            this.numericUpDownAnimationFPS.Location = new System.Drawing.Point(78, 32);
+            this.numericUpDownAnimationFPS.Location = new System.Drawing.Point(78, 75);
             this.numericUpDownAnimationFPS.Name = "numericUpDownAnimationFPS";
             this.numericUpDownAnimationFPS.Size = new System.Drawing.Size(66, 20);
             this.numericUpDownAnimationFPS.TabIndex = 3;
+            // 
+            // rendertargetTileset
+            // 
+            this.rendertargetTileset.Camera = null;
+            this.rendertargetTileset.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rendertargetTileset.Location = new System.Drawing.Point(173, 3);
+            this.rendertargetTileset.Name = "rendertargetTileset";
+            this.rendertargetTileset.Size = new System.Drawing.Size(676, 410);
+            this.rendertargetTileset.TabIndex = 0;
             // 
             // panel2
             // 
@@ -350,127 +474,15 @@
             this.buttonAddFrame.UseVisualStyleBackColor = true;
             this.buttonAddFrame.Click += new System.EventHandler(this.buttonAddFrame_Click);
             // 
-            // label3
+            // buttonSelectTexture
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 106);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Scale";
-            // 
-            // numericUpDownScale
-            // 
-            this.numericUpDownScale.DecimalPlaces = 1;
-            this.numericUpDownScale.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.numericUpDownScale.Location = new System.Drawing.Point(78, 104);
-            this.numericUpDownScale.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownScale.Name = "numericUpDownScale";
-            this.numericUpDownScale.Size = new System.Drawing.Size(66, 20);
-            this.numericUpDownScale.TabIndex = 12;
-            this.numericUpDownScale.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // renderTargetCurrentFrame
-            // 
-            this.renderTargetCurrentFrame.Camera = null;
-            this.renderTargetCurrentFrame.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.renderTargetCurrentFrame.Location = new System.Drawing.Point(3, 33);
-            this.renderTargetCurrentFrame.Name = "renderTargetCurrentFrame";
-            this.renderTargetCurrentFrame.Size = new System.Drawing.Size(326, 252);
-            this.renderTargetCurrentFrame.TabIndex = 3;
-            // 
-            // renderTargetAnimation
-            // 
-            this.renderTargetAnimation.Camera = null;
-            this.renderTargetAnimation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.renderTargetAnimation.Location = new System.Drawing.Point(341, 3);
-            this.renderTargetAnimation.Name = "renderTargetAnimation";
-            this.renderTargetAnimation.Size = new System.Drawing.Size(332, 288);
-            this.renderTargetAnimation.TabIndex = 4;
-            // 
-            // rendertargetTileset
-            // 
-            this.rendertargetTileset.Camera = null;
-            this.rendertargetTileset.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rendertargetTileset.Location = new System.Drawing.Point(173, 3);
-            this.rendertargetTileset.Name = "rendertargetTileset";
-            this.rendertargetTileset.Size = new System.Drawing.Size(676, 410);
-            this.rendertargetTileset.TabIndex = 0;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 132);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "Rotation";
-            // 
-            // numericUpDownRotation
-            // 
-            this.numericUpDownRotation.Location = new System.Drawing.Point(78, 130);
-            this.numericUpDownRotation.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.numericUpDownRotation.Name = "numericUpDownRotation";
-            this.numericUpDownRotation.Size = new System.Drawing.Size(66, 20);
-            this.numericUpDownRotation.TabIndex = 14;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 158);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "Rotation X";
-            // 
-            // numericUpDownRotationX
-            // 
-            this.numericUpDownRotationX.Location = new System.Drawing.Point(78, 156);
-            this.numericUpDownRotationX.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.numericUpDownRotationX.Name = "numericUpDownRotationX";
-            this.numericUpDownRotationX.Size = new System.Drawing.Size(66, 20);
-            this.numericUpDownRotationX.TabIndex = 16;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 184);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "Rotation Y";
-            // 
-            // numericUpDownRotationY
-            // 
-            this.numericUpDownRotationY.Location = new System.Drawing.Point(78, 182);
-            this.numericUpDownRotationY.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.numericUpDownRotationY.Name = "numericUpDownRotationY";
-            this.numericUpDownRotationY.Size = new System.Drawing.Size(66, 20);
-            this.numericUpDownRotationY.TabIndex = 18;
+            this.buttonSelectTexture.Location = new System.Drawing.Point(44, 32);
+            this.buttonSelectTexture.Name = "buttonSelectTexture";
+            this.buttonSelectTexture.Size = new System.Drawing.Size(100, 23);
+            this.buttonSelectTexture.TabIndex = 20;
+            this.buttonSelectTexture.Text = "Select Texture";
+            this.buttonSelectTexture.UseVisualStyleBackColor = true;
+            this.buttonSelectTexture.Click += new System.EventHandler(this.buttonSelectTexture_Click);
             // 
             // AnimationEditor
             // 
@@ -488,14 +500,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFrameSelection)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGridHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGridWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAnimationFPS)).EndInit();
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownScale)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotation)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationY)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -536,5 +548,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownRotationY;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown numericUpDownRotationX;
+        private System.Windows.Forms.Button buttonSelectTexture;
     }
 }

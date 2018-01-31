@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,23 @@ namespace Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AnimationEditor(new Graphics.Animation.TilesetAnimation(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"), 10, 0)));
+
+            Game Game = new Game();
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+
+
+            Application.Run(new AnimationEditor(new Graphics.Animation.TilesetAnimation(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"), 10, 0), Game.ContentManager));
         }
     }
 }

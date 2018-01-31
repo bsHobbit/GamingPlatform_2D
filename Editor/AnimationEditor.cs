@@ -1,6 +1,7 @@
 ﻿using Box2DX.Common;
 using Graphics.Geometry;
 using System.Collections.Generic;
+using GameCore;
 using System.Windows.Forms;
 using Animation = Graphics.Animation.TilesetAnimation;
 
@@ -14,6 +15,7 @@ namespace Editor
         Rectangle2D SelectionRect;
         Rectangle2D FrameRect;
         Grid2D TilesetGrid;
+        ContentManager GameContent;
 
         int SelectedFrame { get => trackBarFrameSelection.Value; }
 
@@ -25,9 +27,11 @@ namespace Editor
             InitializeComponent();
         }
 
-        public AnimationEditor(Animation Animation)
+        public AnimationEditor(Animation Animation, ContentManager GameContent)
             : this()
         {
+            /*keep references to every info that is needed*/
+            this.GameContent = GameContent;
             this.Animation = Animation;
             Text += " - " + Animation.Name;
 
@@ -88,7 +92,6 @@ namespace Editor
             UpdateGUI();
         }
 
-
         void InitializeRenderTargets()
         {
             rendertargetTileset.Initialize();
@@ -104,6 +107,15 @@ namespace Editor
         void UpdateTilesetCamera()
         {
             rendertargetTileset.Camera.LookAt = new Box2DX.Common.Vec2(Animation.Tileset.Width / 2f, Animation.Tileset.Height / 2f);
+        }
+
+
+        /*let the user select a texture for the animation*/
+        private void buttonSelectTexture_Click(object sender, System.EventArgs e)
+        {
+            ContentBrowser browser = new ContentBrowser();
+            browser.Initialize(GameContent);
+            browser.ShowDialog();
         }
 
         /*Update the grid*/
@@ -235,5 +247,6 @@ namespace Editor
             trackBarFrameSelection.Value++;
             Animation.Reset();
         }
+
     }
 }

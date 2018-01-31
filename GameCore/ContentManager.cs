@@ -6,8 +6,13 @@ namespace GameCore
 {
     public class ContentManager : Core.ComponentModel.Component
     {
+        /*event stuff*/
+        public delegate void ContentManagerTextureEventHandler(ContentManager Sender, Texture2D Content);
+        public event ContentManagerTextureEventHandler OnTextureAdded;
+        public event ContentManagerTextureEventHandler OnTextureRemoved;
+
         /*members*/
-        internal List<Texture2D> Textures;
+        public List<Texture2D> Textures { get; private set; }
         internal List<RenderableObject2D> RenderableObjects;
 
         /*init everything*/
@@ -21,7 +26,10 @@ namespace GameCore
         public void AddTexture(Texture2D Texture)
         {
             if (!Textures.Contains(Texture))
+            {
                 Textures.Add(ToDispose(Texture));
+                OnTextureAdded?.Invoke(this, Texture);
+            }
         }
 
         public void RemoveTexture(Texture2D Texture)
@@ -30,6 +38,7 @@ namespace GameCore
             {
                 Textures.Remove(Texture);
                 RemoveAndDispose(Texture);
+                OnTextureRemoved?.Invoke(this, Texture);
             }
         }
 
@@ -47,7 +56,9 @@ namespace GameCore
         public void AddAnimation(Graphics.Animation.TilesetAnimation Animation)
         {
             if (!RenderableObjects.Contains(Animation))
+            {
                 RenderableObjects.Add(ToDispose(Animation));
+            }
         }
 
         public void RemoveAnimation(Graphics.Animation.TilesetAnimation Animation)

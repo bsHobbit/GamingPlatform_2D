@@ -114,7 +114,7 @@ namespace Editor
         private void buttonSelectTexture_Click(object sender, System.EventArgs e)
         {
             ContentBrowser browser = new ContentBrowser();
-            browser.Initialize(GameContent, true);
+            browser.Initialize(GameContent, true, ContentBrowser.eBrowsers.Texture | ContentBrowser.eBrowsers.Animations);
 
             /*Update the texture if the user really wants to...*/
             if (browser.ShowDialog() == DialogResult.OK )

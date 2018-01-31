@@ -9,6 +9,14 @@ namespace Editor
     {
         const int TEXTURES_PER_ROW = 10;
 
+        /*nested types*/
+        [System.Flags]
+        public enum eBrowsers
+        {
+            Texture = 1,
+            Animations = 2
+        }
+
         /*member*/
         ContentManager GameContent;
         bool CloseOnSelection;
@@ -21,8 +29,6 @@ namespace Editor
         }
 
 
-        
-
         /*ctor*/
         public ContentBrowser()
         {
@@ -30,13 +36,16 @@ namespace Editor
         }
 
         /*init*/
-        public void Initialize(ContentManager GameContent, bool CloseOnSelection)
+        public void Initialize(ContentManager GameContent, bool CloseOnSelection , eBrowsers VisibleBrowsers)
         {
             this.GameContent = GameContent;
             this.CloseOnSelection = CloseOnSelection;
 
+            UpdateBrowserVisibility(VisibleBrowsers);
+
             /*Init collection displays*/
-            collectionDisplayTextures.Initialize(TEXTURES_PER_ROW);
+            if (VisibleBrowsers.HasFlag(eBrowsers.Texture))
+                collectionDisplayTextures.Initialize(TEXTURES_PER_ROW);
 
 
             /*Register events*/
@@ -53,6 +62,14 @@ namespace Editor
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
+        }
+
+        void UpdateBrowserVisibility(eBrowsers VisibleBrowsers)
+        {
+            if (!VisibleBrowsers.HasFlag(eBrowsers.Texture))
+                tabControlContent.TabPages.Remove(tabPageTextures);
+            if (!VisibleBrowsers.HasFlag(eBrowsers.Animations))
+                tabControlContent.TabPages.Remove(tabPageAnimations);
         }
 
 

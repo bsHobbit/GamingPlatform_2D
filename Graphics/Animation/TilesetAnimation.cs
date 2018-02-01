@@ -21,6 +21,7 @@ namespace Graphics.Animation
         }
         bool Reverse;
         public bool AnimationInProgress { get; private set; }
+        public float AnimationTime { get => frames != null ? (CurrentFrame / frames.Count) : 0; }
 
         public TilesetAnimation(Texture2D Texture, int FPS, int Z)
         {

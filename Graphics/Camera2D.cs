@@ -1,4 +1,5 @@
 ﻿using Box2DX.Common;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace Graphics
@@ -64,7 +65,20 @@ namespace Graphics
             float newScale = ZoomIn ? scale + .1f * scale : scale - .1f * scale;
             if (newScale >= .1f && newScale < 100f)
             {
+                float Factor = newScale;
+                PointF[] tmpPoints = new PointF[] { new PointF(Location.X, Location.Y) };
+                ViewMatrix.TransformPoints(tmpPoints);
+                Vec2 prevScreenLocation = new Vec2(tmpPoints[0].X, tmpPoints[0].Y);
+
                 Scale = newScale;
+
+                tmpPoints = new PointF[] { new PointF(Location.X, Location.Y) };
+                ViewMatrix.TransformPoints(tmpPoints);
+                Vec2 newScreenLocation = new Vec2(tmpPoints[0].X, tmpPoints[0].Y);
+
+                Vec2 diff = (prevScreenLocation - newScreenLocation);
+                diff = new Vec2(diff.X / Factor, diff.Y / Factor);
+                LookAt -= diff;
             }
         }
     }

@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\AnimationState.cs" />
+    <Compile Include="Animation\AnimationTransition.cs" />
     <Compile Include="Animation\Frame.cs" />
     <Compile Include="Animation\TilesetAnimation.cs" />
     <Compile Include="Camera2D.cs" />

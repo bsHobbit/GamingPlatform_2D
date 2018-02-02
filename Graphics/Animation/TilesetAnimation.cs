@@ -33,7 +33,7 @@ namespace Graphics.Animation
         public TilesetAnimation(Texture2D Texture, int FPS, int Z)
         {
             this.Texture = Texture;
-            Speed = SpeedFromFPS(FPS);
+            this.FPS = FPS;
             IsReverseLoop = true;
             Loop = true;
             Initialize(new Vec2(), Z, null, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, null, Texture);

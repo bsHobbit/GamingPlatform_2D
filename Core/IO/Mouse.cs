@@ -5,7 +5,7 @@ namespace Core.IO
     public class Mouse
     {
 
-        const float CLICK_TIME_MS = 100;
+        const float CLICK_TIME_MS = 200;
 
         MouseState currentState;
         public MouseState CurrentState { get => currentState; }
@@ -23,23 +23,27 @@ namespace Core.IO
 
         public void Update(MouseState Mouse, float Elapsed)
         {
-            for (int i = 0; i < ButtonCount; i++)
-                clickTimer[i] += Elapsed;
-
-            /*reset timer on mousedown*/
-            for (int i = 0; i < ButtonCount; i++)
-            {
-                if (Mouse[i] == ButtonState.Pressed && currentState[i] == ButtonState.Released)
-                    clickTimer[i] = 0f;
-            }
 
             /*Check if any mousebutton got triggered*/
             for (int i = 0; i < ButtonCount; i++)
             {
+                if (Mouse[i] == ButtonState.Pressed)
+                    clickTimer[i] += Elapsed;
+
+                //if (Mouse[i] == ButtonState.Released && clickTimer[i] > 0)
+                //{
+                //    if (clickTimer[i] < CLICK_TIME_MS && currentState[i] == ButtonState.Pressed)
+                //        currentState[i] = ButtonState.Triggered;
+                //}
+
                 if (clickTimer[i] < CLICK_TIME_MS && currentState[i] == ButtonState.Pressed && Mouse[i] == ButtonState.Released)
                     currentState[i] = ButtonState.Triggered;
                 else
                     currentState[i] = Mouse[i];
+
+
+                if (Mouse[i] == ButtonState.Released)
+                    clickTimer[i] = 0;
             }
 
             /*Update location stuff*/

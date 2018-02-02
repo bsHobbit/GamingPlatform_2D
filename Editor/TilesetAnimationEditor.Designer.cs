@@ -491,7 +491,7 @@
             this.ClientSize = new System.Drawing.Size(852, 716);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "TilesetAnimationEditor";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Animation Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TilesetAnimationEditor_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);

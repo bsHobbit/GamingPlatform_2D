@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GameCore
 {
-    public class ContentManager : Core.ComponentModel.Component
+    public partial class ContentManager : Core.ComponentModel.Component
     {
         /*event stuff*/
         public delegate void ContentManagerTextureEventHandler(ContentManager Sender, Texture2D Content);
@@ -59,6 +59,16 @@ namespace GameCore
             }
         }
 
+        public Texture2D GetTexture(string Name)
+        {
+            for (int i = 0; i < Textures.Count; i++)
+            {
+                if (Textures[i].Name == Name)
+                    return Textures[i];
+            }
+            return null;
+        }
+
         /*Remove all objects that use a specific texture*/
         public void RemoveReferences(Texture2D Texture)
         {
@@ -74,6 +84,10 @@ namespace GameCore
         {
             if (!RenderableObjects.Contains(Animation))
             {
+                /*make sure the item gets a default name*/
+                if (string.IsNullOrEmpty(Animation.Name))
+                    Animation.Name = GetFreeName(typeof(TilesetAnimation));
+
                 RenderableObjects.Add(ToDispose(Animation));
             }
         }
@@ -86,6 +100,70 @@ namespace GameCore
                 RemoveAndDispose(Animation);
             }
         }
+
+
+        /*manage names*/
+        public RenderableObject2D GetRenderableObject(string Name, System.Type Filter)
+        {
+            for (int i = 0; i < RenderableObjects.Count; i++)
+                if (RenderableObjects[i].GetType() == Filter && RenderableObjects[i].Name == Name)
+                    return RenderableObjects[i];
+            return null;
+        }
+
+        public string GetFreeName(System.Type Filter, int i = 0)
+        {
+            string currentName = "obj_" + i.ToString();
+            if (GetRenderableObject(currentName, Filter) == null)
+                return currentName;
+            return GetFreeName(Filter, i + 1);
+        }
+
+
+        /*save and load*/
+
+        void CreatePath(string Path)
+        {
+            if (!System.IO.Directory.Exists(Path))
+                System.IO.Directory.CreateDirectory(Path);
+        }
+
+
+        void RemovePath(string Path)
+        {
+            if (!System.IO.Directory.Exists(Path))
+                System.IO.Directory.Delete(Path, true);
+        }
+
+        internal void Save(string Path)
+        {
+            
+            CreatePath(Path);
+            string contentPath = Path + "Content\\";
+            /*delete old existing stuff*/
+            RemovePath(contentPath);
+
+            /*create new stuff*/
+            CreatePath(contentPath);
+
+            /*Save all tilesetanimations*/
+            string tilesetAnimationsPath = contentPath + "tileset_animations\\";
+            CreatePath(tilesetAnimationsPath);
+            SaveTilesetAnimations(tilesetAnimationsPath);
+        }
+
+        internal void Load(string Path)
+        {
+            string contentPath = Path + "Content\\";
+            string tilesetAnimationsPath = contentPath + "tileset_animations\\";
+            if (System.IO.Directory.Exists (tilesetAnimationsPath))
+            {
+                string[] tsaFiles = System.IO.Directory.GetFiles(tilesetAnimationsPath, "*.tsa");
+                foreach (var tsaFile in tsaFiles)
+                    LoadTilesetAnimations(tsaFile);
+            }
+        }
+
 
     }
 }

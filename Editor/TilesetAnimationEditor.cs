@@ -97,6 +97,9 @@ namespace Editor
             numericUpDownGridWidth.Value = LastGridWidth;
             numericUpDownGridHeight.Value = LastGridHeight;
 
+            textBox1.Text = TilesetAnimation.Name;
+
+
             /*update the windows controls*/
             UpdateGUI();
         }

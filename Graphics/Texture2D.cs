@@ -12,8 +12,9 @@ namespace Graphics
         public int Height;
         public bool IsValid { get; private set; }
 
-        public Texture2D(Bitmap Bitmap)
+        public Texture2D(Bitmap Bitmap, string Name = "")
         {
+            this.Name = Name;
             IsValid = Bitmap != null;
             Thumbnails = new Dictionary<int, Bitmap>();
             if (IsValid)
@@ -116,7 +117,7 @@ namespace Graphics
                         throw new System.Exception("Unsupported image format :(");
                     else
                     {
-                        return new Texture2D(bitmap);
+                        return new Texture2D(bitmap, System.IO.Path.GetFileName(Path));
                     }
                 }
                 catch (System.Exception e)

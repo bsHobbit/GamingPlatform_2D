@@ -71,6 +71,7 @@ namespace Editor
             }
 
             UpdateTextures();
+            UpdateTilesetAnimations();
         }
 
         /*Handle tilesetanimation selection*/

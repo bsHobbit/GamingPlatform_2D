@@ -6,6 +6,8 @@
         public delegate void GameUpdateEventHandler(float Elapsed);
         public event GameUpdateEventHandler Update;
 
+        string Path;
+
         /*nested types*/
         enum ELoopState
         {
@@ -23,8 +25,9 @@
 
 
         /*ctor*/
-        public Game()
+        public Game(string Path)
         {
+            this.Path = Path;
             contentManager = new ContentManager();
             LoopState = ELoopState.Paused;
             elapsedTimeTimer = System.Diagnostics.Stopwatch.StartNew();
@@ -78,18 +81,17 @@
 
 
         /*save and load content*/
-        public void SaveContent(string Path)
+        public void SaveContent()
         {
             Pause();
-
-
+            contentManager.Save(Path);
             Run();
         }
 
-        public void LoadContent(string Path)
+        public void LoadContent()
         {
             Pause();
-
+            contentManager.Load(Path);
             Run();
         }
     }

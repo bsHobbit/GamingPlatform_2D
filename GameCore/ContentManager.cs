@@ -131,7 +131,7 @@ namespace GameCore
 
         void RemovePath(string Path)
         {
-            if (!System.IO.Directory.Exists(Path))
+            if (System.IO.Directory.Exists(Path))
                 System.IO.Directory.Delete(Path, true);
         }
 
@@ -140,14 +140,13 @@ namespace GameCore
             
             CreatePath(Path);
             string contentPath = Path + "Content\\";
-            /*delete old existing stuff*/
-            RemovePath(contentPath);
 
             /*create new stuff*/
             CreatePath(contentPath);
 
             /*Save all tilesetanimations*/
             string tilesetAnimationsPath = contentPath + "tileset_animations\\";
+            RemovePath(tilesetAnimationsPath);
             CreatePath(tilesetAnimationsPath);
             SaveTilesetAnimations(tilesetAnimationsPath);
         }

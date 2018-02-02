@@ -18,8 +18,9 @@ namespace Editor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Game Game = new Game(@"D:\Temp\kk\game\");
-            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Temp\kk\Fumiko.png"));
+            Game Game = new Game(@"D:\Programmierung\Temp\game\");
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
+            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest2.png"));
             Game.LoadContent();
 
 

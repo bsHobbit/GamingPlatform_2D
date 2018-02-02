@@ -19,6 +19,7 @@ namespace Editor
         }
 
         /*member*/
+        eBrowsers VisibleBrowsers;
         ContentManager GameContent;
         bool CloseOnSelection;
 
@@ -39,6 +40,7 @@ namespace Editor
         /*init*/
         public void Initialize(ContentManager GameContent, bool CloseOnSelection , eBrowsers VisibleBrowsers)
         {
+            this.VisibleBrowsers = VisibleBrowsers;
             this.GameContent = GameContent;
             this.CloseOnSelection = CloseOnSelection;
 
@@ -84,7 +86,12 @@ namespace Editor
                 Editor.Show();
 
                 /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
-                Editor.FormClosing += (s, e) => { collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0)); Editor.Dispose(); };
+                Editor.FormClosing += (s, e) => 
+                {
+                    collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
+                    collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
+                    Editor.Dispose();
+                };
             }
         }
 
@@ -113,22 +120,29 @@ namespace Editor
         /*Make sure every available texture is displayed in the collecttion Display*/
         void UpdateTextures()
         {
-            collectionDisplayTextures.ClearItems();
-            for (int i = 0; i < GameContent.Textures.Count; i++)
+            if (VisibleBrowsers.HasFlag(eBrowsers.Texture))
             {
-                var Texture = GameContent.Textures[i];
-                collectionDisplayTextures.AddItem(Texture, Texture.Name, System.Drawing.RectangleF.Empty);
+                collectionDisplayTextures.ClearItems();
+                for (int i = 0; i < GameContent.Textures.Count; i++)
+                {
+                    var Texture = GameContent.Textures[i];
+                    collectionDisplayTextures.AddItem(Texture, Texture.Name, System.Drawing.RectangleF.Empty);
+                }
             }
         }
 
         void UpdateTilesetAnimations()
         {
-            collectionDisplayTilesetAnimations.ClearItems();
-            var tilesetAnimations = GameContent.TilesetAnimations;
-            for (int i = 0; i < tilesetAnimations.Count; i++)
+
+            if (VisibleBrowsers.HasFlag(eBrowsers.TilesetAnimations))
             {
-                var Texture = tilesetAnimations[i].Texture;
-                collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name, tilesetAnimations[i].GetSegment(0));
+                collectionDisplayTilesetAnimations.ClearItems();
+                var tilesetAnimations = GameContent.TilesetAnimations;
+                for (int i = 0; i < tilesetAnimations.Count; i++)
+                {
+                    var Texture = tilesetAnimations[i].Texture;
+                    collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name, tilesetAnimations[i].GetSegment(0));
+                }
             }
         }
 

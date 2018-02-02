@@ -17,7 +17,7 @@ namespace Editor
         /*nested types*/
         class TextureInfo
         {
-            public Texture2D OriginalTexture { get; private set; }
+            public Texture2D OriginalTexture { get; internal set; }
             public string Info { get; private set; }
             public RenderableObject2D RenderObject { get; set; }
             public int Index { get; private set; }
@@ -242,6 +242,12 @@ namespace Editor
         public void UpdateThumbnailSegment(int ItemIndex, System.Drawing.RectangleF Segment)
         {
             Items[ItemIndex].UpdateSegment(Segment);
+            UpdateThumbnail(Items[ItemIndex]);
+        }
+
+        public void UpdateThumbnailTexture(int ItemIndex, Texture2D Texture)
+        {
+            Items[ItemIndex].OriginalTexture = Texture;
             UpdateThumbnail(Items[ItemIndex]);
         }
 

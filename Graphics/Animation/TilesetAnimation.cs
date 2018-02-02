@@ -86,7 +86,7 @@ namespace Graphics.Animation
             if (CurrentFrame >= 0 && CurrentFrame < frames.Count)
             {
                 Vertices = CreateRectangle2D(frames[CurrentFrame].Width, frames[CurrentFrame].Height);
-                TextureSegment = new System.Drawing.RectangleF(frames[CurrentFrame].StartX, frames[CurrentFrame].StartY, frames[CurrentFrame].Width, frames[CurrentFrame].Height);
+                TextureSegment = GetSegment(CurrentFrame);
             }
             else
             {
@@ -106,6 +106,14 @@ namespace Graphics.Animation
                 Obj.TextureSegment = new System.Drawing.RectangleF(frames[CurrentFrame].StartX, frames[CurrentFrame].StartY, frames[CurrentFrame].Width, frames[CurrentFrame].Height);
                 Obj.Texture = Texture;
             }
+        }
+
+        /*Get the segment for a current frame*/
+        public System.Drawing.RectangleF GetSegment(int FrameIndex)
+        {
+            if (FrameIndex >= 0 && FrameIndex < frames.Count)
+                return new System.Drawing.RectangleF(frames[FrameIndex].StartX, frames[FrameIndex].StartY, frames[FrameIndex].Width, frames[FrameIndex].Height);
+            return System.Drawing.RectangleF.Empty;
         }
         
 

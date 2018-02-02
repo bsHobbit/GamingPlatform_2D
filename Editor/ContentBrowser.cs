@@ -8,7 +8,7 @@ namespace Editor
     public partial class ContentBrowser : Form
     {
         const int TEXTURES_PER_ROW = 10;
-        const int TILESETANIMATIONS_PER_ROW = 25;
+        const int TILESETANIMATIONS_PER_ROW = 15;
 
         /*nested types*/
         [System.Flags]
@@ -83,7 +83,7 @@ namespace Editor
                 Editor.Show();
 
                 /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
-                Editor.FormClosing += (s, e) => { collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].TextureSegment); Editor.Dispose(); };
+                Editor.FormClosing += (s, e) => { collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0)); Editor.Dispose(); };
             }
         }
 
@@ -127,7 +127,7 @@ namespace Editor
             for (int i = 0; i < tilesetAnimations.Count; i++)
             {
                 var Texture = tilesetAnimations[i].Texture;
-                collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name, tilesetAnimations[i].TextureSegment);
+                collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name, tilesetAnimations[i].GetSegment(0));
             }
         }
 

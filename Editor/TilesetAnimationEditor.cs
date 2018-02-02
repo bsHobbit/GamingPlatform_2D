@@ -11,6 +11,9 @@ namespace Editor
 {
     public partial class TilesetAnimationEditor : Form
     {
+        static int LastGridWidth = 32;
+        static int LastGridHeight = 32;
+
         TilesetAnimation TilesetAnimation;
         Rectangle2D TilesetRect;
         Rectangle2D SelectionRect;
@@ -73,8 +76,8 @@ namespace Editor
 
             /*Update the grid if the user so desires*/
             checkBoxGrid.CheckedChanged += (s, e) => { UpdateGrid(); };
-            numericUpDownGridWidth.ValueChanged +=(s,e) => { UpdateGrid(); };
-            numericUpDownGridHeight.ValueChanged += (s, e) => { UpdateGrid(); };
+            numericUpDownGridWidth.ValueChanged +=(s,e) => { UpdateGrid(); LastGridWidth = (int)numericUpDownGridWidth.Value; };
+            numericUpDownGridHeight.ValueChanged += (s, e) => { UpdateGrid(); LastGridHeight = (int)numericUpDownGridHeight.Value; };
 
             /*Update Animation properties if the user so desires*/
             numericUpDownAnimationFPS.ValueChanged += (s, e) => { TilesetAnimation.FPS = (int)numericUpDownAnimationFPS.Value; TilesetAnimation.Reset(); };
@@ -85,10 +88,15 @@ namespace Editor
             numericUpDownRotationX.ValueChanged += (s, e) => { TilesetAnimation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
             numericUpDownRotationY.ValueChanged += (s, e) => { TilesetAnimation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
 
+
             /*allow the user to select stuff in the tileset*/
             TilesetRect.MouseDown += (s, e) => { UserIsSelectingInTileset = true; selectionMouseDownLocation = ApplyGrid(s.TransformIntoLocalSpace(e.CurrentState.Location), true); };
             TilesetRect.MouseUp += (s, e) => { UserIsSelectingInTileset = false; UpdateFrame(); };
             TilesetRect.MouseMove += TilesetRect_MouseMove;
+
+            numericUpDownGridWidth.Value = LastGridWidth;
+            numericUpDownGridHeight.Value = LastGridHeight;
+
             /*update the windows controls*/
             UpdateGUI();
         }

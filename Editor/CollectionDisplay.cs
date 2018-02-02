@@ -15,19 +15,26 @@ namespace Editor
         public event CollectionDisplaySelectionEventHandler TextureSelected;
 
         /*nested types*/
-        struct TextureInfo
+        class TextureInfo
         {
             public Texture2D OriginalTexture { get; private set; }
             public string Info { get; private set; }
             public RenderableObject2D RenderObject { get; set; }
             public int Index { get; private set; }
+            public System.Drawing.RectangleF Segment { get; set; }
 
-            public TextureInfo(Texture2D OriginalTexture, string Info, Rectangle2D RenderRect, int Index)
+            public TextureInfo(Texture2D OriginalTexture, string Info, Rectangle2D RenderRect, System.Drawing.RectangleF Segment, int Index)
             {
                 this.OriginalTexture = OriginalTexture;
+                this.Segment = Segment;
                 this.Info = Info;
                 RenderObject = RenderRect;
                 this.Index = Index;
+            }
+
+            internal void UpdateSegment(System.Drawing.RectangleF Segment)
+            {
+                this.Segment = Segment;
             }
         }
 
@@ -37,13 +44,13 @@ namespace Editor
         int ItemWidth
         {
             get => itemWidth;
-            set { itemWidth = value; UpdateThumbails(); }
+            set { itemWidth = value; UpdateThumbnails(); }
         }
         int itemHeight;
         int ItemHeight
         {
             get => itemHeight;
-            set { itemHeight = value; UpdateThumbails(); }
+            set { itemHeight = value; UpdateThumbnails(); }
         }
 
         int ItemsPerRow;
@@ -78,7 +85,7 @@ namespace Editor
             UpdateCamera();
             
 
-            RenderTarget.SizeChanged += (s, e) => {  UpdateThumbails(); UpdateCamera(); };
+            RenderTarget.SizeChanged += (s, e) => {  UpdateThumbnails(); UpdateCamera(); };
 
             RenderTarget.MouseWheel += RenderTarget_MouseWheel;
         }
@@ -89,17 +96,17 @@ namespace Editor
         /*Managed Items*/
 
         /*the Info is used to enable the user to filter items*/
-        public void AddItem(Texture2D Texture, string Info)
+        public void AddItem(Texture2D Texture, string Info, System.Drawing.RectangleF Segment)
         {
             if (Items == null)
                 throw new System.Exception("Call Initialize first!");
             
             if (Texture.IsValid)
             {
-                Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight));
+                Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight, Segment));
                 Rectangle2D renderRect = new Rectangle2D(ItemWidth, ItemHeight, new Vec2(), 0, System.Drawing.Color.Black, System.Drawing.Color.Gray, thumbnail);
                 int currentIndex = Items.Count;
-                Items.Add(new TextureInfo(Texture, Info, renderRect, currentIndex));
+                Items.Add(new TextureInfo(Texture, Info, renderRect, Segment, currentIndex));
                 RenderTarget.AddRenderObject(renderRect);
 
                 /*highlight mouse-over object*/
@@ -157,7 +164,7 @@ namespace Editor
         }
 
         /*Update thumbnails if the size is changed*/
-        void UpdateThumbails()
+        void UpdateThumbnails()
         {
             /*make sure it's already initialized*/
             if (Items != null)
@@ -167,19 +174,23 @@ namespace Editor
 
                 /*update each thumbnail*/
                 foreach (var item in Items)
-                {
-                    if (item.OriginalTexture.IsValid)
-                    {
-                        Texture2D thumbnail = new Texture2D(item.OriginalTexture.GetThumbnail(ItemWidth, ItemHeight));
-                        item.RenderObject.Texture = thumbnail;
-                        if (item.RenderObject is Rectangle2D renderRect)
-                            renderRect.Update(item.RenderObject.Location, itemWidth, itemHeight);
-                    }
-                }
+                    UpdateThumbnail(item);
 
                 /*Make sure they are dislayed correct*/
                 UpdateItems();
             }
+        }
+
+        void UpdateThumbnail(TextureInfo Item)
+        {
+            if (Item.OriginalTexture.IsValid)
+            {
+                Texture2D thumbnail = new Texture2D(Item.OriginalTexture.GetThumbnail(ItemWidth, ItemHeight, Item.Segment));
+                Item.RenderObject.Texture = thumbnail;
+                if (Item.RenderObject is Rectangle2D renderRect)
+                    renderRect.Update(Item.RenderObject.Location, itemWidth, itemHeight);
+            }
+
         }
 
         /*check filter*/
@@ -226,6 +237,12 @@ namespace Editor
             float cameraY = (RenderTarget.Height / 2) + (TopMostRow * ItemHeight);
 
             RenderTarget.Camera.LookAt = new Vec2(cameraX, cameraY);
+        }
+
+        public void UpdateThumbnailSegment(int ItemIndex, System.Drawing.RectangleF Segment)
+        {
+            Items[ItemIndex].UpdateSegment(Segment);
+            UpdateThumbnail(Items[ItemIndex]);
         }
 
         /*Allow the user to scroll the collection*/

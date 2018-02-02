@@ -78,8 +78,12 @@ namespace Editor
         {
             if (!NeedsClosingAfterSelection())
             {
+                /*Allow the user to edit the animation*/
                 TilesetAnimationEditor Editor = new TilesetAnimationEditor(GameContent.TilesetAnimations[Index], GameContent);
                 Editor.Show();
+
+                /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
+                Editor.FormClosing += (s, e) => { collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].TextureSegment); Editor.Dispose(); };
             }
         }
 
@@ -112,7 +116,7 @@ namespace Editor
             for (int i = 0; i < GameContent.Textures.Count; i++)
             {
                 var Texture = GameContent.Textures[i];
-                collectionDisplayTextures.AddItem(Texture, Texture.Name);
+                collectionDisplayTextures.AddItem(Texture, Texture.Name, System.Drawing.RectangleF.Empty);
             }
         }
 
@@ -123,7 +127,7 @@ namespace Editor
             for (int i = 0; i < tilesetAnimations.Count; i++)
             {
                 var Texture = tilesetAnimations[i].Texture;
-                collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name);
+                collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name, tilesetAnimations[i].TextureSegment);
             }
         }
 

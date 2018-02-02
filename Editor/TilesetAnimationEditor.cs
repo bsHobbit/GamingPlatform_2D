@@ -77,7 +77,7 @@ namespace Editor
             numericUpDownGridHeight.ValueChanged += (s, e) => { UpdateGrid(); };
 
             /*Update Animation properties if the user so desires*/
-            numericUpDownAnimationFPS.ValueChanged += (s, e) => { TilesetAnimation.Speed = TilesetAnimation.SpeedFromFPS((float)numericUpDownAnimationFPS.Value); TilesetAnimation.Reset(); };
+            numericUpDownAnimationFPS.ValueChanged += (s, e) => { TilesetAnimation.FPS = (int)numericUpDownAnimationFPS.Value; TilesetAnimation.Reset(); };
             checkBoxLoopAnimation.CheckedChanged += (s, e) => { TilesetAnimation.Loop = checkBoxLoopAnimation.Checked; TilesetAnimation.Reset(); };
             checkBoxReverse.CheckedChanged += (s, e) => { TilesetAnimation.IsReverseLoop = checkBoxReverse.Checked; TilesetAnimation.Reset(); };
             numericUpDownScale.ValueChanged += (s, e) => { TilesetAnimation.Scale = (float)numericUpDownScale.Value; };
@@ -183,6 +183,13 @@ namespace Editor
             trackBarFrameSelection.Maximum = TilesetAnimation.Frames.Count - 1;
             if (trackBarFrameSelection.Maximum >= currentSelectedFrame)
                 trackBarFrameSelection.Value = currentSelectedFrame;
+
+            checkBoxLoopAnimation.Checked = TilesetAnimation.Loop;
+            checkBoxReverse.Checked = TilesetAnimation.IsReverseLoop;
+            numericUpDownAnimationFPS.Value = TilesetAnimation.FPS;
+            numericUpDownRotation.Value = (decimal)TilesetAnimation.Rotation;
+            numericUpDownRotationX.Value = (decimal)TilesetAnimation.RotationOffset.X;
+            numericUpDownRotationY.Value = (decimal)TilesetAnimation.RotationOffset.Y;
         }
 
 
@@ -264,5 +271,12 @@ namespace Editor
             TilesetAnimation.Reset();
         }
 
+        /*stop the rendering as soon as the form is closing*/
+        private void TilesetAnimationEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            renderTargetAnimation.StopRendering();
+            renderTargetCurrentFrame.StopRendering();
+            rendertargetTileset.StopRendering();
+        }
     }
 }

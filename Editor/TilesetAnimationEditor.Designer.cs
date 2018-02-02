@@ -37,6 +37,7 @@
             this.renderTargetCurrentFrame = new WinFormRenderer.cRenderTarget();
             this.renderTargetAnimation = new WinFormRenderer.cRenderTarget();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonSelectTexture = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDownRotationY = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -62,7 +63,6 @@
             this.buttonMoveFrameBottom = new System.Windows.Forms.Button();
             this.buttonMoveFrameTop = new System.Windows.Forms.Button();
             this.buttonAddFrame = new System.Windows.Forms.Button();
-            this.buttonSelectTexture = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -196,6 +196,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(164, 410);
             this.panel1.TabIndex = 6;
+            // 
+            // buttonSelectTexture
+            // 
+            this.buttonSelectTexture.Location = new System.Drawing.Point(44, 32);
+            this.buttonSelectTexture.Name = "buttonSelectTexture";
+            this.buttonSelectTexture.Size = new System.Drawing.Size(100, 23);
+            this.buttonSelectTexture.TabIndex = 20;
+            this.buttonSelectTexture.Text = "Select Texture";
+            this.buttonSelectTexture.UseVisualStyleBackColor = true;
+            this.buttonSelectTexture.Click += new System.EventHandler(this.buttonSelectTexture_Click);
             // 
             // label6
             // 
@@ -474,25 +484,16 @@
             this.buttonAddFrame.UseVisualStyleBackColor = true;
             this.buttonAddFrame.Click += new System.EventHandler(this.buttonAddFrame_Click);
             // 
-            // buttonSelectTexture
-            // 
-            this.buttonSelectTexture.Location = new System.Drawing.Point(44, 32);
-            this.buttonSelectTexture.Name = "buttonSelectTexture";
-            this.buttonSelectTexture.Size = new System.Drawing.Size(100, 23);
-            this.buttonSelectTexture.TabIndex = 20;
-            this.buttonSelectTexture.Text = "Select Texture";
-            this.buttonSelectTexture.UseVisualStyleBackColor = true;
-            this.buttonSelectTexture.Click += new System.EventHandler(this.buttonSelectTexture_Click);
-            // 
-            // AnimationEditor
+            // TilesetAnimationEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 716);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "AnimationEditor";
+            this.Name = "TilesetAnimationEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Animation Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TilesetAnimationEditor_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

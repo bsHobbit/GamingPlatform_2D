@@ -35,33 +35,34 @@ namespace Graphics
                             GraphicsUnit.Pixel);
             else
             {
-                if (Segment.Width > 0 && Segment.Height > 0)
-                {
-                    g.DrawImage(Bitmap,
-                                new RectangleF(X, Y, TargetWidth, TargetHeight),
-                                Segment,
-                                GraphicsUnit.Pixel);
-                }
+                g.DrawImage(Bitmap,
+                            new RectangleF(X, Y, TargetWidth, TargetHeight),
+                            Segment,
+                            GraphicsUnit.Pixel);
             }
         }
 
 
 
         /*thumbnail creation*/
-        public Bitmap GetThumbnail(int ThumbnailWidth, int ThumbnailHeight)
+        public Bitmap GetThumbnail(int ThumbnailWidth, int ThumbnailHeight, RectangleF Segment)
         {
             Size s = new Size(ThumbnailWidth, ThumbnailHeight);
-            int hash = s.GetHashCode();
+
+            int hash = 17;
+            hash = hash * 23 + s.GetHashCode();
+            hash = hash * 23 + Segment.GetHashCode();
+
             if (Thumbnails.ContainsKey(hash))
                 return Thumbnails[hash];
             else
-                Thumbnails.Add(hash, ToDispose(CreateThumbnail(ThumbnailHeight, ThumbnailHeight)));
+                Thumbnails.Add(hash, ToDispose(CreateThumbnail(ThumbnailHeight, ThumbnailHeight, Segment)));
 
             /*check if the current thumbnail is valid, if not create a valid one*/
             return Thumbnails[hash];
         }
 
-        Bitmap CreateThumbnail(int Width, int Height)
+        Bitmap CreateThumbnail(int Width, int Height, RectangleF Segment)
         {
             Bitmap result = new Bitmap(Width, Height);
             
@@ -77,6 +78,7 @@ namespace Graphics
 
                 /*check wich aspec ratio fits the thumbnail and create the thumbnail*/
                 float aspect = this.Height / (float)this.Width;
+                if (!Segment.IsEmpty) aspect = Segment.Height / Segment.Width;
                 if (Width * aspect < Height)
                 {
                     targetWidth = Width;
@@ -86,16 +88,14 @@ namespace Graphics
                 else
                 {
                     aspect = this.Width / (float)this.Height; /*ofc... it's the other that fits better*/
+                    if (!Segment.IsEmpty) aspect = Segment.Width / Segment.Height;
                     targetHeight = Height;
                     targetWidth = (int)(Width * aspect);
                     targetX = Height / 2 - targetWidth / 2;
                 }
 
                 /*scale the original image down to the best size to fit in the thumbnail*/
-                g.DrawImage(Bitmap,
-                            new RectangleF(targetX, targetY, targetWidth, targetHeight),
-                            new RectangleF(0, 0, Bitmap.Width, Bitmap.Height),
-                            GraphicsUnit.Pixel);
+                Draw(g, targetX, targetY, targetWidth, targetHeight, Segment);
 
                 /*free the graphics object*/
                 g.Dispose();

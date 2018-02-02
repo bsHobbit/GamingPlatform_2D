@@ -9,8 +9,15 @@ namespace Graphics.Animation
         public List<Frame> Frames { get => frames; }
         int CurrentFrame;
 
+        int fps;
+        public int FPS
+        {
+            get => fps;
+            set { fps = value; Speed = SpeedFromFPS(value); }
+        }
         public float Speed;
         float FrameTimer;
+
 
         public bool Loop { get; set; }
         bool isReverseLoop;

@@ -19,6 +19,7 @@ namespace WinFormRenderer
         PointF device_Mouse_Location;
         Core.IO.ButtonState[] device_Mouse_ButtonStates;
         int device_Mouse_Delta = 0;
+        Timer WindowsTimer = new Timer();
 
         Camera2D camera;
         public Camera2D Camera
@@ -89,12 +90,12 @@ namespace WinFormRenderer
             
 
             /*Einfacher Timer zum Rendern*/
-            Timer timer = new Timer()
+            WindowsTimer = new Timer()
             {
                 Enabled = true,
                 Interval = (int)Graphics.Animation.TilesetAnimation.SpeedFromFPS(60)
             };
-            timer.Tick += (s, e) => 
+            WindowsTimer.Tick += (s, e) => 
             {
                 float elapsed = (float)Timer.Elapsed.TotalMilliseconds;
 
@@ -126,11 +127,18 @@ namespace WinFormRenderer
             renderTarget.SizeChanged += (s, e) => { Camera.ScreenSize = new Box2DX.Common.Vec2(renderTarget.ClientSize.Width, renderTarget.ClientSize.Height); };
 
             /*Input related events*/
-            renderTarget.MouseMove += RenderTarget_MouseMove;
-            renderTarget.MouseDown += RenderTarget_MouseDown;
-            renderTarget.MouseUp += RenderTarget_MouseUp;
-            renderTarget.MouseWheel += RenderTarget_MouseWheel;
-            renderTarget.MouseEnter += (s, e) => { renderTarget.Focus(); };
+            renderTarget.MouseMove      += RenderTarget_MouseMove;
+            renderTarget.MouseDown      += RenderTarget_MouseDown;
+            renderTarget.MouseUp        += RenderTarget_MouseUp;
+            renderTarget.MouseWheel     += RenderTarget_MouseWheel;
+            renderTarget.MouseEnter     += (s, e) => { renderTarget.Focus(); };
+        }
+
+        /*stop the rendering*/
+        public void StopRendering()
+        {
+            WindowsTimer.Enabled = false;
+            renderTarget.Paint -= RenderTarget_Paint;
         }
 
         /*Manage User Input */

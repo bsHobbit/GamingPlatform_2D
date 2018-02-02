@@ -7,7 +7,7 @@ namespace Graphics.Animation
 
         /*member*/
         public TilesetAnimation TilesetAnimation { get; set; }
-        float MinStateTime; /*minimun Tilesetanitiom time that has to be reached to be allowed to translate*/
+        public float MinStateTime { get; set; } /*minimun Tilesetanitiom time that has to be reached to be allowed to translate*/
         List<AnimationTransition> PossibleTranslations;
 
 
@@ -15,6 +15,7 @@ namespace Graphics.Animation
         public AnimationState()
         {
             PossibleTranslations = new List<AnimationTransition>();
+            MinStateTime = 0;
         }
 
 

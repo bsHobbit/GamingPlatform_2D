@@ -76,7 +76,7 @@ namespace Graphics
         public List<Vec2> Vertices
         {
             get => vertices;
-            protected set
+            internal set
             {
                 vertices = value;
                 UpdateBoundingBox();

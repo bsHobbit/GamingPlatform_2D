@@ -4,19 +4,56 @@ using System.Collections.Generic;
 
 namespace Graphics.Animation
 {
-    public class Animation 
+    public class Animation : RenderableObject2D
     {
         Dictionary<string, object> Attributes;
 
-        AnimationState Entry;
-        AnimationState CurrentAnimationState;
+        AnimationState entry;
+        AnimationState Entry
+        {
+            get => entry;
+            set
+            {
+                entry = value;
+                if (CurrentAnimationState == null)
+                    CurrentAnimationState = entry;
+                UpdateRenderParameter();
+            }
+        }
 
-        public Animation()
+        AnimationState CurrentAnimationState;
+        
+        /*ctor*/
+        public Animation(Vec2 Location, int Z)
         {
             Attributes = new Dictionary<string, object>();
+            Initialize(Location, Z, new List<Vec2>(), System.Drawing.Color.Transparent, System.Drawing.Color.Empty);
+        }
+
+        /*make sure the animation state is updated*/
+        public override void Update(float Elapsed)
+        {
+            if (CurrentAnimationState != null)
+            {
+                AnimationState newState = CurrentAnimationState.Update(Elapsed, this);
+                if (newState != CurrentAnimationState)
+                {
+                    CurrentAnimationState = newState;
+                    UpdateRenderParameter();
+                }
+            }
         }
 
 
+        /*make sure the current-animationstate is rendered correct*/
+        void UpdateRenderParameter()
+        {
+            if (CurrentAnimationState != null)
+                CurrentAnimationState.TilesetAnimation.CopyRenderParameter(this);
+        }
+
+
+        /*Attribute management*/
         public object GetAttribute(string Name)
         {
             if (Attributes.ContainsKey(Name))

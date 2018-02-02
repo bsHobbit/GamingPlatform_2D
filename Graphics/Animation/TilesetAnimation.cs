@@ -90,6 +90,16 @@ namespace Graphics.Animation
                 System.Console.WriteLine(string.Format("Error in animation frame count you should go check it.\nFrame: {0}\nTotal frames: {1}", CurrentFrame, frames.Count));
             }
         }
+
+        internal void CopyRenderParameter(RenderableObject2D Obj)
+        {
+            if (CurrentFrame >= 0 && CurrentFrame < frames.Count)
+            {
+                Obj.Vertices = CreateRectangle2D(frames[CurrentFrame].Width, frames[CurrentFrame].Height);
+                Obj.TextureSegment = new System.Drawing.RectangleF(frames[CurrentFrame].StartX, frames[CurrentFrame].StartY, frames[CurrentFrame].Width, frames[CurrentFrame].Height);
+                Obj.Texture = Texture;
+            }
+        }
         
 
 

@@ -7,7 +7,7 @@ namespace Graphics.Interaction
     public class MouseInputManager
     {
         /*constants*/
-        const float DOUBLECLICK_TIME_MS = 300;
+        const float DOUBLECLICK_TIME_MS = 100;
         const float CAMERA_TIME_MS = 500;
         const float CAMERA_MOVEMENT_VALID_DISTANCE = 10;
         const MouseButtons CAMERA_MOVEMENT_BUTTON = MouseButtons.Right;
@@ -27,9 +27,6 @@ namespace Graphics.Interaction
         Vec2 mouseDownCameraMovementStart; /*i need this to check movement distance for camera movement check*/
         
 
-        
-
-        
         /*ctor*/
         public MouseInputManager(Mouse Input, List<RenderableObject2D> Items)
         {

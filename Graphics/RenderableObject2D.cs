@@ -285,14 +285,7 @@ namespace Graphics
                     if (Texture != null && Texture.IsValid && VerticeInterpretation == VerticeInterpretation.Solid)
                     {
                         g.SetClip(path);
-                        try
-                        {
-                            Texture.Draw(g, boundingBox.X, boundingBox.Y, boundingBox.Width, boundingBox.Height, TextureSegment);
-                        }
-                        catch (System.Exception ex)
-                        {
-                        }
-                        
+                        Texture.Draw(g, boundingBox.X, boundingBox.Y, boundingBox.Width, boundingBox.Height, TextureSegment);
                         g.ResetClip();
                     }
                 }

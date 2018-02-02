@@ -52,7 +52,7 @@ namespace Editor
 
 
             /*Register events*/
-            collectionDisplayTextures.TextureSelected += (s, e) => { selectedTexture = e;  NeedsClosingAfterSelection(); };
+            collectionDisplayTextures.TextureSelected += (s, Index) => { selectedTexture = GameContent.Textures[Index];  NeedsClosingAfterSelection(); };
             collectionDisplayTilesetAnimations.TextureSelected += TilesetAnimationSelected;
 
 
@@ -74,9 +74,13 @@ namespace Editor
         }
 
         /*Handle tilesetanimation selection*/
-        private void TilesetAnimationSelected(CollectionDisplay Sender, Texture2D Texture)
+        private void TilesetAnimationSelected(CollectionDisplay Sender, int Index)
         {
-            
+            if (!NeedsClosingAfterSelection())
+            {
+                TilesetAnimationEditor Editor = new TilesetAnimationEditor(GameContent.TilesetAnimations[Index], GameContent);
+                Editor.Show();
+            }
         }
 
 

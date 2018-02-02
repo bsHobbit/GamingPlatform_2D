@@ -11,7 +11,7 @@ namespace Editor
     {
 
         /*events*/
-        public delegate void CollectionDisplaySelectionEventHandler(CollectionDisplay Sender, Texture2D Texture);
+        public delegate void CollectionDisplaySelectionEventHandler(CollectionDisplay Sender, int Index);
         public event CollectionDisplaySelectionEventHandler TextureSelected;
 
         /*nested types*/
@@ -19,13 +19,15 @@ namespace Editor
         {
             public Texture2D OriginalTexture { get; private set; }
             public string Info { get; private set; }
-            public Rectangle2D RenderRect { get; set; }
+            public RenderableObject2D RenderObject { get; set; }
+            public int Index { get; private set; }
 
-            public TextureInfo(Texture2D OriginalTexture, string Info, Rectangle2D RenderRect)
+            public TextureInfo(Texture2D OriginalTexture, string Info, Rectangle2D RenderRect, int Index)
             {
                 this.OriginalTexture = OriginalTexture;
                 this.Info = Info;
-                this.RenderRect = RenderRect;
+                RenderObject = RenderRect;
+                this.Index = Index;
             }
         }
 
@@ -96,7 +98,8 @@ namespace Editor
             {
                 Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight));
                 Rectangle2D renderRect = new Rectangle2D(ItemWidth, ItemHeight, new Vec2(), 0, System.Drawing.Color.Black, System.Drawing.Color.Gray, thumbnail);
-                Items.Add(new TextureInfo(Texture, Info, renderRect));
+                int currentIndex = Items.Count;
+                Items.Add(new TextureInfo(Texture, Info, renderRect, currentIndex));
                 RenderTarget.AddRenderObject(renderRect);
 
                 /*highlight mouse-over object*/
@@ -104,22 +107,22 @@ namespace Editor
                 renderRect.MouseLeave += (s, e) => { s.OutlineColor = System.Drawing.Color.Gray; s.ZLocation = 0; };
 
                 /*Auswahl durch den Benutzer*/
-                renderRect.DoubleClick += (s, e) => { TextureSelected?.Invoke(this, GetTexture((Rectangle2D)s)); };
+                renderRect.DoubleClick += (s, e) => { TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s)); };
                 UpdateItems();
                 UpdateCamera();
             }
         }
 
         /*Get the texture by it's renderobject for the event ;)*/
-        Texture2D GetTexture(Rectangle2D RenderRect)
+        int GetIndex(Rectangle2D RenderRect)
         {
             foreach (var item in Items)
             {
-                if (item.RenderRect == RenderRect)
-                    return item.OriginalTexture;
+                if (item.RenderObject == RenderRect)
+                    return item.Index;
             }
 
-            return null;
+            return -1;
         }
 
         public void RemoveItem(Texture2D Texture)
@@ -129,7 +132,7 @@ namespace Editor
             {
                 if (Items[i].OriginalTexture == Texture)
                 {
-                    RenderTarget.RemoveRenderObject(Items[i].RenderRect);
+                    RenderTarget.RemoveRenderObject(Items[i].RenderObject);
                     //Items[i].RenderRect.Texture.Dispose();
                     Items.RemoveAt(i);
                     return;
@@ -168,8 +171,9 @@ namespace Editor
                     if (item.OriginalTexture.IsValid)
                     {
                         Texture2D thumbnail = new Texture2D(item.OriginalTexture.GetThumbnail(ItemWidth, ItemHeight));
-                        item.RenderRect.Texture = thumbnail;
-                        item.RenderRect.Update(item.RenderRect.Location, itemWidth, itemHeight);
+                        item.RenderObject.Texture = thumbnail;
+                        if (item.RenderObject is Rectangle2D renderRect)
+                            renderRect.Update(item.RenderObject.Location, itemWidth, itemHeight);
                     }
                 }
 
@@ -195,8 +199,8 @@ namespace Editor
             {
                 if (IsInFilter(item.Info)) /*ignore fake textures & filtered items*/
                 {
-                    Rectangle2D rect = item.RenderRect;
-                    rect.Location = new Vec2(currentCol * ItemWidth, TotalRows * itemHeight);
+                    RenderableObject2D renderObject = item.RenderObject;
+                    renderObject.Location = new Vec2(currentCol * ItemWidth, TotalRows * itemHeight);
 
                     /*make sure the next item is positioned properly*/
                     currentCol++;

@@ -17,18 +17,20 @@ namespace Editor
         /*nested types*/
         struct TextureInfo
         {
+            public Texture2D OriginalTexture { get; private set; }
             public string Info { get; private set; }
             public Rectangle2D RenderRect { get; set; }
 
-            public TextureInfo(string Info, Rectangle2D RenderRect)
+            public TextureInfo(Texture2D OriginalTexture, string Info, Rectangle2D RenderRect)
             {
+                this.OriginalTexture = OriginalTexture;
                 this.Info = Info;
                 this.RenderRect = RenderRect;
             }
         }
 
         /*member*/
-        Dictionary<Texture2D, TextureInfo> Items;
+        List<TextureInfo> Items;
         int itemWidth;
         int ItemWidth
         {
@@ -68,7 +70,7 @@ namespace Editor
 
 
             /*Initialize rendering*/
-            Items = new Dictionary<Texture2D, TextureInfo>();
+            Items = new List<TextureInfo>();
             RenderTarget.Initialize();
             RenderTarget.EnableMouseInput();
             UpdateCamera();
@@ -89,12 +91,12 @@ namespace Editor
         {
             if (Items == null)
                 throw new System.Exception("Call Initialize first!");
-
-            if (Texture.IsValid && !Items.ContainsKey(Texture))
+            
+            if (Texture.IsValid)
             {
                 Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight));
                 Rectangle2D renderRect = new Rectangle2D(ItemWidth, ItemHeight, new Vec2(), 0, System.Drawing.Color.Black, System.Drawing.Color.Gray, thumbnail);
-                Items.Add(Texture, new TextureInfo(Info, renderRect));
+                Items.Add(new TextureInfo(Texture, Info, renderRect));
                 RenderTarget.AddRenderObject(renderRect);
 
                 /*highlight mouse-over object*/
@@ -113,8 +115,8 @@ namespace Editor
         {
             foreach (var item in Items)
             {
-                if (item.Value.RenderRect == RenderRect)
-                    return item.Key;
+                if (item.RenderRect == RenderRect)
+                    return item.OriginalTexture;
             }
 
             return null;
@@ -122,12 +124,16 @@ namespace Editor
 
         public void RemoveItem(Texture2D Texture)
         {
-            if (Items != null && Items.ContainsKey(Texture))
+
+            for (int i = 0; i < Items.Count; i++)
             {
-                RenderTarget.RemoveRenderObject(Items[Texture].RenderRect);
-                Items[Texture].RenderRect.Texture.Dispose();
-                Items.Remove(Texture);
-                UpdateItems();
+                if (Items[i].OriginalTexture == Texture)
+                {
+                    RenderTarget.RemoveRenderObject(Items[i].RenderRect);
+                    //Items[i].RenderRect.Texture.Dispose();
+                    Items.RemoveAt(i);
+                    return;
+                }
             }
         }
 
@@ -136,7 +142,7 @@ namespace Editor
             if (Items != null)
             {
                 while (Items.Count > 0)
-                    RemoveItem(Items.Keys.ElementAt(0));
+                    RemoveItem(Items[0].OriginalTexture);
             }
         }
         
@@ -159,11 +165,11 @@ namespace Editor
                 /*update each thumbnail*/
                 foreach (var item in Items)
                 {
-                    if (item.Key.IsValid)
+                    if (item.OriginalTexture.IsValid)
                     {
-                        Texture2D thumbnail = new Texture2D(item.Key.GetThumbnail(ItemWidth, ItemHeight));
-                        item.Value.RenderRect.Texture = thumbnail;
-                        item.Value.RenderRect.Update(item.Value.RenderRect.Location, itemWidth, itemHeight);
+                        Texture2D thumbnail = new Texture2D(item.OriginalTexture.GetThumbnail(ItemWidth, ItemHeight));
+                        item.RenderRect.Texture = thumbnail;
+                        item.RenderRect.Update(item.RenderRect.Location, itemWidth, itemHeight);
                     }
                 }
 
@@ -187,9 +193,9 @@ namespace Editor
             /*loop through every object that needs to be rendered*/
             foreach (var item in Items)
             {
-                if (item.Key.IsValid && IsInFilter(item.Value.Info)) /*ignore fake textures & filtered items*/
+                if (IsInFilter(item.Info)) /*ignore fake textures & filtered items*/
                 {
-                    Rectangle2D rect = item.Value.RenderRect;
+                    Rectangle2D rect = item.RenderRect;
                     rect.Location = new Vec2(currentCol * ItemWidth, TotalRows * itemHeight);
 
                     /*make sure the next item is positioned properly*/

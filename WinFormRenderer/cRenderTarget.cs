@@ -56,22 +56,20 @@ namespace WinFormRenderer
         /*Handle everything rendering related*/
         public void AddRenderObject(RenderableObject2D Item)
         {
-            ObjectsToRender.Add(disposeCollector.ToDispose(Item));
+            if (!ObjectsToRender.Contains(Item))
+                ObjectsToRender.Add(Item);
         }
 
         public void RemoveRenderObject(RenderableObject2D Item)
         {
             if (ObjectsToRender.Contains(Item))
-            {
                 ObjectsToRender.Remove(Item);
-                disposeCollector.RemoveAndDispose(Item);
-            }
         }
 
         private void RenderTarget_Paint(object sender, PaintEventArgs e)
         {
             /*Reset everthing*/
-            e.Graphics.Clear(System.Drawing.Color.CornflowerBlue);
+            e.Graphics.Clear(Color.CornflowerBlue);
             e.Graphics.ResetTransform();
 
             e.Graphics.Transform = Camera.ViewMatrix;

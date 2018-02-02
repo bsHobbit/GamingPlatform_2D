@@ -7,7 +7,7 @@ namespace Graphics.Interaction
     public class MouseInputManager
     {
         /*constants*/
-        const float DOUBLECLICK_TIME_MS = 150;
+        const float DOUBLECLICK_TIME_MS = 300;
         const float CAMERA_TIME_MS = 500;
         const float CAMERA_MOVEMENT_VALID_DISTANCE = 10;
         const MouseButtons CAMERA_MOVEMENT_BUTTON = MouseButtons.Right;

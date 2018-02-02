@@ -8,13 +8,14 @@ namespace Editor
     public partial class ContentBrowser : Form
     {
         const int TEXTURES_PER_ROW = 10;
+        const int TILESETANIMATIONS_PER_ROW = 25;
 
         /*nested types*/
         [System.Flags]
         public enum eBrowsers
         {
             Texture = 1,
-            Animations = 2
+            TilesetAnimations = 2
         }
 
         /*member*/
@@ -46,33 +47,58 @@ namespace Editor
             /*Init collection displays*/
             if (VisibleBrowsers.HasFlag(eBrowsers.Texture))
                 collectionDisplayTextures.Initialize(TEXTURES_PER_ROW);
+            if (VisibleBrowsers.HasFlag(eBrowsers.TilesetAnimations))
+                collectionDisplayTilesetAnimations.Initialize(TILESETANIMATIONS_PER_ROW);
 
 
             /*Register events*/
-            collectionDisplayTextures.TextureSelected += (s, e) => { selectedTexture = e;  SomethingGotSelected(); };
+            collectionDisplayTextures.TextureSelected += (s, e) => { selectedTexture = e;  NeedsClosingAfterSelection(); };
+            collectionDisplayTilesetAnimations.TextureSelected += TilesetAnimationSelected;
+
+
+            buttonAddTilesetAnimation.Visible = !CloseOnSelection;
+            if (!CloseOnSelection)
+            {
+                buttonAddTilesetAnimation.Click += (s, e) => 
+                {
+                    Hide();
+                    Texture2D animationTexture = SelectTexture(GameContent);
+                    if (animationTexture != null)
+                        GameContent.AddTilesetAnimation(new Graphics.Animation.TilesetAnimation(animationTexture, 10, 0)); 
+                    UpdateTilesetAnimations();
+                    Show();
+                };
+            }
+
             UpdateTextures();
+        }
+
+        /*Handle tilesetanimation selection*/
+        private void TilesetAnimationSelected(CollectionDisplay Sender, Texture2D Texture)
+        {
+            
         }
 
 
         /*Close on selection?*/
-        void SomethingGotSelected()
+        bool NeedsClosingAfterSelection()
         {
             if (CloseOnSelection )
             {
                 DialogResult = DialogResult.OK;
-                this.Close();
+                Close();
+                return true;
             }
+            return false;
         }
 
         void UpdateBrowserVisibility(eBrowsers VisibleBrowsers)
         {
             if (!VisibleBrowsers.HasFlag(eBrowsers.Texture))
                 tabControlContent.TabPages.Remove(tabPageTextures);
-            if (!VisibleBrowsers.HasFlag(eBrowsers.Animations))
-                tabControlContent.TabPages.Remove(tabPageAnimations);
+            if (!VisibleBrowsers.HasFlag(eBrowsers.TilesetAnimations))
+                tabControlContent.TabPages.Remove(tabPageTilesetAnimations);
         }
-
-
 
 
         /*Make sure every available texture is displayed in the collecttion Display*/
@@ -84,6 +110,29 @@ namespace Editor
                 var Texture = GameContent.Textures[i];
                 collectionDisplayTextures.AddItem(Texture, Texture.Name);
             }
+        }
+
+        void UpdateTilesetAnimations()
+        {
+            collectionDisplayTilesetAnimations.ClearItems();
+            var tilesetAnimations = GameContent.TilesetAnimations;
+            for (int i = 0; i < tilesetAnimations.Count; i++)
+            {
+                var Texture = tilesetAnimations[i].Texture;
+                collectionDisplayTilesetAnimations.AddItem(Texture, tilesetAnimations[i].Name);
+            }
+        }
+
+
+
+        /*Static helpers*/
+        public Texture2D SelectTexture(ContentManager ContentManager)
+        {
+            ContentBrowser browser = new ContentBrowser();
+            browser.Initialize(ContentManager, true, eBrowsers.Texture);
+            if (browser.ShowDialog() == DialogResult.OK)
+                return browser.SelectedTexture;
+            return null;
         }
     }
 }

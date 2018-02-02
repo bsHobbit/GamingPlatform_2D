@@ -3,14 +3,15 @@ using Graphics.Geometry;
 using System.Collections.Generic;
 using GameCore;
 using System.Windows.Forms;
-using Animation = Graphics.Animation.TilesetAnimation;
+using Graphics.Animation;
+
 
 
 namespace Editor
 {
-    public partial class AnimationEditor : Form
+    public partial class TilesetAnimationEditor : Form
     {
-        Animation Animation;
+        TilesetAnimation TilesetAnimation;
         Rectangle2D TilesetRect;
         Rectangle2D SelectionRect;
         Rectangle2D FrameRect;
@@ -22,30 +23,30 @@ namespace Editor
         bool UserIsSelectingInTileset;
         Vec2 selectionMouseDownLocation;
 
-        public AnimationEditor()
+        public TilesetAnimationEditor()
         {
             InitializeComponent();
         }
 
-        public AnimationEditor(Animation Animation, ContentManager GameContent)
+        public TilesetAnimationEditor(TilesetAnimation TilesetAnimation, ContentManager GameContent)
             : this()
         {
             /*keep references to every info that is needed*/
             this.GameContent = GameContent;
-            this.Animation = Animation;
-            Text += " - " + Animation.Name;
+            this.TilesetAnimation = TilesetAnimation;
+            Text += " - " + TilesetAnimation.Name;
 
             InitializeRenderTargets();
 
             /*add at least one frame to the animation to work with*/
-            if (Animation.Frames.Count == 0)
-                Animation.AddFrame(0, 0, 1, 1);
+            if (TilesetAnimation.Frames.Count == 0)
+                TilesetAnimation.AddFrame(0, 0, 1, 1);
 
             /*user isnt doing any input*/
             UserIsSelectingInTileset = false;
 
             /*render the tileset into this rectangle*/
-            TilesetRect = new Rectangle2D(Animation.Texture.Width, Animation.Texture.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Texture);
+            TilesetRect = new Rectangle2D(TilesetAnimation.Texture.Width, TilesetAnimation.Texture.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, TilesetAnimation.Texture);
 
             /*visualize the user selection*/
             SelectionRect = new Rectangle2D(10, 10, new Vec2(), 1, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Green), System.Drawing.Color.Black);
@@ -53,7 +54,7 @@ namespace Editor
             SelectionRect.Enabled = false;
 
             /*Visualize the selected tilesetpart*/
-            FrameRect = new Rectangle2D(10, 10, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, Animation.Texture);
+            FrameRect = new Rectangle2D(10, 10, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, TilesetAnimation.Texture);
             FrameRect.Visible = false;
 
             /*add the renderobject to the renderpipeline*/
@@ -65,7 +66,7 @@ namespace Editor
             UpdateGrid();
 
             /*render the animation itself*/
-            renderTargetAnimation.AddRenderObject(Animation);
+            renderTargetAnimation.AddRenderObject(TilesetAnimation);
 
             /*Update the camera for the tileset so it's centered*/
             UpdateTilesetCamera();
@@ -76,13 +77,13 @@ namespace Editor
             numericUpDownGridHeight.ValueChanged += (s, e) => { UpdateGrid(); };
 
             /*Update Animation properties if the user so desires*/
-            numericUpDownAnimationFPS.ValueChanged += (s, e) => { Animation.Speed = Animation.SpeedFromFPS((float)numericUpDownAnimationFPS.Value); Animation.Reset(); };
-            checkBoxLoopAnimation.CheckedChanged += (s, e) => { Animation.Loop = checkBoxLoopAnimation.Checked; Animation.Reset(); };
-            checkBoxReverse.CheckedChanged += (s, e) => { Animation.IsReverseLoop = checkBoxReverse.Checked; Animation.Reset(); };
-            numericUpDownScale.ValueChanged += (s, e) => { Animation.Scale = (float)numericUpDownScale.Value; };
-            numericUpDownRotation.ValueChanged += (s, e) => { Animation.Rotation = (float)numericUpDownRotation.Value; };
-            numericUpDownRotationX.ValueChanged += (s, e) => { Animation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
-            numericUpDownRotationY.ValueChanged += (s, e) => { Animation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
+            numericUpDownAnimationFPS.ValueChanged += (s, e) => { TilesetAnimation.Speed = TilesetAnimation.SpeedFromFPS((float)numericUpDownAnimationFPS.Value); TilesetAnimation.Reset(); };
+            checkBoxLoopAnimation.CheckedChanged += (s, e) => { TilesetAnimation.Loop = checkBoxLoopAnimation.Checked; TilesetAnimation.Reset(); };
+            checkBoxReverse.CheckedChanged += (s, e) => { TilesetAnimation.IsReverseLoop = checkBoxReverse.Checked; TilesetAnimation.Reset(); };
+            numericUpDownScale.ValueChanged += (s, e) => { TilesetAnimation.Scale = (float)numericUpDownScale.Value; };
+            numericUpDownRotation.ValueChanged += (s, e) => { TilesetAnimation.Rotation = (float)numericUpDownRotation.Value; };
+            numericUpDownRotationX.ValueChanged += (s, e) => { TilesetAnimation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
+            numericUpDownRotationY.ValueChanged += (s, e) => { TilesetAnimation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
 
             /*allow the user to select stuff in the tileset*/
             TilesetRect.MouseDown += (s, e) => { UserIsSelectingInTileset = true; selectionMouseDownLocation = ApplyGrid(s.TransformIntoLocalSpace(e.CurrentState.Location), true); };
@@ -106,7 +107,7 @@ namespace Editor
 
         void UpdateTilesetCamera()
         {
-            rendertargetTileset.Camera.LookAt = new Vec2(Animation.Texture.Width / 2f, Animation.Texture.Height / 2f);
+            rendertargetTileset.Camera.LookAt = new Vec2(TilesetAnimation.Texture.Width / 2f, TilesetAnimation.Texture.Height / 2f);
         }
 
 
@@ -114,14 +115,14 @@ namespace Editor
         private void buttonSelectTexture_Click(object sender, System.EventArgs e)
         {
             ContentBrowser browser = new ContentBrowser();
-            browser.Initialize(GameContent, true, ContentBrowser.eBrowsers.Texture | ContentBrowser.eBrowsers.Animations);
+            browser.Initialize(GameContent, true, ContentBrowser.eBrowsers.Texture | ContentBrowser.eBrowsers.TilesetAnimations);
 
             /*Update the texture if the user really wants to...*/
             if (browser.ShowDialog() == DialogResult.OK )
             {
                 if (browser.SelectedTexture != null)
                 {
-                    Animation.Texture = browser.SelectedTexture;
+                    TilesetAnimation.Texture = browser.SelectedTexture;
 
                     /*Update the visuals for this editor too*/
                     TilesetRect.Update(new Vec2(), browser.SelectedTexture.Width, browser.SelectedTexture.Height);
@@ -139,7 +140,7 @@ namespace Editor
             rendertargetTileset.RemoveRenderObject(TilesetGrid);
             if (checkBoxGrid.Checked)
             {
-                TilesetGrid = new Grid2D(new Box2DX.Common.Vec2(), Animation.Texture.Width, Animation.Texture.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value, 0, System.Drawing.Color.Red);
+                TilesetGrid = new Grid2D(new Box2DX.Common.Vec2(), TilesetAnimation.Texture.Width, TilesetAnimation.Texture.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value, 0, System.Drawing.Color.Red);
                 TilesetGrid.Enabled = false;
                 rendertargetTileset.AddRenderObject(TilesetGrid);
             }
@@ -179,7 +180,7 @@ namespace Editor
             /*Update the Trackbar so the user can scroll through the single frames*/
             int currentSelectedFrame = SelectedFrame;
             trackBarFrameSelection.Value = 0;
-            trackBarFrameSelection.Maximum = Animation.Frames.Count - 1;
+            trackBarFrameSelection.Maximum = TilesetAnimation.Frames.Count - 1;
             if (trackBarFrameSelection.Maximum >= currentSelectedFrame)
                 trackBarFrameSelection.Value = currentSelectedFrame;
         }
@@ -190,7 +191,7 @@ namespace Editor
         {
             if (checkBoxGrid.Checked)
             {
-                Animation.AutoCut((int)SelectionRect.Location.X, (int)SelectionRect.Location.Y, SelectionRect.Width, SelectionRect.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value);
+                TilesetAnimation.AutoCut((int)SelectionRect.Location.X, (int)SelectionRect.Location.Y, SelectionRect.Width, SelectionRect.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value);
                 UpdateGUI();
                 UpdateFrameDisplay();
             }
@@ -199,12 +200,12 @@ namespace Editor
         /*Update the frame by user description*/
         void UpdateFrame()
         {
-            if (SelectedFrame >= 0 && SelectedFrame < Animation.Frames.Count)
+            if (SelectedFrame >= 0 && SelectedFrame < TilesetAnimation.Frames.Count)
             {
-                Animation.Frames[SelectedFrame].StartX = (int)SelectionRect.Location.X;
-                Animation.Frames[SelectedFrame].StartY = (int)SelectionRect.Location.Y;
-                Animation.Frames[SelectedFrame].Width = SelectionRect.Width;
-                Animation.Frames[SelectedFrame].Height = SelectionRect.Height;
+                TilesetAnimation.Frames[SelectedFrame].StartX = (int)SelectionRect.Location.X;
+                TilesetAnimation.Frames[SelectedFrame].StartY = (int)SelectionRect.Location.Y;
+                TilesetAnimation.Frames[SelectedFrame].Width = SelectionRect.Width;
+                TilesetAnimation.Frames[SelectedFrame].Height = SelectionRect.Height;
                 UpdateFrameDisplay();
             }
 
@@ -213,10 +214,10 @@ namespace Editor
         /*update the user-selected frame so it's displayed correctly*/
         void UpdateFrameDisplay()
         {
-            if (SelectedFrame >= 0 && SelectedFrame < Animation.Frames.Count)
+            if (SelectedFrame >= 0 && SelectedFrame < TilesetAnimation.Frames.Count)
             {
-                FrameRect.Update(new Vec2(), Animation.Frames[SelectedFrame].Width, Animation.Frames[SelectedFrame].Height);
-                FrameRect.TextureSegment = new System.Drawing.RectangleF(Animation.Frames[SelectedFrame].StartX, Animation.Frames[SelectedFrame].StartY, Animation.Frames[SelectedFrame].Width, Animation.Frames[SelectedFrame].Height);
+                FrameRect.Update(new Vec2(), TilesetAnimation.Frames[SelectedFrame].Width, TilesetAnimation.Frames[SelectedFrame].Height);
+                FrameRect.TextureSegment = new System.Drawing.RectangleF(TilesetAnimation.Frames[SelectedFrame].StartX, TilesetAnimation.Frames[SelectedFrame].StartY, TilesetAnimation.Frames[SelectedFrame].Width, TilesetAnimation.Frames[SelectedFrame].Height);
                 FrameRect.Visible = true;
             }
         }
@@ -231,10 +232,10 @@ namespace Editor
         private void buttonRemoveFrame_Click(object sender, System.EventArgs e)
         {
             /*there has to be at least 1 frame for the animation to exist*/
-            if (Animation.Frames.Count > 1)
+            if (TilesetAnimation.Frames.Count > 1)
             {
-                Animation.RemoveFrame(Animation.Frames[SelectedFrame]);
-                Animation.Reset();
+                TilesetAnimation.RemoveFrame(TilesetAnimation.Frames[SelectedFrame]);
+                TilesetAnimation.Reset();
                 UpdateGUI();
                 UpdateFrameDisplay();
             }
@@ -243,13 +244,13 @@ namespace Editor
         /*moving frames in order*/
         private void buttonMoveFrameTop_Click(object sender, System.EventArgs e)
         {
-            if (Animation.SwapFrames(SelectedFrame, SelectedFrame - 1))
+            if (TilesetAnimation.SwapFrames(SelectedFrame, SelectedFrame - 1))
                 trackBarFrameSelection.Value--;
         }
 
         private void buttonMoveFrameBottom_Click(object sender, System.EventArgs e)
         {
-            if (Animation.SwapFrames(SelectedFrame, SelectedFrame + 1))
+            if (TilesetAnimation.SwapFrames(SelectedFrame, SelectedFrame + 1))
                 trackBarFrameSelection.Value++;
         }
 
@@ -257,10 +258,10 @@ namespace Editor
         /*add empty frame*/
         private void buttonAddFrame_Click(object sender, System.EventArgs e)
         {
-            Animation.AddFrame(0, 0, 0, 0);
+            TilesetAnimation.AddFrame(0, 0, 0, 0);
             UpdateGUI();
             trackBarFrameSelection.Value++;
-            Animation.Reset();
+            TilesetAnimation.Reset();
         }
 
     }

@@ -84,7 +84,11 @@ namespace Graphics
         }
         public VerticeInterpretation VerticeInterpretation;
 
-        RectangleF BoundingBox;
+        RectangleF boundingBox;
+        public RectangleF BoundingBox
+        {
+            get => boundingBox;
+        }
 
         public Texture2D Texture { get; set; }
         public RectangleF TextureSegment { get; set; }
@@ -168,7 +172,7 @@ namespace Graphics
 
         void UpdateBoundingBox()
         {
-            BoundingBox = GetBoundingBox(vertices);
+            boundingBox = GetBoundingBox(vertices);
         }
 
         public virtual void Update(float Elapsed) { }
@@ -278,10 +282,17 @@ namespace Graphics
 
 
                     /*Draw Texture*/
-                    if (Texture != null && VerticeInterpretation == VerticeInterpretation.Solid)
+                    if (Texture != null && Texture.IsValid && VerticeInterpretation == VerticeInterpretation.Solid)
                     {
                         g.SetClip(path);
-                        Texture.Draw(g, BoundingBox.X, BoundingBox.Y, BoundingBox.Width, BoundingBox.Height, TextureSegment);
+                        try
+                        {
+                            Texture.Draw(g, boundingBox.X, boundingBox.Y, boundingBox.Width, boundingBox.Height, TextureSegment);
+                        }
+                        catch (System.Exception ex)
+                        {
+                        }
+                        
                         g.ResetClip();
                     }
                 }

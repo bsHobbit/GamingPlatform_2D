@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Graphics;
-
+using Graphics.Animation;
+using System.Linq;
 
 namespace GameCore
 {
@@ -14,6 +15,22 @@ namespace GameCore
         /*members*/
         public List<Texture2D> Textures { get; private set; }
         internal List<RenderableObject2D> RenderableObjects;
+
+        /*seprating the renderableobjects 2D into the differenct categories*/
+        public List<TilesetAnimation> TilesetAnimations
+        {
+            get
+            {
+                List<TilesetAnimation> result = new List<TilesetAnimation>();
+                for (int i = 0; i < RenderableObjects.Count; i++)
+                {
+                    if (RenderableObjects[i] is TilesetAnimation tsa)
+                        result.Add(tsa);
+                }
+                return result;
+            }
+            
+        }
 
         /*init everything*/
         public ContentManager()
@@ -52,8 +69,8 @@ namespace GameCore
             }
         }
 
-        /*Manage Animation*/
-        public void AddAnimation(Graphics.Animation.TilesetAnimation Animation)
+        /*Manage TilesetAnimation*/
+        public void AddTilesetAnimation(TilesetAnimation Animation)
         {
             if (!RenderableObjects.Contains(Animation))
             {
@@ -61,7 +78,7 @@ namespace GameCore
             }
         }
 
-        public void RemoveAnimation(Graphics.Animation.TilesetAnimation Animation)
+        public void RemoveTilesetAnimation(TilesetAnimation Animation)
         {
             if (RenderableObjects.Contains(Animation))
             {

@@ -1,6 +1,6 @@
 ﻿namespace Editor
 {
-    partial class AnimationEditor
+    partial class TilesetAnimationEditor
     {
         /// <summary>
         /// Required designer variable.

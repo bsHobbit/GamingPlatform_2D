@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 using Core.ComponentModel;
+using System.Collections.Generic;
 
 namespace Graphics
 {
     public class Texture2D : Component 
     {
         Bitmap Bitmap;
-        Bitmap Thumbnail;
+        Dictionary<int, Bitmap> Thumbnails;
         public int Width;
         public int Height;
         public bool IsValid { get; private set; }
@@ -14,6 +15,7 @@ namespace Graphics
         public Texture2D(Bitmap Bitmap)
         {
             IsValid = Bitmap != null;
+            Thumbnails = new Dictionary<int, Bitmap>();
             if (IsValid)
             {
                 this.Bitmap = ToDispose(Bitmap);
@@ -26,15 +28,21 @@ namespace Graphics
         {
             /*Render*/
             if (Segment.IsEmpty)
+
                 g.DrawImage(Bitmap,
                             new RectangleF(X, Y, TargetWidth, TargetHeight),
                             new RectangleF(0, 0, Bitmap.Width, Bitmap.Height),
                             GraphicsUnit.Pixel);
             else
-                g.DrawImage(Bitmap,
-                            new RectangleF(X, Y, TargetWidth, TargetHeight),
-                            Segment,
-                            GraphicsUnit.Pixel);
+            {
+                if (Segment.Width > 0 && Segment.Height > 0)
+                {
+                    g.DrawImage(Bitmap,
+                                new RectangleF(X, Y, TargetWidth, TargetHeight),
+                                Segment,
+                                GraphicsUnit.Pixel);
+                }
+            }
         }
 
 
@@ -42,14 +50,15 @@ namespace Graphics
         /*thumbnail creation*/
         public Bitmap GetThumbnail(int ThumbnailWidth, int ThumbnailHeight)
         {
-            /*check if the current thumbnail is valid, if not create a valid one*/
-            if (Thumbnail == null || Thumbnail.Width != ThumbnailWidth || Thumbnail.Height != ThumbnailHeight)
-            {
-                RemoveAndDispose(Thumbnail);
-                Thumbnail = ToDispose(CreateThumbnail(ThumbnailHeight, ThumbnailHeight));
-            }
+            Size s = new Size(ThumbnailWidth, ThumbnailHeight);
+            int hash = s.GetHashCode();
+            if (Thumbnails.ContainsKey(hash))
+                return Thumbnails[hash];
+            else
+                Thumbnails.Add(hash, ToDispose(CreateThumbnail(ThumbnailHeight, ThumbnailHeight)));
 
-            return Thumbnail;
+            /*check if the current thumbnail is valid, if not create a valid one*/
+            return Thumbnails[hash];
         }
 
         Bitmap CreateThumbnail(int Width, int Height)

@@ -82,16 +82,25 @@ namespace Editor
             if (!NeedsClosingAfterSelection())
             {
                 /*Allow the user to edit the animation*/
-                TilesetAnimationEditor Editor = new TilesetAnimationEditor(GameContent.TilesetAnimations[Index], GameContent);
-                Editor.Show();
 
-                /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
-                Editor.FormClosing += (s, e) => 
+                var animation = GameContent.TilesetAnimations[Index];
+                /*check if the animation has a valid texture, of not make sure the user is able to select one*/
+                if (animation.Texture == null)
+                    animation.Texture = SelectTexture(GameContent);
+
+                if (animation.Texture != null)
                 {
-                    collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
-                    collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
-                    Editor.Dispose();
-                };
+                    TilesetAnimationEditor Editor = new TilesetAnimationEditor(animation, GameContent);
+                    Editor.Show();
+
+                    /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
+                    Editor.FormClosing += (s, e) =>
+                    {
+                        collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
+                        collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
+                        Editor.Dispose();
+                    };
+                }
             }
         }
 
@@ -147,6 +156,21 @@ namespace Editor
         }
 
 
+        /*remove textures*/
+        private void buttonRemoveTexture_Click(object sender, System.EventArgs e)
+        {
+            if (selectedTexture != null)
+            {
+                GameContent.RemoveTexture(selectedTexture);
+                GameContent.RemoveReferences(selectedTexture);
+                selectedTexture = null;
+                UpdateTextures();
+                UpdateTilesetAnimations();
+            }
+
+        }
+
+
 
         /*Static helpers*/
         public Texture2D SelectTexture(ContentManager ContentManager)
@@ -157,5 +181,6 @@ namespace Editor
                 return browser.SelectedTexture;
             return null;
         }
+
     }
 }

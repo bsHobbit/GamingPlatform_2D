@@ -51,7 +51,7 @@ namespace GameCore
 
         public void RemoveTexture(Texture2D Texture)
         {
-            if (Textures.Contains (Texture))
+            if (Textures.Contains(Texture))
             {
                 Textures.Remove(Texture);
                 RemoveAndDispose(Texture);
@@ -154,8 +154,19 @@ namespace GameCore
         internal void Load(string Path)
         {
             string contentPath = Path + "Content\\";
+
+            /*textures*/
+            string texturePath = contentPath + "textures\\";
+            if (System.IO.Directory.Exists(texturePath))
+            {
+                string[] Files = System.IO.Directory.GetFiles(texturePath);
+                foreach (var imageFile in Files)
+                    LoadTexture(imageFile);
+            }
+
+            /*tileset-animations*/
             string tilesetAnimationsPath = contentPath + "tileset_animations\\";
-            if (System.IO.Directory.Exists (tilesetAnimationsPath))
+            if (System.IO.Directory.Exists(tilesetAnimationsPath))
             {
                 string[] tsaFiles = System.IO.Directory.GetFiles(tilesetAnimationsPath, "*.tsa");
                 foreach (var tsaFile in tsaFiles)

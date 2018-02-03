@@ -38,9 +38,11 @@
             this.collectionDisplayTilesetAnimations = new Editor.CollectionDisplay();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonAddTilesetAnimation = new System.Windows.Forms.Button();
+            this.buttonRemoveTexture = new System.Windows.Forms.Button();
             this.tabControlContent.SuspendLayout();
             this.tabPageTextures.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabPageTilesetAnimations.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -94,6 +96,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonRemoveTexture);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
@@ -153,6 +156,16 @@
             this.buttonAddTilesetAnimation.Text = "Add";
             this.buttonAddTilesetAnimation.UseVisualStyleBackColor = true;
             // 
+            // buttonRemoveTexture
+            // 
+            this.buttonRemoveTexture.Location = new System.Drawing.Point(19, 20);
+            this.buttonRemoveTexture.Name = "buttonRemoveTexture";
+            this.buttonRemoveTexture.Size = new System.Drawing.Size(161, 23);
+            this.buttonRemoveTexture.TabIndex = 0;
+            this.buttonRemoveTexture.Text = "Remove";
+            this.buttonRemoveTexture.UseVisualStyleBackColor = true;
+            this.buttonRemoveTexture.Click += new System.EventHandler(this.buttonRemoveTexture_Click);
+            // 
             // ContentBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -165,6 +178,7 @@
             this.tabControlContent.ResumeLayout(false);
             this.tabPageTextures.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.tabPageTilesetAnimations.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -184,5 +198,6 @@
         private CollectionDisplay collectionDisplayTilesetAnimations;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button buttonAddTilesetAnimation;
+        private System.Windows.Forms.Button buttonRemoveTexture;
     }
 }

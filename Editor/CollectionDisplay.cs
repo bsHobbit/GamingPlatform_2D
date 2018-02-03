@@ -100,7 +100,11 @@ namespace Editor
         {
             if (Items == null)
                 throw new System.Exception("Call Initialize first!");
-            
+
+
+            if (Texture == null)
+                Texture = new Texture2D(new System.Drawing.Bitmap(ItemWidth, ItemHeight), Info);
+
             if (Texture.IsValid)
             {
                 Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight, Segment));
@@ -118,6 +122,7 @@ namespace Editor
                 UpdateItems();
                 UpdateCamera();
             }
+            
         }
 
         /*Get the texture by it's renderobject for the event ;)*/

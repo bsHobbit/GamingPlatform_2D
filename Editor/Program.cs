@@ -1,8 +1,5 @@
 ﻿using GameCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Editor
@@ -19,8 +16,6 @@ namespace Editor
             Application.SetCompatibleTextRenderingDefault(false);
 
             Game Game = new Game(@"D:\Programmierung\Temp\game\");
-            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest.png"));
-            Game.ContentManager.AddTexture(Graphics.Texture2D.FromFile(@"D:\Programmierung\Temp\charsettest2.png"));
             Game.LoadContent();
 
 

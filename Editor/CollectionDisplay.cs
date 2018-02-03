@@ -188,7 +188,7 @@ namespace Editor
 
         void UpdateThumbnail(TextureInfo Item)
         {
-            if (Item.OriginalTexture.IsValid)
+            if (Item.OriginalTexture != null && Item.OriginalTexture.IsValid)
             {
                 Texture2D thumbnail = new Texture2D(Item.OriginalTexture.GetThumbnail(ItemWidth, ItemHeight, Item.Segment));
                 Item.RenderObject.Texture = thumbnail;

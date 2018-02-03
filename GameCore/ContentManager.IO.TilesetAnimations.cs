@@ -12,7 +12,10 @@ namespace GameCore
             {
                 string tsaFile = Path + tsa.Name + ".tsa";
                 System.IO.StreamWriter sw = new System.IO.StreamWriter(tsaFile, false);
-                sw.WriteLine(tsa.Texture.Name);
+                if (tsa.Texture != null)
+                    sw.WriteLine(tsa.Texture.Name);
+                else
+                    sw.WriteLine("");
                 sw.WriteLine(tsa.Loop);
                 sw.WriteLine(tsa.IsReverseLoop);
                 sw.WriteLine(tsa.FPS);
@@ -48,7 +51,7 @@ namespace GameCore
             int Frames = Convert.ToInt32(sr.ReadLine());
 
             var baseTexture = GetTexture(TextureName);
-            if (baseTexture != null)
+            //if (baseTexture != null)
             {
                 TilesetAnimation result = new TilesetAnimation(baseTexture, FPS, 0)
                 {

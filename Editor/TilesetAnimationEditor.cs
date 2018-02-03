@@ -49,7 +49,9 @@ namespace Editor
             UserIsSelectingInTileset = false;
 
             /*render the tileset into this rectangle*/
-            TilesetRect = new Rectangle2D(TilesetAnimation.Texture.Width, TilesetAnimation.Texture.Height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, TilesetAnimation.Texture);
+            int width = TilesetAnimation.Texture == null ? 10 : TilesetAnimation.Texture.Width;
+            int height = TilesetAnimation.Texture == null ? 10 : TilesetAnimation.Texture.Height;
+            TilesetRect = new Rectangle2D(width, height, new Vec2(0, 0), -1, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, TilesetAnimation.Texture);
 
             /*visualize the user selection*/
             SelectionRect = new Rectangle2D(10, 10, new Vec2(), 1, System.Drawing.Color.FromArgb(80, System.Drawing.Color.Green), System.Drawing.Color.Black);
@@ -118,7 +120,8 @@ namespace Editor
 
         void UpdateTilesetCamera()
         {
-            rendertargetTileset.Camera.LookAt = new Vec2(TilesetAnimation.Texture.Width / 2f, TilesetAnimation.Texture.Height / 2f);
+            if (TilesetAnimation.Texture != null)
+                rendertargetTileset.Camera.LookAt = new Vec2(TilesetAnimation.Texture.Width / 2f, TilesetAnimation.Texture.Height / 2f);
         }
 
 
@@ -149,9 +152,9 @@ namespace Editor
         void UpdateGrid()
         {
             rendertargetTileset.RemoveRenderObject(TilesetGrid);
-            if (checkBoxGrid.Checked)
+            if (checkBoxGrid.Checked && TilesetAnimation.Texture != null)
             {
-                TilesetGrid = new Grid2D(new Box2DX.Common.Vec2(), TilesetAnimation.Texture.Width, TilesetAnimation.Texture.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value, 0, System.Drawing.Color.Red);
+                TilesetGrid = new Grid2D(new Vec2(), TilesetAnimation.Texture.Width, TilesetAnimation.Texture.Height, (int)numericUpDownGridWidth.Value, (int)numericUpDownGridHeight.Value, 0, System.Drawing.Color.Red);
                 TilesetGrid.Enabled = false;
                 rendertargetTileset.AddRenderObject(TilesetGrid);
             }

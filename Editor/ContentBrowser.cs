@@ -88,7 +88,7 @@ namespace Editor
                 if (animation.Texture == null)
                     animation.Texture = SelectTexture(GameContent);
 
-                if (animation.Texture != null)
+                //if (animation.Texture != null)
                 {
                     TilesetAnimationEditor Editor = new TilesetAnimationEditor(animation, GameContent);
                     Editor.Show();

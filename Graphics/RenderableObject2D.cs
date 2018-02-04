@@ -96,6 +96,8 @@ namespace Graphics
         public Matrix WorldMatrix { get; set; }
         Matrix InverseWorldMatrix;
 
+        Dictionary<int, RenderableText> TextToRender;
+
 
         protected void Initialize(Vec2 Location,
                                   int Z,
@@ -123,6 +125,8 @@ namespace Graphics
                 this.TextureSegment = (RectangleF)TextureSegment;
             else
                 this.TextureSegment = RectangleF.Empty;
+
+            TextToRender = new Dictionary<int, RenderableText>();
 
             Visible = true;
             Enabled = true;
@@ -244,6 +248,21 @@ namespace Graphics
         public static List<Vec2> CreateRectangle2D(int Width, int Height) => new List<Vec2>() { new Vec2(0, 0), new Vec2(Width, 0), new Vec2(Width, Height), new Vec2(0, Height) };
 
 
+        /*manage text*/
+        public void AddText(RenderableText Text)
+        {
+            int hash = Text.GetHashCode();
+            if (!TextToRender.ContainsKey(hash))
+                TextToRender.Add(hash, Text);
+        }
+
+        public void RemoveText(RenderableText Text)
+        {
+            int hash = Text.GetHashCode();
+            if (TextToRender.ContainsKey(hash))
+                TextToRender.Remove(hash);
+        }
+
         /*GDI Only-Stuff*/
 
         public static PointF[] ToPointFArray(List<Vec2> Vertices)
@@ -287,6 +306,17 @@ namespace Graphics
                         g.SetClip(path);
                         Texture.Draw(g, boundingBox.X, boundingBox.Y, boundingBox.Width, boundingBox.Height, TextureSegment);
                         g.ResetClip();
+                    }
+
+                    /*Draw Text*/
+                    if (TextToRender != null)
+                    {
+                        foreach (var text in TextToRender)
+                        {
+                            if (text.Value.ClipWithObject) g.SetClip(path);
+                            text.Value.Draw(g);
+                            if (text.Value.ClipWithObject) g.ResetClip();
+                        }
                     }
                 }
             }

@@ -109,6 +109,7 @@ namespace Editor
             {
                 Texture2D thumbnail = new Texture2D(Texture.GetThumbnail(ItemWidth, ItemHeight, Segment));
                 Rectangle2D renderRect = new Rectangle2D(ItemWidth, ItemHeight, new Vec2(), 0, System.Drawing.Color.Transparent, System.Drawing.Color.Gray, thumbnail);
+                renderRect.AddText(new RenderableText(Info, new System.Drawing.Font("Arial", 12), System.Drawing.Color.Black, new Vec2(), true));
                 int currentIndex = Items.Count;
                 Items.Add(new TextureInfo(Texture, Info, renderRect, Segment, currentIndex));
                 RenderTarget.AddRenderObject(renderRect);

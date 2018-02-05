@@ -14,7 +14,8 @@ namespace Editor
     {
         Animation Animation;
         AnimationState SelectedState;
-        Dictionary<AnimationState, Rectangle2D> RenderObjects;
+        Dictionary<AnimationState, Rectangle2D> RenderObjects_States;
+        Dictionary<AnimationTransition, Line2D> RenderObjects_Transitions;
         GameCore.ContentManager GameContent;
 
         public AnimationEditor()
@@ -29,7 +30,8 @@ namespace Editor
             this.GameContent = GameContent;
 
             /*Init renderobjects*/
-            RenderObjects = new Dictionary<AnimationState, Rectangle2D>();
+            RenderObjects_States = new Dictionary<AnimationState, Rectangle2D>();
+            RenderObjects_Transitions = new Dictionary<AnimationTransition, Line2D>();
 
 
             /*initialize rendering*/
@@ -75,7 +77,7 @@ namespace Editor
         {
             if (State != null)
             {
-                if (!RenderObjects.ContainsKey(State))
+                if (!RenderObjects_States.ContainsKey(State))
                 {
                     /*create new render-object*/
                     RenderableText description = new RenderableText(State.TilesetAnimation.Name, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
@@ -83,10 +85,11 @@ namespace Editor
                     stateRenderRect.AddText(description);
                     stateRenderRect.Tag = State;
                     stateRenderRect.EnableUserTranslation();
-                    RenderObjects.Add(State, stateRenderRect);
+                    RenderObjects_States.Add(State, stateRenderRect);
 
                     /*make sure the user can select it*/
                     stateRenderRect.MouseDown += (s, e) => { SelectedState = s.Tag as AnimationState; };
+                    stateRenderRect.LocationChanged += (s, e, x) => { AddAnimationTransition(Animation.Entry);  };
 
                     /*make sure it's displayed*/
                     RenderTarget.AddRenderObject(stateRenderRect);
@@ -102,7 +105,23 @@ namespace Editor
             if (State != null)
             {
                 for (int i = 0; i < State.PossibleTransitions.Count; i++)
+                {
+                    Vec2 startLocation = RenderObjects_States[State].Location + (new Vec2(RenderObjects_States[State].Width, RenderObjects_States[State].Height) * .5f);
+                    Vec2 targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + (new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height) * .5f);
+
+                    if (!RenderObjects_Transitions.ContainsKey(State.PossibleTransitions[i]))
+                    {
+                        Line2D transitionLine = new Line2D(startLocation, targetLocation, new Vec2(), -1, System.Drawing.Color.Black, 2);
+                        RenderObjects_Transitions.Add(State.PossibleTransitions[i], transitionLine);
+                        RenderTarget.AddRenderObject(transitionLine);
+
+                    }
+                    else
+                        RenderObjects_Transitions[State.PossibleTransitions[i]].Update(startLocation, targetLocation);
+                        
+
                     AddAnimationTransition(State.PossibleTransitions[i].TranslateInto);
+                }
             }
         }
 

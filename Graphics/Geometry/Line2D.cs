@@ -15,8 +15,15 @@ namespace Graphics.Geometry
             this.V1 = V1;
             this.V2 = V2;
             List<Vec2> vertices = new List<Vec2>() { V1, V2 };
-            Initialize(Location, 0, vertices, Color, Color, RectangleF.Empty, null, LineWidth, Scale, Rotation, VerticeInterpretation.Lines);
+            Initialize(Location, Z, vertices, Color, Color, RectangleF.Empty, null, LineWidth, Scale, Rotation, VerticeInterpretation.Lines);
             RotationOffset = (V1 - V2) * .5f;
+        }
+
+        public void Update(Vec2 V1, Vec2 V2)
+        {
+            this.V1 = V1;
+            this.V2 = V2;
+            Vertices = new List<Vec2>() { V1, V2 };
         }
     }
 }

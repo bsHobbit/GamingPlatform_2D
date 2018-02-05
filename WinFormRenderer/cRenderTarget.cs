@@ -131,7 +131,11 @@ namespace WinFormRenderer
             renderTarget.MouseDown      += RenderTarget_MouseDown;
             renderTarget.MouseUp        += RenderTarget_MouseUp;
             renderTarget.MouseWheel     += RenderTarget_MouseWheel;
-            renderTarget.MouseEnter     += (s, e) => { renderTarget.Focus(); };
+            renderTarget.MouseEnter     += (s, e) => 
+            {
+                if (ParentForm != null && ParentForm.Focused)
+                    renderTarget.Focus();
+            };
         }
 
         /*stop the rendering*/

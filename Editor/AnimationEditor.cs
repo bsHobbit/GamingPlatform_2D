@@ -59,7 +59,7 @@ namespace Editor
                 /*create a new animationy state with a condition for the selected animationstate*/
                 else if (SelectedState != null)
                 {
-
+                    /*let the user select a condition for this transition*/
                 }
             }
 

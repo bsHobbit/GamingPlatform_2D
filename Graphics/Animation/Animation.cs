@@ -52,6 +52,39 @@ namespace Graphics.Animation
                 CurrentAnimationState.TilesetAnimation.CopyRenderParameter(this);
         }
 
+        /*state management*/
+        public List<AnimationTransition> RemoveStateAndReferences(AnimationState State)
+        {
+            
+            List<AnimationTransition> removedTransitions = new List<AnimationTransition>();
+            RemoveStateAndReferences(Entry, State, removedTransitions);
+
+            for (int i = 0; i < State.PossibleTransitions.Count; i++)
+                removedTransitions.Add(State.PossibleTransitions[i]);
+
+            if (State == Entry)
+                Entry = null;
+
+            return removedTransitions;
+        }
+
+        void RemoveStateAndReferences(AnimationState CurrentState, AnimationState StateToRemove, List<AnimationTransition> removedTransitions)
+        {
+            for (int i = 0; i < CurrentState.PossibleTransitions.Count; i++)
+            {
+                RemoveStateAndReferences(CurrentState.PossibleTransitions[i].TranslateInto, StateToRemove, removedTransitions);
+
+                List<AnimationTransition> tmpRemovedList = new List<AnimationTransition>();
+                if (CurrentState.PossibleTransitions[i].TranslateInto == StateToRemove)
+                {
+                    removedTransitions.Add(CurrentState.PossibleTransitions[i]);
+                    tmpRemovedList.Add(CurrentState.PossibleTransitions[i]);
+                }
+
+                for (int j = 0; j < tmpRemovedList.Count; j++)
+                    CurrentState.RemoveTransition(tmpRemovedList[j]);
+            }
+        }
 
         /*Attribute management*/
         public object GetAttribute(string Name)

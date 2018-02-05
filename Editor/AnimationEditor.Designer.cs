@@ -32,6 +32,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonAddState = new System.Windows.Forms.Button();
+            this.buttonRemoveState = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +63,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonRemoveState);
             this.panel1.Controls.Add(this.buttonAddState);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -78,6 +80,16 @@
             this.buttonAddState.Text = "Add State";
             this.buttonAddState.UseVisualStyleBackColor = true;
             this.buttonAddState.Click += new System.EventHandler(this.buttonAddState_Click);
+            // 
+            // buttonRemoveState
+            // 
+            this.buttonRemoveState.Location = new System.Drawing.Point(9, 38);
+            this.buttonRemoveState.Name = "buttonRemoveState";
+            this.buttonRemoveState.Size = new System.Drawing.Size(171, 23);
+            this.buttonRemoveState.TabIndex = 1;
+            this.buttonRemoveState.Text = "Remove State";
+            this.buttonRemoveState.UseVisualStyleBackColor = true;
+            this.buttonRemoveState.Click += new System.EventHandler(this.buttonRemoveState_Click);
             // 
             // AnimationEditor
             // 
@@ -100,5 +112,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonAddState;
+        private System.Windows.Forms.Button buttonRemoveState;
     }
 }

@@ -100,6 +100,28 @@ namespace Editor
             }
         }
 
+
+        private void buttonRemoveState_Click(object sender, System.EventArgs e)
+        {
+            if (SelectedState != null)
+            {
+                /*remove the animationstate*/
+                var removedTransitions = Animation.RemoveStateAndReferences(SelectedState);
+                RenderTarget.RemoveRenderObject(RenderObjects_States[SelectedState]);
+                RenderObjects_States.Remove(SelectedState);
+
+                /*remove all references to this state*/
+                for (int i = 0; i < removedTransitions.Count; i++)
+                {
+                    RenderTarget.RemoveRenderObject(RenderObjects_Transitions[removedTransitions[i]]);
+                    RenderObjects_Transitions.Remove(removedTransitions[i]);
+                }
+
+                SelectedState = null;
+            }
+        }
+
+
         void UpdateAnimationTransition_RenderObjects(AnimationState State)
         {
             if (State != null)
@@ -161,6 +183,5 @@ namespace Editor
             UpdateAnimationTransition_RenderObjects(Animation.Entry);
             
         }
-
     }
 }

@@ -13,17 +13,20 @@ namespace Editor
     public partial class AnimationEditor : Form
     {
         Animation Animation;
+        AnimationState SelectedState;
         Dictionary<AnimationState, Rectangle2D> RenderObjects;
+        GameCore.ContentManager GameContent;
 
         public AnimationEditor()
         {
             InitializeComponent();
         }
 
-        public AnimationEditor(Animation Animation)
+        public AnimationEditor(Animation Animation, GameCore.ContentManager GameContent)
             :this()
         {
             this.Animation = Animation;
+            this.GameContent = GameContent;
 
             /*Init renderobjects*/
             RenderObjects = new Dictionary<AnimationState, Rectangle2D>();
@@ -37,6 +40,31 @@ namespace Editor
             UpdateVisuals();
         }
 
+        /*Manage states*/
+        private void buttonAddState_Click(object sender, System.EventArgs e)
+        {
+
+            TilesetAnimation tsa = ContentBrowser.SelectTilesetAnimation(GameContent);
+            if (tsa != null)
+            {
+                /*create the entry point*/
+                if (SelectedState == null && Animation.Entry == null)
+                {
+                    Animation.Entry = new AnimationState()
+                    {
+                        TilesetAnimation = tsa,
+                        MinStateTime = 1f
+                    };
+                }
+                /*create a new animationy state with a condition for the selected animationstate*/
+                else if (SelectedState != null)
+                {
+
+                }
+            }
+
+            UpdateVisuals();
+        }
 
         /*make sure everything is displayed properly*/
         void AddAnimationState(AnimationState State)
@@ -49,7 +77,11 @@ namespace Editor
                     RenderableText description = new RenderableText(State.TilesetAnimation.Name, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
                     Rectangle2D stateRenderRect = new Rectangle2D((int)description.GetSize().X, (int)description.GetSize().Y, State.WindowLocation, 0, System.Drawing.Color.Gray, System.Drawing.Color.White);
                     stateRenderRect.AddText(description);
+                    stateRenderRect.Tag = State;
                     RenderObjects.Add(State, stateRenderRect);
+
+                    /*make sure the user can select it*/
+                    stateRenderRect.Click += (s, e) => { SelectedState = s.Tag as AnimationState; };
 
                     /*make sure it's displayed*/
                     RenderTarget.AddRenderObject(stateRenderRect);
@@ -79,5 +111,6 @@ namespace Editor
             AddAnimationTransition(Animation.Entry);
             
         }
+
     }
 }

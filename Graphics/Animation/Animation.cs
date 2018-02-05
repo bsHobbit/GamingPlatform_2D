@@ -48,7 +48,7 @@ namespace Graphics.Animation
         /*make sure the current-animationstate is rendered correct*/
         void UpdateRenderParameter()
         {
-            if (CurrentAnimationState != null)
+            if (CurrentAnimationState != null && CurrentAnimationState.TilesetAnimation != null)
                 CurrentAnimationState.TilesetAnimation.CopyRenderParameter(this);
         }
 

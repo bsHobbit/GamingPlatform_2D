@@ -1,5 +1,6 @@
 ﻿using GameCore;
 using Graphics;
+using Graphics.Animation;
 using System.Windows.Forms;
 
 namespace Editor
@@ -30,6 +31,14 @@ namespace Editor
         {
             get => selectedTexture;
             set { selectedTexture = value; }
+        }
+
+
+        TilesetAnimation selectedTilesetAnimation;
+        public TilesetAnimation SelectedTilesetAnimation
+        {
+            get => selectedTilesetAnimation;
+            set { selectedTilesetAnimation = value; }
         }
 
 
@@ -71,13 +80,13 @@ namespace Editor
                     Hide();
                     Texture2D animationTexture = SelectTexture(GameContent);
                     if (animationTexture != null)
-                        GameContent.AddRenderableObject(new Graphics.Animation.TilesetAnimation(animationTexture, 10, 0)); 
+                        GameContent.AddRenderableObject(new TilesetAnimation(animationTexture, 10, 0)); 
                     UpdateTilesetAnimations();
                     Show();
                 };
                 buttonAddAnimation.Click += (s, e) =>
                 {
-                    GameContent.AddRenderableObject(new Graphics.Animation.Animation(new Box2DX.Common.Vec2(), 0));
+                    GameContent.AddRenderableObject(new Animation(new Box2DX.Common.Vec2(), 0));
                     UpdateAnimations();
                 };
             }
@@ -93,7 +102,7 @@ namespace Editor
             if (!NeedsClosingAfterSelection())
             {
                 var animation = GameContent.Animations[Index];
-                AnimationEditor Editor = new AnimationEditor(animation);
+                AnimationEditor Editor = new AnimationEditor(animation, GameContent);
                 Editor.Show();
 
                 /*Update the thumbnail in the contentbrowser to distinct it from the other animations visually*/
@@ -109,6 +118,7 @@ namespace Editor
         /*Handle tilesetanimation selection*/
         private void TilesetAnimationSelected(CollectionDisplay Sender, int Index)
         {
+            SelectedTilesetAnimation = GameContent.TilesetAnimations[Index];
             if (!NeedsClosingAfterSelection())
             {
                 /*Allow the user to edit the animation*/
@@ -213,12 +223,21 @@ namespace Editor
         }
 
         /*Static helpers*/
-        public Texture2D SelectTexture(ContentManager ContentManager)
+        public static Texture2D SelectTexture(ContentManager ContentManager)
         {
             ContentBrowser browser = new ContentBrowser();
             browser.Initialize(ContentManager, true, eBrowsers.Texture);
             if (browser.ShowDialog() == DialogResult.OK)
                 return browser.SelectedTexture;
+            return null;
+        }
+
+        public static TilesetAnimation SelectTilesetAnimation(ContentManager ContentManager)
+        {
+            ContentBrowser browser = new ContentBrowser();
+            browser.Initialize(ContentManager, true, eBrowsers.TilesetAnimations);
+            if (browser.ShowDialog() == DialogResult.OK)
+                return browser.SelectedTilesetAnimation;
             return null;
         }
 

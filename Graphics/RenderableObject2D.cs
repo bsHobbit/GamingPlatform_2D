@@ -28,6 +28,7 @@ namespace Graphics
         public void OnDoubleClick(Mouse Mouse) { DoubleClick?.Invoke(this, Mouse); }
 
 
+        public object Tag { get; set; }
 
         float rotation;
         public float  Rotation

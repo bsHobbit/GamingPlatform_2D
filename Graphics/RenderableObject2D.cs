@@ -11,6 +11,9 @@ namespace Graphics
     {
 
         /*Event Stuff*/
+        public delegate void RenderableObject2DLocationChangedEventHandler(RenderableObject2D Sender, Vec2 NewLocation, Vec2 PreviousLocation);
+        public event RenderableObject2DLocationChangedEventHandler LocationChanged;
+        public void OnLocationChanged(Vec2 NewLocation, Vec2 PreviousLocation) { LocationChanged?.Invoke(this, NewLocation, PreviousLocation); }
         public delegate void InputManagerMouseEventArgs(RenderableObject2D Sender, Mouse MouseEventArgs);
         public event InputManagerMouseEventArgs MouseEnter;
         public void OnMouseEnter(Mouse Mouse) { MouseEnter?.Invoke(this, Mouse); }
@@ -48,7 +51,13 @@ namespace Graphics
         public Vec2   Location
         {
             get => location;
-            set { location = value; UpdateWorldMatrix(); }
+            set
+            {
+                Vec2 prevLocation = location;
+                location = value;
+                UpdateWorldMatrix();
+                OnLocationChanged(location, prevLocation);
+            }
         }
 
         int Z;

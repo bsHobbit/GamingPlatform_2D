@@ -26,6 +26,20 @@ namespace Graphics.Animation
             MinStateTime = 0;
         }
 
+        public void AddTransitition(AnimationTransition Transition)
+        {
+            if (!possibleTransitions.Contains(Transition))
+                possibleTransitions.Add(Transition);
+        }
+
+        public void RemoveTransition(AnimationTransition Transition)
+        {
+            if (possibleTransitions.Contains(Transition))
+                possibleTransitions.Remove(Transition);
+        }
+
+
+
 
         /*update the animationstate*/
         public AnimationState Update(float Elapsed, Animation Animation)

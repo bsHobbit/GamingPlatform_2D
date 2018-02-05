@@ -44,23 +44,27 @@ namespace Editor
         private void buttonAddState_Click(object sender, System.EventArgs e)
         {
 
-            TilesetAnimation tsa = ContentBrowser.SelectTilesetAnimation(GameContent);
-            if (tsa != null)
+            /*create the entry point*/
+            if (SelectedState == null && Animation.Entry == null)
             {
-                /*create the entry point*/
-                if (SelectedState == null && Animation.Entry == null)
+                TilesetAnimation tsa = ContentBrowser.SelectTilesetAnimation(GameContent);
+                Animation.Entry = new AnimationState()
                 {
-                    Animation.Entry = new AnimationState()
-                    {
-                        TilesetAnimation = tsa,
-                        MinStateTime = 1f
-                    };
-                }
-                /*create a new animationy state with a condition for the selected animationstate*/
-                else if (SelectedState != null)
+                    TilesetAnimation = tsa,
+                    MinStateTime = 1f
+                };
+            }
+            /*create a new animationy state with a condition for the selected animationstate*/
+            else if (SelectedState != null)
+            {
+                TilesetAnimation tsa = ContentBrowser.SelectTilesetAnimation(GameContent);
+                /*let the user select a condition for this transition*/
+                AnimationState newState = new AnimationState()
                 {
-                    /*let the user select a condition for this transition*/
-                }
+                    TilesetAnimation = tsa,
+                    MinStateTime = 1f
+                };
+                SelectedState.AddTransitition(new AnimationTransition(new AnimationTransition.Condition(AnimationTransition.Condition.eConditionType.Equal, "", 0f), newState));
             }
 
             UpdateVisuals();
@@ -82,7 +86,7 @@ namespace Editor
                     RenderObjects.Add(State, stateRenderRect);
 
                     /*make sure the user can select it*/
-                    stateRenderRect.Click += (s, e) => { SelectedState = s.Tag as AnimationState; };
+                    stateRenderRect.MouseDown += (s, e) => { SelectedState = s.Tag as AnimationState; };
 
                     /*make sure it's displayed*/
                     RenderTarget.AddRenderObject(stateRenderRect);

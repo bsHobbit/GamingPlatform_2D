@@ -32,9 +32,10 @@
         public Condition TransitionCondition { get; set; }
 
         /*ctor*/
-        public AnimationTransition(Condition TransitionCondition)
+        public AnimationTransition(Condition TransitionCondition, AnimationState TranslateInto)
         {
             this.TransitionCondition = this.TransitionCondition;
+            this.TranslateInto = TranslateInto;
         }
 
 

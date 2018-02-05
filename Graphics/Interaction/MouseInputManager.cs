@@ -41,11 +41,22 @@ namespace Graphics.Interaction
         {
             cameraMovementStyle = Style;
         }
-            
+
 
         /*logic*/
 
-        bool IsMouseOverItem(RenderableObject2D Item) => Item.IsPointInsideObject(Input.CurrentState.Location);
+        bool IsMouseOverItem(RenderableObject2D Item)
+        {
+            if (Item.Vertices.Count == 2)
+            {
+                var transformedVertices = Item.TransformedVertices();
+                return RenderableObject2D.DistanceFromPointToLine(Input.CurrentState.Location, transformedVertices[0], transformedVertices[1]) <= 5;
+            }
+            else if (Item.Vertices.Count >= 3)
+                return Item.IsPointInsideObject(Input.CurrentState.Location);
+
+            return false;
+        }
 
         RenderableObject2D GetItemAtMouse()
         {

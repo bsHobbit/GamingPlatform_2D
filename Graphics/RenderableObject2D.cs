@@ -249,6 +249,14 @@ namespace Graphics
         }
         public bool IsPointInsideObject(Vec2 Point) => IsInPolygon(Point, TransformedVertices());
 
+
+        public static double DistanceFromPointToLine(Vec2 point, Vec2 l1, Vec2 l2)
+        {
+            return Math.Abs((l2.X - l1.X) * (l1.Y - point.Y) - (l1.X - point.X) * (l2.Y - l1.Y)) /
+                   Math.Sqrt((float)System.Math.Pow(l2.X - l1.X, 2) + (float)System.Math.Pow(l2.Y - l1.Y, 2));
+        }
+
+
         public static bool IsBetween(float x, float a, float b)
         {
             return (x - a) * (x - b) < 0;

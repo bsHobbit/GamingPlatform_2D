@@ -135,6 +135,9 @@ namespace Graphics.Interaction
                     {
                         /*goodbye old item*/
                         ItemAtMouse.OnMouseLeave(Input);
+
+                        /*Might be the same cause it moved?*/
+                        newItemAtMouse = GetItemAtMouse();
                         /*hello new item*/
                         if (newItemAtMouse != null)
                             newItemAtMouse.OnMouseEnter(Input);

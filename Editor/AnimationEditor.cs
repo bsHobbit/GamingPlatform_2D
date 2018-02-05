@@ -78,6 +78,7 @@ namespace Editor
                     Rectangle2D stateRenderRect = new Rectangle2D((int)description.GetSize().X, (int)description.GetSize().Y, State.WindowLocation, 0, System.Drawing.Color.Gray, System.Drawing.Color.White);
                     stateRenderRect.AddText(description);
                     stateRenderRect.Tag = State;
+                    stateRenderRect.EnableUserTranslation();
                     RenderObjects.Add(State, stateRenderRect);
 
                     /*make sure the user can select it*/

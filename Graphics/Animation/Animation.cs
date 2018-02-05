@@ -9,7 +9,7 @@ namespace Graphics.Animation
         Dictionary<string, object> Attributes;
 
         AnimationState entry;
-        AnimationState Entry
+        public AnimationState Entry
         {
             get => entry;
             set

@@ -29,7 +29,20 @@ namespace GameCore
                 }
                 return result;
             }
-            
+        }
+
+        public List<Animation> Animations
+        {
+            get
+            {
+                List<Animation> result = new List<Animation>();
+                for (int i = 0; i < RenderableObjects.Count; i++)
+                {
+                    if (RenderableObjects[i] is Animation animation)
+                        result.Add(animation);
+                }
+                return result;
+            }
         }
 
         /*init everything*/
@@ -79,28 +92,27 @@ namespace GameCore
             }
         }
 
-        /*Manage TilesetAnimation*/
-        public void AddTilesetAnimation(TilesetAnimation Animation)
+        /*Manage Renderable Objects*/
+        public void AddRenderableObject<T>(T Object) where T: RenderableObject2D
         {
-            if (!RenderableObjects.Contains(Animation))
+            if (!RenderableObjects.Contains(Object))
             {
                 /*make sure the item gets a default name*/
-                if (string.IsNullOrEmpty(Animation.Name))
-                    Animation.Name = GetFreeName(typeof(TilesetAnimation));
+                if (string.IsNullOrEmpty(Object.Name))
+                    Object.Name = GetFreeName(typeof(TilesetAnimation));
 
-                RenderableObjects.Add(ToDispose(Animation));
+                RenderableObjects.Add(ToDispose(Object));
             }
         }
 
-        public void RemoveTilesetAnimation(TilesetAnimation Animation)
+        public void RemoveRenderableObject<T>(T Object) where T: RenderableObject2D
         {
-            if (RenderableObjects.Contains(Animation))
+            if (RenderableObjects.Contains(Object))
             {
-                RenderableObjects.Remove(Animation);
-                RemoveAndDispose(Animation);
+                RenderableObjects.Remove(Object);
+                RemoveAndDispose(Object);
             }
         }
-
 
         /*manage names*/
         public RenderableObject2D GetRenderableObject(string Name, System.Type Filter)

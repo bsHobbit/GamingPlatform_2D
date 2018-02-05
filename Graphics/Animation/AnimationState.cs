@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Box2DX.Common;
+using System.Collections.Generic;
 
 namespace Graphics.Animation
 {
@@ -8,13 +9,20 @@ namespace Graphics.Animation
         /*member*/
         public TilesetAnimation TilesetAnimation { get; set; }
         public float MinStateTime { get; set; } /*minimun Tilesetanitiom time that has to be reached to be allowed to translate*/
-        List<AnimationTransition> PossibleTranslations;
+        List<AnimationTransition> possibleTransitions;
+        public List<AnimationTransition> PossibleTransitions
+        {
+            get => possibleTransitions;
+        }
+
+        /*onyl for the editor*/
+        public Vec2 WindowLocation { get; set; }
 
 
         /*ctor*/
         public AnimationState()
         {
-            PossibleTranslations = new List<AnimationTransition>();
+            possibleTransitions = new List<AnimationTransition>();
             MinStateTime = 0;
         }
 
@@ -29,11 +37,11 @@ namespace Graphics.Animation
             if (TilesetAnimation.AnimationTime >= MinStateTime)
             {
                 /*check if the animstion has to be changed*/
-                for (int i = 0; i < PossibleTranslations.Count; i++)
+                for (int i = 0; i < possibleTransitions.Count; i++)
                 {
                     /*hey, there is a new state i can translate into let's do this!*/
-                    if (PossibleTranslations[i].CanTranslateInto(Animation))
-                        return PossibleTranslations[i].TranslateInto;
+                    if (possibleTransitions[i].CanTranslateInto(Animation))
+                        return possibleTransitions[i].TranslateInto;
                 }
                 
             }
@@ -41,5 +49,6 @@ namespace Graphics.Animation
             /*Animationstate did not change*/
             return this;
         }
+
     }
 }

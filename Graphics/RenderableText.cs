@@ -39,5 +39,15 @@ namespace Graphics
             if (!string.IsNullOrEmpty(Text) && Font != null)
                 g.DrawString(Text, Font, new SolidBrush(Color), Offset.X, Offset.Y);
         }
+
+        public Vec2 GetSize()
+        {
+            Bitmap tmpImage = new Bitmap(10, 10);
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(tmpImage);
+            var tmpSize = g.MeasureString(Text, Font);
+            g.Dispose();
+            tmpImage.Dispose();
+            return new Vec2(tmpSize.Width, tmpSize.Height);
+        }
     }
 }

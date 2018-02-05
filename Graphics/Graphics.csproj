@@ -54,6 +54,7 @@
     <Compile Include="Animation\TilesetAnimation.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Geometry\Grid2D.cs" />
+    <Compile Include="Geometry\Line2D.cs" />
     <Compile Include="Geometry\Rectangle2D.cs" />
     <Compile Include="Interaction\CameraMovementStyle.cs" />
     <Compile Include="Interaction\MouseInputManager.cs" />

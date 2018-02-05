@@ -9,13 +9,15 @@ namespace Editor
     {
         const int TEXTURES_PER_ROW = 10;
         const int TILESETANIMATIONS_PER_ROW = 15;
+        const int ANIMATIONS_PER_ROW = 15;
 
         /*nested types*/
         [System.Flags]
         public enum eBrowsers
         {
             Texture = 1,
-            TilesetAnimations = 2
+            TilesetAnimations = 2,
+            Animations = 4,
         }
 
         /*member*/
@@ -51,14 +53,17 @@ namespace Editor
                 collectionDisplayTextures.Initialize(TEXTURES_PER_ROW);
             if (VisibleBrowsers.HasFlag(eBrowsers.TilesetAnimations))
                 collectionDisplayTilesetAnimations.Initialize(TILESETANIMATIONS_PER_ROW);
+            if (VisibleBrowsers.HasFlag(eBrowsers.Animations))
+                collectionDisplayAnimations.Initialize(ANIMATIONS_PER_ROW);
 
 
             /*Register events*/
             collectionDisplayTextures.TextureSelected += (s, Index) => { selectedTexture = GameContent.Textures[Index];  NeedsClosingAfterSelection(); };
             collectionDisplayTilesetAnimations.TextureSelected += TilesetAnimationSelected;
-
+            collectionDisplayAnimations.TextureSelected += AnimationSelected;
 
             buttonAddTilesetAnimation.Visible = !CloseOnSelection;
+            buttonAddAnimation.Visible = !CloseOnSelection;
             if (!CloseOnSelection)
             {
                 buttonAddTilesetAnimation.Click += (s, e) => 
@@ -66,14 +71,39 @@ namespace Editor
                     Hide();
                     Texture2D animationTexture = SelectTexture(GameContent);
                     if (animationTexture != null)
-                        GameContent.AddTilesetAnimation(new Graphics.Animation.TilesetAnimation(animationTexture, 10, 0)); 
+                        GameContent.AddRenderableObject(new Graphics.Animation.TilesetAnimation(animationTexture, 10, 0)); 
                     UpdateTilesetAnimations();
                     Show();
+                };
+                buttonAddAnimation.Click += (s, e) =>
+                {
+                    GameContent.AddRenderableObject(new Graphics.Animation.Animation(new Box2DX.Common.Vec2(), 0));
+                    UpdateAnimations();
                 };
             }
 
             UpdateTextures();
             UpdateTilesetAnimations();
+            UpdateAnimations();
+        }
+
+        /*Handle-Animation-Selection*/
+        private void AnimationSelected(CollectionDisplay Sender, int Index)
+        {
+            if (!NeedsClosingAfterSelection())
+            {
+                var animation = GameContent.Animations[Index];
+                AnimationEditor Editor = new AnimationEditor(animation);
+                Editor.Show();
+
+                /*Update the thumbnail in the contentbrowser to distinct it from the other animations visually*/
+                Editor.FormClosing += (s, e) =>
+                {
+                    collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.Animations[Index].TextureSegment);
+                    collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.Animations[Index].Texture);
+                    Editor.Dispose();
+                };
+            }
         }
 
         /*Handle tilesetanimation selection*/
@@ -88,19 +118,16 @@ namespace Editor
                 if (animation.Texture == null)
                     animation.Texture = SelectTexture(GameContent);
 
-                //if (animation.Texture != null)
-                {
-                    TilesetAnimationEditor Editor = new TilesetAnimationEditor(animation, GameContent);
-                    Editor.Show();
+                TilesetAnimationEditor Editor = new TilesetAnimationEditor(animation, GameContent);
+                Editor.Show();
 
-                    /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
-                    Editor.FormClosing += (s, e) =>
-                    {
-                        collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
-                        collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
-                        Editor.Dispose();
-                    };
-                }
+                /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
+                Editor.FormClosing += (s, e) =>
+                {
+                    collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
+                    collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
+                    Editor.Dispose();
+                };
             }
         }
 
@@ -123,6 +150,8 @@ namespace Editor
                 tabControlContent.TabPages.Remove(tabPageTextures);
             if (!VisibleBrowsers.HasFlag(eBrowsers.TilesetAnimations))
                 tabControlContent.TabPages.Remove(tabPageTilesetAnimations);
+            if (!VisibleBrowsers.HasFlag(eBrowsers.Animations))
+                tabControlContent.TabPages.Remove(tabPageAnimations);
         }
 
 
@@ -142,7 +171,6 @@ namespace Editor
 
         void UpdateTilesetAnimations()
         {
-
             if (VisibleBrowsers.HasFlag(eBrowsers.TilesetAnimations))
             {
                 collectionDisplayTilesetAnimations.ClearItems();
@@ -155,6 +183,20 @@ namespace Editor
             }
         }
 
+
+        void UpdateAnimations()
+        {
+            if (VisibleBrowsers.HasFlag(eBrowsers.Animations))
+            {
+                collectionDisplayAnimations.ClearItems();
+                var animations = GameContent.Animations;
+                for (int i = 0; i < animations.Count; i++)
+                {
+                    var Texture = animations[i].Texture;
+                    collectionDisplayAnimations.AddItem(Texture, animations[i].Name, animations[i].TextureSegment);
+                }
+            }
+        }
 
         /*remove textures*/
         private void buttonRemoveTexture_Click(object sender, System.EventArgs e)
@@ -169,8 +211,6 @@ namespace Editor
             }
 
         }
-
-
 
         /*Static helpers*/
         public Texture2D SelectTexture(ContentManager ContentManager)

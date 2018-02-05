@@ -33,12 +33,17 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayTextures = new Editor.CollectionDisplay();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonRemoveTexture = new System.Windows.Forms.Button();
             this.tabPageTilesetAnimations = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayTilesetAnimations = new Editor.CollectionDisplay();
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonAddTilesetAnimation = new System.Windows.Forms.Button();
-            this.buttonRemoveTexture = new System.Windows.Forms.Button();
+            this.tabPageAnimations = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.collectionDisplayAnimations = new Editor.CollectionDisplay();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.buttonAddAnimation = new System.Windows.Forms.Button();
             this.tabControlContent.SuspendLayout();
             this.tabPageTextures.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -46,12 +51,16 @@
             this.tabPageTilesetAnimations.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tabPageAnimations.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlContent
             // 
             this.tabControlContent.Controls.Add(this.tabPageTextures);
             this.tabControlContent.Controls.Add(this.tabPageTilesetAnimations);
+            this.tabControlContent.Controls.Add(this.tabPageAnimations);
             this.tabControlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlContent.Location = new System.Drawing.Point(0, 0);
             this.tabControlContent.Name = "tabControlContent";
@@ -102,6 +111,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(194, 706);
             this.panel1.TabIndex = 1;
+            // 
+            // buttonRemoveTexture
+            // 
+            this.buttonRemoveTexture.Location = new System.Drawing.Point(19, 20);
+            this.buttonRemoveTexture.Name = "buttonRemoveTexture";
+            this.buttonRemoveTexture.Size = new System.Drawing.Size(161, 23);
+            this.buttonRemoveTexture.TabIndex = 0;
+            this.buttonRemoveTexture.Text = "Remove";
+            this.buttonRemoveTexture.UseVisualStyleBackColor = true;
+            this.buttonRemoveTexture.Click += new System.EventHandler(this.buttonRemoveTexture_Click);
             // 
             // tabPageTilesetAnimations
             // 
@@ -156,15 +175,58 @@
             this.buttonAddTilesetAnimation.Text = "Add";
             this.buttonAddTilesetAnimation.UseVisualStyleBackColor = true;
             // 
-            // buttonRemoveTexture
+            // tabPageAnimations
             // 
-            this.buttonRemoveTexture.Location = new System.Drawing.Point(19, 20);
-            this.buttonRemoveTexture.Name = "buttonRemoveTexture";
-            this.buttonRemoveTexture.Size = new System.Drawing.Size(161, 23);
-            this.buttonRemoveTexture.TabIndex = 0;
-            this.buttonRemoveTexture.Text = "Remove";
-            this.buttonRemoveTexture.UseVisualStyleBackColor = true;
-            this.buttonRemoveTexture.Click += new System.EventHandler(this.buttonRemoveTexture_Click);
+            this.tabPageAnimations.Controls.Add(this.tableLayoutPanel3);
+            this.tabPageAnimations.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAnimations.Name = "tabPageAnimations";
+            this.tabPageAnimations.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAnimations.Size = new System.Drawing.Size(1168, 718);
+            this.tabPageAnimations.TabIndex = 2;
+            this.tabPageAnimations.Text = "Animations";
+            this.tabPageAnimations.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.collectionDisplayAnimations, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel3, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1162, 712);
+            this.tableLayoutPanel3.TabIndex = 2;
+            // 
+            // collectionDisplayAnimations
+            // 
+            this.collectionDisplayAnimations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.collectionDisplayAnimations.Filter = null;
+            this.collectionDisplayAnimations.Location = new System.Drawing.Point(203, 3);
+            this.collectionDisplayAnimations.Name = "collectionDisplayAnimations";
+            this.collectionDisplayAnimations.Size = new System.Drawing.Size(956, 706);
+            this.collectionDisplayAnimations.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.buttonAddAnimation);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(194, 706);
+            this.panel3.TabIndex = 1;
+            // 
+            // buttonAddAnimation
+            // 
+            this.buttonAddAnimation.Location = new System.Drawing.Point(12, 15);
+            this.buttonAddAnimation.Name = "buttonAddAnimation";
+            this.buttonAddAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonAddAnimation.TabIndex = 0;
+            this.buttonAddAnimation.Text = "Add";
+            this.buttonAddAnimation.UseVisualStyleBackColor = true;
             // 
             // ContentBrowser
             // 
@@ -182,6 +244,9 @@
             this.tabPageTilesetAnimations.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.tabPageAnimations.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -199,5 +264,10 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button buttonAddTilesetAnimation;
         private System.Windows.Forms.Button buttonRemoveTexture;
+        private System.Windows.Forms.TabPage tabPageAnimations;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private CollectionDisplay collectionDisplayAnimations;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button buttonAddAnimation;
     }
 }

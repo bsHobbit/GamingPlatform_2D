@@ -67,7 +67,7 @@ namespace GameCore
                 for (int i = 0; i < Frames; i++)
                     result.AddFrame(Convert.ToInt32(sr.ReadLine()), Convert.ToInt32(sr.ReadLine()), Convert.ToInt32(sr.ReadLine()), Convert.ToInt32(sr.ReadLine()));
 
-                AddTilesetAnimation(result);
+                AddRenderableObject(result);
             }
             sr.Close();
         }

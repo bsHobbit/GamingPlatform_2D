@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnimationEditor.Designer.cs">
+      <DependentUpon>AnimationEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="TilesetAnimationEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AnimationEditor.resx">
+      <DependentUpon>AnimationEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TilesetAnimationEditor.resx">
       <DependentUpon>TilesetAnimationEditor.cs</DependentUpon>
     </EmbeddedResource>

@@ -7,5 +7,6 @@ namespace Graphics
         Wireframe,
         Lines,
         Points,
+        Arrows
     }
 }

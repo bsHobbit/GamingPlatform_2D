@@ -347,6 +347,26 @@ namespace Graphics
                     g.DrawLine(new Pen(new SolidBrush(Color), OutlineWidth), v1.X, v1.Y, v2.X, v2.Y);
                 }
             }
+            else if (VerticeInterpretation == VerticeInterpretation.Arrows)
+            {
+                for (int i = 0; i < Vertices.Count; i += 2)
+                {
+                    Vec2 v1 = Vertices[i];
+                    Vec2 v2 = Vertices[i + 1];
+                    g.DrawLine(new Pen(new SolidBrush(Color), OutlineWidth), v1.X, v1.Y, v2.X, v2.Y);
+
+                    float totalLength = (v2 - v1).Length();
+                    float fixedOffset = 10 / totalLength;
+                    Vec2 v = v2 + ((v1 - v2) * fixedOffset);
+                    Vec2 p = Core.Vec2Extension.LeftNormal(v1 - v2) * 5;
+                    Vec2 vr = v + p;
+                    g.DrawLine(new Pen(new SolidBrush(OutlineColor), OutlineWidth), v2.X, v2.Y, vr.X, vr.Y);
+
+                    p = Core.Vec2Extension.RightNormal(v1 - v2) * 5;
+                    vr = v + p;
+                    g.DrawLine(new Pen(new SolidBrush(OutlineColor), OutlineWidth), v2.X, v2.Y, vr.X, vr.Y);
+                }
+            }
             else if (VerticeInterpretation == VerticeInterpretation.Points)
             {
                 for (int i = 0; i < Vertices.Count; i++)

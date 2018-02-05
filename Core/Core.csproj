@@ -53,6 +53,7 @@
     <Compile Include="IO\MouseButtons.cs" />
     <Compile Include="IO\MouseState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vec2Extension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

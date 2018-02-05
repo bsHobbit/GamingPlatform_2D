@@ -111,7 +111,8 @@ namespace Editor
 
                     if (!RenderObjects_Transitions.ContainsKey(State.PossibleTransitions[i]))
                     {
-                        Line2D transitionLine = new Line2D(startLocation, targetLocation, new Vec2(), -1, System.Drawing.Color.Black, 2);
+                        Line2D transitionLine = new Line2D(startLocation, targetLocation, new Vec2(), 1, System.Drawing.Color.Black, 2, true);
+                        transitionLine.Enabled = false;
                         RenderObjects_Transitions.Add(State.PossibleTransitions[i], transitionLine);
                         RenderTarget.AddRenderObject(transitionLine);
 

@@ -28,39 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.RenderTarget = new WinFormRenderer.cRenderTarget();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageAnimationManagement = new System.Windows.Forms.TabPage();
-            this.buttonAddState = new System.Windows.Forms.Button();
+            this.groupBoxState = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDownStateMinTime = new System.Windows.Forms.NumericUpDown();
             this.buttonRemoveState = new System.Windows.Forms.Button();
+            this.groupBoxTransitionSettings = new System.Windows.Forms.GroupBox();
+            this.numericUpDownTransitionValue = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxTransitionCondition = new System.Windows.Forms.ComboBox();
+            this.comboBoxTransitionAttribute = new System.Windows.Forms.ComboBox();
+            this.buttonAddState = new System.Windows.Forms.Button();
             this.tabPageAnimationAttributes = new System.Windows.Forms.TabPage();
             this.panelAttributes = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.buttonAddAttribute = new System.Windows.Forms.Button();
-            this.groupBoxTransitionSettings = new System.Windows.Forms.GroupBox();
-            this.comboBoxTransitionAttribute = new System.Windows.Forms.ComboBox();
-            this.comboBoxTransitionCondition = new System.Windows.Forms.ComboBox();
-            this.numericUpDownTransitionValue = new System.Windows.Forms.NumericUpDown();
+            this.RenderTarget = new WinFormRenderer.cRenderTarget();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageAnimationManagement.SuspendLayout();
-            this.tabPageAnimationAttributes.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.groupBoxState.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStateMinTime)).BeginInit();
             this.groupBoxTransitionSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransitionValue)).BeginInit();
+            this.tabPageAnimationAttributes.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // RenderTarget
-            // 
-            this.RenderTarget.Camera = null;
-            this.RenderTarget.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RenderTarget.Location = new System.Drawing.Point(203, 3);
-            this.RenderTarget.Name = "RenderTarget";
-            this.RenderTarget.Size = new System.Drawing.Size(601, 586);
-            this.RenderTarget.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -99,9 +95,9 @@
             // 
             // tabPageAnimationManagement
             // 
+            this.tabPageAnimationManagement.Controls.Add(this.groupBoxState);
             this.tabPageAnimationManagement.Controls.Add(this.groupBoxTransitionSettings);
             this.tabPageAnimationManagement.Controls.Add(this.buttonAddState);
-            this.tabPageAnimationManagement.Controls.Add(this.buttonRemoveState);
             this.tabPageAnimationManagement.Location = new System.Drawing.Point(4, 22);
             this.tabPageAnimationManagement.Name = "tabPageAnimationManagement";
             this.tabPageAnimationManagement.Padding = new System.Windows.Forms.Padding(3);
@@ -110,25 +106,117 @@
             this.tabPageAnimationManagement.Text = "States";
             this.tabPageAnimationManagement.UseVisualStyleBackColor = true;
             // 
+            // groupBoxState
+            // 
+            this.groupBoxState.Controls.Add(this.label1);
+            this.groupBoxState.Controls.Add(this.numericUpDownStateMinTime);
+            this.groupBoxState.Controls.Add(this.buttonRemoveState);
+            this.groupBoxState.Enabled = false;
+            this.groupBoxState.Location = new System.Drawing.Point(5, 112);
+            this.groupBoxState.Name = "groupBoxState";
+            this.groupBoxState.Size = new System.Drawing.Size(175, 68);
+            this.groupBoxState.TabIndex = 3;
+            this.groupBoxState.TabStop = false;
+            this.groupBoxState.Text = "State";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Min Time";
+            // 
+            // numericUpDownStateMinTime
+            // 
+            this.numericUpDownStateMinTime.DecimalPlaces = 1;
+            this.numericUpDownStateMinTime.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownStateMinTime.Location = new System.Drawing.Point(106, 13);
+            this.numericUpDownStateMinTime.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownStateMinTime.Name = "numericUpDownStateMinTime";
+            this.numericUpDownStateMinTime.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownStateMinTime.TabIndex = 4;
+            this.numericUpDownStateMinTime.ValueChanged += new System.EventHandler(this.numericUpDownStateMinTime_ValueChanged);
+            // 
+            // buttonRemoveState
+            // 
+            this.buttonRemoveState.Location = new System.Drawing.Point(6, 39);
+            this.buttonRemoveState.Name = "buttonRemoveState";
+            this.buttonRemoveState.Size = new System.Drawing.Size(160, 23);
+            this.buttonRemoveState.TabIndex = 1;
+            this.buttonRemoveState.Text = "Remove State";
+            this.buttonRemoveState.UseVisualStyleBackColor = true;
+            this.buttonRemoveState.Click += new System.EventHandler(this.buttonRemoveState_Click);
+            // 
+            // groupBoxTransitionSettings
+            // 
+            this.groupBoxTransitionSettings.Controls.Add(this.numericUpDownTransitionValue);
+            this.groupBoxTransitionSettings.Controls.Add(this.comboBoxTransitionCondition);
+            this.groupBoxTransitionSettings.Controls.Add(this.comboBoxTransitionAttribute);
+            this.groupBoxTransitionSettings.Enabled = false;
+            this.groupBoxTransitionSettings.Location = new System.Drawing.Point(6, 6);
+            this.groupBoxTransitionSettings.Name = "groupBoxTransitionSettings";
+            this.groupBoxTransitionSettings.Size = new System.Drawing.Size(171, 100);
+            this.groupBoxTransitionSettings.TabIndex = 2;
+            this.groupBoxTransitionSettings.TabStop = false;
+            this.groupBoxTransitionSettings.Text = "Transition";
+            // 
+            // numericUpDownTransitionValue
+            // 
+            this.numericUpDownTransitionValue.DecimalPlaces = 1;
+            this.numericUpDownTransitionValue.Location = new System.Drawing.Point(105, 64);
+            this.numericUpDownTransitionValue.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numericUpDownTransitionValue.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownTransitionValue.Name = "numericUpDownTransitionValue";
+            this.numericUpDownTransitionValue.Size = new System.Drawing.Size(60, 20);
+            this.numericUpDownTransitionValue.TabIndex = 3;
+            this.numericUpDownTransitionValue.ValueChanged += new System.EventHandler(this.numericUpDownTransitionValue_ValueChanged);
+            // 
+            // comboBoxTransitionCondition
+            // 
+            this.comboBoxTransitionCondition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTransitionCondition.FormattingEnabled = true;
+            this.comboBoxTransitionCondition.Location = new System.Drawing.Point(9, 63);
+            this.comboBoxTransitionCondition.Name = "comboBoxTransitionCondition";
+            this.comboBoxTransitionCondition.Size = new System.Drawing.Size(90, 21);
+            this.comboBoxTransitionCondition.TabIndex = 2;
+            this.comboBoxTransitionCondition.SelectedIndexChanged += new System.EventHandler(this.comboBoxTransitionCondition_SelectedIndexChanged);
+            // 
+            // comboBoxTransitionAttribute
+            // 
+            this.comboBoxTransitionAttribute.FormattingEnabled = true;
+            this.comboBoxTransitionAttribute.Location = new System.Drawing.Point(9, 22);
+            this.comboBoxTransitionAttribute.Name = "comboBoxTransitionAttribute";
+            this.comboBoxTransitionAttribute.Size = new System.Drawing.Size(156, 21);
+            this.comboBoxTransitionAttribute.TabIndex = 1;
+            this.comboBoxTransitionAttribute.SelectedIndexChanged += new System.EventHandler(this.comboBoxTransitionAttribute_SelectedIndexChanged);
+            // 
             // buttonAddState
             // 
-            this.buttonAddState.Location = new System.Drawing.Point(6, 123);
+            this.buttonAddState.Location = new System.Drawing.Point(6, 186);
             this.buttonAddState.Name = "buttonAddState";
             this.buttonAddState.Size = new System.Drawing.Size(171, 23);
             this.buttonAddState.TabIndex = 0;
             this.buttonAddState.Text = "Add State";
             this.buttonAddState.UseVisualStyleBackColor = true;
             this.buttonAddState.Click += new System.EventHandler(this.buttonAddState_Click);
-            // 
-            // buttonRemoveState
-            // 
-            this.buttonRemoveState.Location = new System.Drawing.Point(6, 152);
-            this.buttonRemoveState.Name = "buttonRemoveState";
-            this.buttonRemoveState.Size = new System.Drawing.Size(171, 23);
-            this.buttonRemoveState.TabIndex = 1;
-            this.buttonRemoveState.Text = "Remove State";
-            this.buttonRemoveState.UseVisualStyleBackColor = true;
-            this.buttonRemoveState.Click += new System.EventHandler(this.buttonRemoveState_Click);
             // 
             // tabPageAnimationAttributes
             // 
@@ -171,56 +259,14 @@
             this.buttonAddAttribute.UseVisualStyleBackColor = true;
             this.buttonAddAttribute.Click += new System.EventHandler(this.buttonAddAttribute_Click);
             // 
-            // groupBoxTransitionSettings
+            // RenderTarget
             // 
-            this.groupBoxTransitionSettings.Controls.Add(this.numericUpDownTransitionValue);
-            this.groupBoxTransitionSettings.Controls.Add(this.comboBoxTransitionCondition);
-            this.groupBoxTransitionSettings.Controls.Add(this.comboBoxTransitionAttribute);
-            this.groupBoxTransitionSettings.Enabled = false;
-            this.groupBoxTransitionSettings.Location = new System.Drawing.Point(6, 6);
-            this.groupBoxTransitionSettings.Name = "groupBoxTransitionSettings";
-            this.groupBoxTransitionSettings.Size = new System.Drawing.Size(171, 100);
-            this.groupBoxTransitionSettings.TabIndex = 2;
-            this.groupBoxTransitionSettings.TabStop = false;
-            this.groupBoxTransitionSettings.Text = "Transition";
-            // 
-            // comboBoxTransitionAttribute
-            // 
-            this.comboBoxTransitionAttribute.FormattingEnabled = true;
-            this.comboBoxTransitionAttribute.Location = new System.Drawing.Point(9, 22);
-            this.comboBoxTransitionAttribute.Name = "comboBoxTransitionAttribute";
-            this.comboBoxTransitionAttribute.Size = new System.Drawing.Size(156, 21);
-            this.comboBoxTransitionAttribute.TabIndex = 1;
-            this.comboBoxTransitionAttribute.SelectedIndexChanged += new System.EventHandler(this.comboBoxTransitionAttribute_SelectedIndexChanged);
-            // 
-            // comboBoxTransitionCondition
-            // 
-            this.comboBoxTransitionCondition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTransitionCondition.FormattingEnabled = true;
-            this.comboBoxTransitionCondition.Location = new System.Drawing.Point(9, 63);
-            this.comboBoxTransitionCondition.Name = "comboBoxTransitionCondition";
-            this.comboBoxTransitionCondition.Size = new System.Drawing.Size(90, 21);
-            this.comboBoxTransitionCondition.TabIndex = 2;
-            this.comboBoxTransitionCondition.SelectedIndexChanged += new System.EventHandler(this.comboBoxTransitionCondition_SelectedIndexChanged);
-            // 
-            // numericUpDownTransitionValue
-            // 
-            this.numericUpDownTransitionValue.DecimalPlaces = 1;
-            this.numericUpDownTransitionValue.Location = new System.Drawing.Point(105, 64);
-            this.numericUpDownTransitionValue.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.numericUpDownTransitionValue.Minimum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownTransitionValue.Name = "numericUpDownTransitionValue";
-            this.numericUpDownTransitionValue.Size = new System.Drawing.Size(60, 20);
-            this.numericUpDownTransitionValue.TabIndex = 3;
-            this.numericUpDownTransitionValue.ValueChanged += new System.EventHandler(this.numericUpDownTransitionValue_ValueChanged);
+            this.RenderTarget.Camera = null;
+            this.RenderTarget.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RenderTarget.Location = new System.Drawing.Point(203, 3);
+            this.RenderTarget.Name = "RenderTarget";
+            this.RenderTarget.Size = new System.Drawing.Size(601, 586);
+            this.RenderTarget.TabIndex = 0;
             // 
             // AnimationEditor
             // 
@@ -235,10 +281,13 @@
             this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPageAnimationManagement.ResumeLayout(false);
-            this.tabPageAnimationAttributes.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
+            this.groupBoxState.ResumeLayout(false);
+            this.groupBoxState.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStateMinTime)).EndInit();
             this.groupBoxTransitionSettings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransitionValue)).EndInit();
+            this.tabPageAnimationAttributes.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -260,5 +309,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDownTransitionValue;
         private System.Windows.Forms.ComboBox comboBoxTransitionCondition;
         private System.Windows.Forms.ComboBox comboBoxTransitionAttribute;
+        private System.Windows.Forms.GroupBox groupBoxState;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericUpDownStateMinTime;
     }
 }

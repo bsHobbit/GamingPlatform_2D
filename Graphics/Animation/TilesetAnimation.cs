@@ -28,7 +28,19 @@ namespace Graphics.Animation
         }
         bool Reverse;
         public bool AnimationInProgress { get; private set; }
-        public float AnimationTime { get => frames != null ? ((float)CurrentFrame / frames.Count) : 0; }
+        public float AnimationTime
+        {
+            get
+            {
+                if (animationLooped)
+                {
+                    animationLooped = false;
+                    return 1;
+                }
+                return frames != null ? ((float)CurrentFrame / frames.Count) : 0;
+            }
+        }
+        bool animationLooped = false;
 
         public TilesetAnimation(Texture2D Texture, int FPS, int Z)
         {
@@ -65,6 +77,7 @@ namespace Graphics.Animation
             CurrentFrame += Reverse ? -1 : 1;
             if (CurrentFrame == frames.Count || CurrentFrame == -1)
             {
+                animationLooped = Loop;
                 if (Loop && IsReverseLoop)
                 {
                     Reverse = !Reverse;

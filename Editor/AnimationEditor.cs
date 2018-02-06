@@ -13,7 +13,12 @@ namespace Editor
     public partial class AnimationEditor : Form
     {
         Animation Animation;
-        AnimationState SelectedState;
+        AnimationState selectedState;
+        AnimationState SelectedState
+        {
+            get => selectedState;
+            set { selectedState = value; UpdateStateGUI(); }
+        }
         AnimationTransition selectedTransition;
         AnimationTransition SelectedTransition
         {
@@ -63,7 +68,8 @@ namespace Editor
                 Animation.Entry = new AnimationState()
                 {
                     TilesetAnimation = tsa,
-                    MinStateTime = .1f
+                    MinStateTime = .1f,
+                    IsFinalState = false
                 };
             }
             /*create a new animationy state with a condition for the selected animationstate*/
@@ -74,7 +80,8 @@ namespace Editor
                 AnimationState newState = new AnimationState()
                 {
                     TilesetAnimation = tsa,
-                    MinStateTime = .1f
+                    MinStateTime = .1f,
+                    IsFinalState = false 
                 };
                 SelectedState.AddTransitition(new AnimationTransition(new AnimationTransition.Condition(AnimationTransition.Condition.eConditionType.Equal, "", 0f), newState));
             }
@@ -113,6 +120,20 @@ namespace Editor
             string newName = Animation.GetFreeAttributeName();
             Animation.AddAttribute(newName, 0f);
             RegisterAttributeControl(new AnimationAttributeEditor(Animation, newName, 0f));
+        }
+
+        /*Update state gui*/
+        void UpdateStateGUI()
+        {
+            groupBoxState.Enabled = selectedState != null;
+            if (selectedState != null)
+            {
+                /*the tmp stuff is to prevent gui events from changing values*/
+                var tmpState = selectedState;
+                selectedState = null;
+                numericUpDownStateMinTime.Value = (decimal)tmpState.MinStateTime;
+                selectedState = tmpState;
+            }
         }
 
         /*Update Transition gui*/
@@ -170,8 +191,8 @@ namespace Editor
                 if (!RenderObjects_States.ContainsKey(State))
                 {
                     /*create new render-object*/
-
-                    RenderableText description = new RenderableText(State.TilesetAnimation.Name, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
+                    string text = State.TilesetAnimation == null ? "ERROR" : State.TilesetAnimation.Name;
+                    RenderableText description = new RenderableText(text, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
                     Rectangle2D stateRenderRect = new Rectangle2D((int)description.GetSize().X, (int)description.GetSize().Y, State.WindowLocation, 0, System.Drawing.Color.Gray, outlineColor);
                     stateRenderRect.AddText(description);
                     stateRenderRect.Tag = State;
@@ -237,7 +258,7 @@ namespace Editor
                         transitionLine.MouseEnter += (s, e) => { s.Color = System.Drawing.Color.Blue; };
                         transitionLine.MouseLeave += (s, e) => { s.Color = System.Drawing.Color.Black; };
 
-                        transitionLine.MouseDown += (s, e) => { SelectedTransition = (AnimationTransition)s.Tag; };
+                        transitionLine.MouseDown += (s, e) => { SelectedTransition = (AnimationTransition)s.Tag; SelectedState = null; };
 
                     }
                     else
@@ -273,5 +294,15 @@ namespace Editor
         private void comboBoxTransitionAttribute_SelectedIndexChanged(object sender, System.EventArgs e) { UpdateTransitionCondition(); }
         private void comboBoxTransitionCondition_SelectedIndexChanged(object sender, System.EventArgs e) { UpdateTransitionCondition(); }
         private void numericUpDownTransitionValue_ValueChanged(object sender, System.EventArgs e) { UpdateTransitionCondition(); }
+
+
+        /*state user input*/
+        private void numericUpDownStateMinTime_ValueChanged(object sender, System.EventArgs e)
+        {
+            if (selectedState != null)
+            {
+                selectedState.MinStateTime = (float)numericUpDownStateMinTime.Value;
+            }
+        }
     }
 }

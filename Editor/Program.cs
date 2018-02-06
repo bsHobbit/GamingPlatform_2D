@@ -15,8 +15,8 @@ namespace Editor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Game Game = new Game(@"D:\Programmierung\Temp\game\");
-            Game Game = new Game(@"D:\Temp\kk\game\");
+            Game Game = new Game(@"D:\Programmierung\Temp\game\");
+            //Game Game = new Game(@"D:\Temp\kk\game\");
             
             Game.LoadContent();
 

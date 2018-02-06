@@ -9,6 +9,7 @@ namespace Graphics.Animation
         /*member*/
         public TilesetAnimation TilesetAnimation { get; set; }
         public float MinStateTime { get; set; } /*minimun Tilesetanitiom time that has to be reached to be allowed to translate*/
+        public bool IsFinalState { get; set; } /*if the state is not final and has no possible transitions it will enter the entry state*/
         List<AnimationTransition> possibleTransitions;
         public List<AnimationTransition> PossibleTransitions
         {
@@ -50,6 +51,9 @@ namespace Graphics.Animation
             /*check if a transition is possible*/
             if (TilesetAnimation.AnimationTime >= MinStateTime)
             {
+                if (!IsFinalState && possibleTransitions.Count == 0)
+                    return Animation.Entry.Update(Elapsed, Animation); 
+
                 /*check if the animstion has to be changed*/
                 for (int i = 0; i < possibleTransitions.Count; i++)
                 {
@@ -57,7 +61,6 @@ namespace Graphics.Animation
                     if (possibleTransitions[i].CanTranslateInto(Animation))
                         return possibleTransitions[i].TranslateInto;
                 }
-                
             }
 
             /*Animationstate did not change*/

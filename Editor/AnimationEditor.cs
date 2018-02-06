@@ -55,6 +55,8 @@ namespace Editor
             /*Update render-objects*/
             UpdateVisuals();
             UpdateAttributeList();
+
+            FormClosing += (s, e) => { RenderTarget.StopRendering(); };
         }
 
         /*Manage states*/
@@ -71,6 +73,7 @@ namespace Editor
                     MinStateTime = .1f,
                     IsFinalState = false
                 };
+                SelectedState = Animation.Entry;
             }
             /*create a new animationy state with a condition for the selected animationstate*/
             else if (SelectedState != null)
@@ -84,6 +87,7 @@ namespace Editor
                     IsFinalState = false 
                 };
                 SelectedState.AddTransitition(new AnimationTransition(new AnimationTransition.Condition(AnimationTransition.Condition.eConditionType.Equal, "", 0f), newState));
+                SelectedState = newState;
             }
 
             UpdateVisuals();
@@ -202,7 +206,7 @@ namespace Editor
 
                     /*make sure the user can select it*/
                     stateRenderRect.MouseDown += (s, e) => { SelectedState = s.Tag as AnimationState; SelectedTransition = null; };
-                    stateRenderRect.LocationChanged += (s, e, x) => { UpdateAnimationTransition_RenderObjects(Animation.Entry); };
+                    stateRenderRect.LocationChanged += (s, e, x) => { ((AnimationState)s.Tag).WindowLocation = e; UpdateAnimationTransition_RenderObjects(Animation.Entry); };
 
                     /*make sure it's displayed*/
                     RenderTarget.AddRenderObject(stateRenderRect);

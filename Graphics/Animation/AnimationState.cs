@@ -51,8 +51,9 @@ namespace Graphics.Animation
             /*check if a transition is possible*/
             if (TilesetAnimation.AnimationTime >= MinStateTime)
             {
-                if (!IsFinalState && possibleTransitions.Count == 0)
-                    return Animation.Entry.Update(Elapsed, Animation); 
+                /*do i have to loop?*/
+                if (!IsFinalState && possibleTransitions.Count == 0 && this != Animation.Entry)
+                    return Animation.Entry.Update(0, Animation); /*maybe the entry loop doesnt have any mintime whatsoever and we need to progress to the next state immediatly?*/
 
                 /*check if the animstion has to be changed*/
                 for (int i = 0; i < possibleTransitions.Count; i++)

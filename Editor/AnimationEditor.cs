@@ -97,6 +97,8 @@ namespace Editor
                     RenderObjects_Transitions.Remove(removedTransitions[i]);
                 }
 
+
+                UpdateAnimationState_RenderObjects(Animation.Entry);
                 SelectedState = null;
                 SelectedTransition = null;
 
@@ -161,23 +163,29 @@ namespace Editor
         {
             if (State != null)
             {
+                System.Drawing.Color outlineColor = State == Animation.Entry ? System.Drawing.Color.LimeGreen : System.Drawing.Color.White;
+
                 if (!RenderObjects_States.ContainsKey(State))
                 {
                     /*create new render-object*/
+
                     RenderableText description = new RenderableText(State.TilesetAnimation.Name, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
-                    Rectangle2D stateRenderRect = new Rectangle2D((int)description.GetSize().X, (int)description.GetSize().Y, State.WindowLocation, 0, System.Drawing.Color.Gray, System.Drawing.Color.White);
+                    Rectangle2D stateRenderRect = new Rectangle2D((int)description.GetSize().X, (int)description.GetSize().Y, State.WindowLocation, 0, System.Drawing.Color.Gray, outlineColor);
                     stateRenderRect.AddText(description);
                     stateRenderRect.Tag = State;
                     stateRenderRect.EnableUserTranslation();
+
                     RenderObjects_States.Add(State, stateRenderRect);
 
                     /*make sure the user can select it*/
                     stateRenderRect.MouseDown += (s, e) => { SelectedState = s.Tag as AnimationState; SelectedTransition = null; };
-                    stateRenderRect.LocationChanged += (s, e, x) => { UpdateAnimationTransition_RenderObjects(Animation.Entry);  };
+                    stateRenderRect.LocationChanged += (s, e, x) => { UpdateAnimationTransition_RenderObjects(Animation.Entry); };
 
                     /*make sure it's displayed*/
                     RenderTarget.AddRenderObject(stateRenderRect);
                 }
+                else
+                    RenderObjects_States[State].OutlineColor = outlineColor; 
 
                 for (int i = 0; i < State.PossibleTransitions.Count; i++)
                     UpdateAnimationState_RenderObjects(State.PossibleTransitions[i].TranslateInto);

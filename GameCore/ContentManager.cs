@@ -99,7 +99,7 @@ namespace GameCore
             {
                 /*make sure the item gets a default name*/
                 if (string.IsNullOrEmpty(Object.Name))
-                    Object.Name = GetFreeName(typeof(T));
+                    Object.Name = GetFreeName<T>();
 
                 RenderableObjects.Add(ToDispose(Object));
             }
@@ -115,20 +115,20 @@ namespace GameCore
         }
 
         /*manage names*/
-        public RenderableObject2D GetRenderableObject(string Name, System.Type Filter)
+        public T GetRenderableObject<T>(string Name) where T: RenderableObject2D
         {
             for (int i = 0; i < RenderableObjects.Count; i++)
-                if (RenderableObjects[i].GetType() == Filter && RenderableObjects[i].Name == Name)
-                    return RenderableObjects[i];
+                if (RenderableObjects[i].GetType() == typeof(T) && RenderableObjects[i].Name == Name)
+                    return (T)RenderableObjects[i];
             return null;
         }
 
-        public string GetFreeName(System.Type Filter, int i = 0)
+        public string GetFreeName<T>(int i = 0) where T: RenderableObject2D
         {
             string currentName = "obj_" + i.ToString();
-            if (GetRenderableObject(currentName, Filter) == null)
+            if (GetRenderableObject<T>(currentName) == null)
                 return currentName;
-            return GetFreeName(Filter, i + 1);
+            return GetFreeName<T>(i + 1);
         }
 
 
@@ -161,6 +161,13 @@ namespace GameCore
             RemovePath(tilesetAnimationsPath);
             CreatePath(tilesetAnimationsPath);
             SaveTilesetAnimations(tilesetAnimationsPath);
+
+
+            /*Save all animations*/
+            string animationPath = contentPath + "animations\\";
+            RemovePath(animationPath);
+            CreatePath(animationPath);
+            SaveAnimations(animationPath);
         }
 
         internal void Load(string Path)
@@ -183,6 +190,15 @@ namespace GameCore
                 string[] tsaFiles = System.IO.Directory.GetFiles(tilesetAnimationsPath, "*.tsa");
                 foreach (var tsaFile in tsaFiles)
                     LoadTilesetAnimations(tsaFile);
+            }
+
+            /*animations*/
+            string animationsPath = contentPath + "animations\\";
+            if (System.IO.Directory.Exists(animationsPath))
+            {
+                string[] animationFiles = System.IO.Directory.GetFiles(animationsPath, "*.ani");
+                foreach (var animationFile in animationFiles)
+                    LoadAnimation(animationFile);
             }
         }
 

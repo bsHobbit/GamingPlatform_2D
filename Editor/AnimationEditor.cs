@@ -83,7 +83,7 @@ namespace Editor
         /*remove an existing animation-state*/
         private void buttonRemoveState_Click(object sender, System.EventArgs e)
         {
-            if (SelectedState != null && SelectedState != Animation.Entry)
+            if (SelectedState != null)
             {
                 /*remove the animationstate*/
                 var removedTransitions = Animation.RemoveStateAndReferences(SelectedState);

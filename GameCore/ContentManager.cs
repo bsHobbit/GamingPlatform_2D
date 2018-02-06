@@ -99,7 +99,7 @@ namespace GameCore
             {
                 /*make sure the item gets a default name*/
                 if (string.IsNullOrEmpty(Object.Name))
-                    Object.Name = GetFreeName(typeof(TilesetAnimation));
+                    Object.Name = GetFreeName(typeof(T));
 
                 RenderableObjects.Add(ToDispose(Object));
             }

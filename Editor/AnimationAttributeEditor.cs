@@ -7,6 +7,7 @@ namespace Editor
     {
         public delegate void AnimationAttributeEditrEventHandler(AnimationAttributeEditor Sender);
         public event AnimationAttributeEditrEventHandler RemoveAttribute;
+        public event AnimationAttributeEditrEventHandler AttributeNameChanged;
 
         Animation Animation;
         public string CurrentAttributeName { get; private set; }
@@ -33,6 +34,7 @@ namespace Editor
                     {
                         Animation.UpdateAttributeName(CurrentAttributeName, newAttributeName);
                         CurrentAttributeName = newAttributeName;
+                        AttributeNameChanged?.Invoke(this);
                     }
                     else
                         textBoxName.Text = CurrentAttributeName;

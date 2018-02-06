@@ -50,7 +50,13 @@ namespace Graphics.Interaction
             if (Item.Vertices.Count == 2)
             {
                 var transformedVertices = Item.TransformedVertices();
-                return RenderableObject2D.DistanceFromPointToLine(Input.CurrentState.Location, transformedVertices[0], transformedVertices[1]) <= 5;
+                if (RenderableObject2D.DistanceFromPointToLine(Input.CurrentState.Location, transformedVertices[0], transformedVertices[1]) <= 5)
+                {
+                    Vec2 l1 = transformedVertices[1] - transformedVertices[0];
+                    Vec2 l2 = Input.CurrentState.Location - transformedVertices[0];
+                    float projection = Core.Vec2Extension.ScalarProjection(l2, l1);
+                    return projection >= 0f && projection <= l1.Length();
+                }
             }
             else if (Item.Vertices.Count >= 3)
                 return Item.IsPointInsideObject(Input.CurrentState.Location);

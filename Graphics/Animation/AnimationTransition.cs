@@ -4,7 +4,7 @@
     {
         
         /*nested types*/
-        public struct Condition
+        public class Condition
         {
             /*what to check ?*/
             public enum eConditionType
@@ -34,7 +34,7 @@
         /*ctor*/
         public AnimationTransition(Condition TransitionCondition, AnimationState TranslateInto)
         {
-            this.TransitionCondition = this.TransitionCondition;
+            this.TransitionCondition = TransitionCondition;
             this.TranslateInto = TranslateInto;
         }
 

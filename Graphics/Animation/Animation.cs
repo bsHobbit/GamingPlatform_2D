@@ -55,16 +55,13 @@ namespace Graphics.Animation
         /*state management*/
         public List<AnimationTransition> RemoveStateAndReferences(AnimationState State)
         {
-            
             List<AnimationTransition> removedTransitions = new List<AnimationTransition>();
-            RemoveStateAndReferences(Entry, State, removedTransitions);
-
-            for (int i = 0; i < State.PossibleTransitions.Count; i++)
-                removedTransitions.Add(State.PossibleTransitions[i]);
-
-            if (State == Entry)
-                Entry = null;
-
+            if (State != entry)
+            {
+                RemoveStateAndReferences(Entry, State, removedTransitions);
+                for (int i = 0; i < State.PossibleTransitions.Count; i++)
+                    removedTransitions.Add(State.PossibleTransitions[i]);
+            }
             return removedTransitions;
         }
 

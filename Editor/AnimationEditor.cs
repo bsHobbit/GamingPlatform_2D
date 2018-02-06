@@ -14,6 +14,12 @@ namespace Editor
     {
         Animation Animation;
         AnimationState SelectedState;
+        AnimationTransition selectedTransition;
+        AnimationTransition SelectedTransition
+        {
+            get => selectedTransition;
+            set { selectedTransition = value; UpdateTransitionGUI(); }
+        }
         Dictionary<AnimationState, Rectangle2D> RenderObjects_States;
         Dictionary<AnimationTransition, Line2D> RenderObjects_Transitions;
         GameCore.ContentManager GameContent;
@@ -21,6 +27,7 @@ namespace Editor
         public AnimationEditor()
         {
             InitializeComponent();
+            comboBoxTransitionCondition.Items.AddRange(System.Enum.GetNames(typeof(AnimationTransition.Condition.eConditionType)));
         }
 
         public AnimationEditor(Animation Animation, GameCore.ContentManager GameContent)
@@ -76,7 +83,7 @@ namespace Editor
         /*remove an existing animation-state*/
         private void buttonRemoveState_Click(object sender, System.EventArgs e)
         {
-            if (SelectedState != null)
+            if (SelectedState != null && SelectedState != Animation.Entry)
             {
                 /*remove the animationstate*/
                 var removedTransitions = Animation.RemoveStateAndReferences(SelectedState);
@@ -91,6 +98,8 @@ namespace Editor
                 }
 
                 SelectedState = null;
+                SelectedTransition = null;
+
             }
         }
 
@@ -100,6 +109,34 @@ namespace Editor
             string newName = Animation.GetFreeAttributeName();
             Animation.AddAttribute(newName, 0f);
             RegisterAttributeControl(new AnimationAttributeEditor(Animation, newName, 0f));
+        }
+
+        /*Update Transition gui*/
+        void UpdateTransitionGUI()
+        {
+            groupBoxTransitionSettings.Enabled = selectedTransition != null;
+            if (selectedTransition != null)
+            {
+                /*the tmp stuff is to prevent gui events from changing values*/
+                var tmpTransition = selectedTransition;
+                selectedTransition = null;
+                comboBoxTransitionAttribute.Text = tmpTransition.TransitionCondition.Attribute;
+                comboBoxTransitionCondition.SelectedIndex = (int)tmpTransition.TransitionCondition.ConditionType;
+                numericUpDownTransitionValue.Value = (decimal)((float)tmpTransition.TransitionCondition.Value);
+                selectedTransition = tmpTransition;
+            }
+            else
+            {
+                comboBoxTransitionAttribute.Text = "";
+            }
+        }
+
+        void UpdateAttributeCombobox()
+        {
+            comboBoxTransitionAttribute.Items.Clear();
+            var attributeNames = Animation.GetAttributeNames();
+            foreach (var item in attributeNames)
+                comboBoxTransitionAttribute.Items.Add(item);
         }
 
         /*Update Attributelist*/
@@ -114,7 +151,9 @@ namespace Editor
         {
             panelAttributes.Controls.Add(control);
             control.Dock = DockStyle.Top;
-            control.RemoveAttribute += (s) => { Animation.RemoveAttribute(s.CurrentAttributeName); panelAttributes.Controls.Remove(s); };
+            control.RemoveAttribute += (s) => { Animation.RemoveAttribute(s.CurrentAttributeName); panelAttributes.Controls.Remove(s); UpdateAttributeCombobox(); };
+            control.AttributeNameChanged += (s) => { UpdateAttributeCombobox(); };
+            UpdateAttributeCombobox();
         }
 
         /*make sure everything is displayed properly*/
@@ -133,7 +172,7 @@ namespace Editor
                     RenderObjects_States.Add(State, stateRenderRect);
 
                     /*make sure the user can select it*/
-                    stateRenderRect.MouseDown += (s, e) => { SelectedState = s.Tag as AnimationState; };
+                    stateRenderRect.MouseDown += (s, e) => { SelectedState = s.Tag as AnimationState; SelectedTransition = null; };
                     stateRenderRect.LocationChanged += (s, e, x) => { UpdateAnimationTransition_RenderObjects(Animation.Entry);  };
 
                     /*make sure it's displayed*/
@@ -185,6 +224,10 @@ namespace Editor
                         transitionLine.Tag = State.PossibleTransitions[i];
                         RenderObjects_Transitions.Add(State.PossibleTransitions[i], transitionLine);
                         RenderTarget.AddRenderObject(transitionLine);
+                        transitionLine.MouseEnter += (s, e) => { s.Color = System.Drawing.Color.Blue; };
+                        transitionLine.MouseLeave += (s, e) => { s.Color = System.Drawing.Color.Black; };
+
+                        transitionLine.MouseDown += (s, e) => { SelectedTransition = (AnimationTransition)s.Tag; };
 
                     }
                     else
@@ -201,11 +244,24 @@ namespace Editor
             /*add all states first*/
             UpdateAnimationState_RenderObjects(Animation.Entry);
 
-
             /*now that every animationstate has it's own renderobject we can add the transitions*/
             UpdateAnimationTransition_RenderObjects(Animation.Entry);
-            
         }
 
+        
+        /*Transition-Conidtion user input*/
+        void UpdateTransitionCondition()
+        {
+            if (selectedTransition != null)
+            {
+                selectedTransition.TransitionCondition.Attribute = comboBoxTransitionAttribute.Text;
+                selectedTransition.TransitionCondition.ConditionType = (AnimationTransition.Condition.eConditionType)comboBoxTransitionCondition.SelectedIndex;
+                selectedTransition.TransitionCondition.Value = (float)numericUpDownTransitionValue.Value;
+            }
+        }
+
+        private void comboBoxTransitionAttribute_SelectedIndexChanged(object sender, System.EventArgs e) { UpdateTransitionCondition(); }
+        private void comboBoxTransitionCondition_SelectedIndexChanged(object sender, System.EventArgs e) { UpdateTransitionCondition(); }
+        private void numericUpDownTransitionValue_ValueChanged(object sender, System.EventArgs e) { UpdateTransitionCondition(); }
     }
 }

@@ -28,7 +28,7 @@ namespace Graphics.Animation
         }
         bool Reverse;
         public bool AnimationInProgress { get; private set; }
-        public float AnimationTime { get => frames != null ? (CurrentFrame / frames.Count) : 0; }
+        public float AnimationTime { get => frames != null ? ((float)CurrentFrame / frames.Count) : 0; }
 
         public TilesetAnimation(Texture2D Texture, int FPS, int Z)
         {
@@ -36,6 +36,7 @@ namespace Graphics.Animation
             this.FPS = FPS;
             IsReverseLoop = true;
             Loop = true;
+            AnimationInProgress = true;
             Initialize(new Vec2(), Z, null, System.Drawing.Color.Transparent, System.Drawing.Color.Empty, null, Texture);
         }
 

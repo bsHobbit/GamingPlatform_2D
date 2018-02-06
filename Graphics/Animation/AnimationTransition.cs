@@ -43,7 +43,7 @@
         public bool CanTranslateInto(Animation Animation)
         {
             object attributeValue = Animation.GetAttribute(TransitionCondition.Attribute);
-            if (attributeValue.GetType() == typeof(float) && TransitionCondition.Value.GetType() == typeof(float))
+            if (attributeValue  != null && attributeValue.GetType() == typeof(float) && TransitionCondition.Value.GetType() == typeof(float))
             {
                 if (TransitionCondition.ConditionType == Condition.eConditionType.Equal)
                     return (float)attributeValue == (float)TransitionCondition.Value;

@@ -37,10 +37,8 @@ namespace Graphics.Animation
             {
                 AnimationState newState = CurrentAnimationState.Update(Elapsed, this);
                 if (newState != CurrentAnimationState)
-                {
                     CurrentAnimationState = newState;
-                    UpdateRenderParameter();
-                }
+                UpdateRenderParameter();
             }
         }
 

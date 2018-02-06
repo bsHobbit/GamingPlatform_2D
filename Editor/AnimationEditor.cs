@@ -45,6 +45,8 @@ namespace Editor
             RenderTarget.Initialize();
             RenderTarget.EnableCameraControl(true);
 
+            RenderTarget.AddRenderObject(Animation);
+
             /*Update render-objects*/
             UpdateVisuals();
             UpdateAttributeList();
@@ -61,7 +63,7 @@ namespace Editor
                 Animation.Entry = new AnimationState()
                 {
                     TilesetAnimation = tsa,
-                    MinStateTime = 1f
+                    MinStateTime = .1f
                 };
             }
             /*create a new animationy state with a condition for the selected animationstate*/
@@ -72,7 +74,7 @@ namespace Editor
                 AnimationState newState = new AnimationState()
                 {
                     TilesetAnimation = tsa,
-                    MinStateTime = 1f
+                    MinStateTime = .1f
                 };
                 SelectedState.AddTransitition(new AnimationTransition(new AnimationTransition.Condition(AnimationTransition.Condition.eConditionType.Equal, "", 0f), newState));
             }

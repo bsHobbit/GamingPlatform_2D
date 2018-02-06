@@ -47,7 +47,9 @@ namespace Graphics.Interaction
 
         bool IsMouseOverItem(RenderableObject2D Item)
         {
-            if (Item.Vertices.Count == 2)
+            if (Item == null || Item.Vertices == null)
+                return false;
+            else if (Item.Vertices.Count == 2)
             {
                 var transformedVertices = Item.TransformedVertices();
                 if (RenderableObject2D.DistanceFromPointToLine(Input.CurrentState.Location, transformedVertices[0], transformedVertices[1]) <= 5)

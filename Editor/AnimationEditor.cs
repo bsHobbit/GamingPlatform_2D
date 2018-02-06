@@ -40,6 +40,7 @@ namespace Editor
 
             /*Update render-objects*/
             UpdateVisuals();
+            UpdateAttributeList();
         }
 
         /*Manage states*/
@@ -72,6 +73,50 @@ namespace Editor
             UpdateVisuals();
         }
 
+        /*remove an existing animation-state*/
+        private void buttonRemoveState_Click(object sender, System.EventArgs e)
+        {
+            if (SelectedState != null)
+            {
+                /*remove the animationstate*/
+                var removedTransitions = Animation.RemoveStateAndReferences(SelectedState);
+                RenderTarget.RemoveRenderObject(RenderObjects_States[SelectedState]);
+                RenderObjects_States.Remove(SelectedState);
+
+                /*remove all references to this state*/
+                for (int i = 0; i < removedTransitions.Count; i++)
+                {
+                    RenderTarget.RemoveRenderObject(RenderObjects_Transitions[removedTransitions[i]]);
+                    RenderObjects_Transitions.Remove(removedTransitions[i]);
+                }
+
+                SelectedState = null;
+            }
+        }
+
+        /*Add an attribute to the animation*/
+        private void buttonAddAttribute_Click(object sender, System.EventArgs e)
+        {
+            string newName = Animation.GetFreeAttributeName();
+            Animation.AddAttribute(newName, 0f);
+            RegisterAttributeControl(new AnimationAttributeEditor(Animation, newName, 0f));
+        }
+
+        /*Update Attributelist*/
+        void UpdateAttributeList()
+        {
+            var attributeNames = Animation.GetAttributeNames();
+            foreach (var item in attributeNames)
+                RegisterAttributeControl(new AnimationAttributeEditor(Animation, item, (float)Animation.GetAttribute(item)));
+        }
+
+        void RegisterAttributeControl (AnimationAttributeEditor control)
+        {
+            panelAttributes.Controls.Add(control);
+            control.Dock = DockStyle.Top;
+            control.RemoveAttribute += (s) => { Animation.RemoveAttribute(s.CurrentAttributeName); panelAttributes.Controls.Remove(s); };
+        }
+
         /*make sure everything is displayed properly*/
         void UpdateAnimationState_RenderObjects(AnimationState State)
         {
@@ -99,28 +144,6 @@ namespace Editor
                     UpdateAnimationState_RenderObjects(State.PossibleTransitions[i].TranslateInto);
             }
         }
-
-
-        private void buttonRemoveState_Click(object sender, System.EventArgs e)
-        {
-            if (SelectedState != null)
-            {
-                /*remove the animationstate*/
-                var removedTransitions = Animation.RemoveStateAndReferences(SelectedState);
-                RenderTarget.RemoveRenderObject(RenderObjects_States[SelectedState]);
-                RenderObjects_States.Remove(SelectedState);
-
-                /*remove all references to this state*/
-                for (int i = 0; i < removedTransitions.Count; i++)
-                {
-                    RenderTarget.RemoveRenderObject(RenderObjects_Transitions[removedTransitions[i]]);
-                    RenderObjects_Transitions.Remove(removedTransitions[i]);
-                }
-
-                SelectedState = null;
-            }
-        }
-
 
         void UpdateAnimationTransition_RenderObjects(AnimationState State)
         {
@@ -159,7 +182,7 @@ namespace Editor
                     if (!RenderObjects_Transitions.ContainsKey(State.PossibleTransitions[i]))
                     {
                         Line2D transitionLine = new Line2D(startLocation, targetLocation, new Vec2(), 1, System.Drawing.Color.Black, 2, true);
-                        transitionLine.Enabled = false;
+                        transitionLine.Tag = State.PossibleTransitions[i];
                         RenderObjects_Transitions.Add(State.PossibleTransitions[i], transitionLine);
                         RenderTarget.AddRenderObject(transitionLine);
 
@@ -183,5 +206,6 @@ namespace Editor
             UpdateAnimationTransition_RenderObjects(Animation.Entry);
             
         }
+
     }
 }

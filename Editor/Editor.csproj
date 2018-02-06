@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationAttributeEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnimationAttributeEditor.Designer.cs">
+      <DependentUpon>AnimationAttributeEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="AnimationEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AnimationAttributeEditor.resx">
+      <DependentUpon>AnimationAttributeEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AnimationEditor.resx">
       <DependentUpon>AnimationEditor.cs</DependentUpon>
     </EmbeddedResource>

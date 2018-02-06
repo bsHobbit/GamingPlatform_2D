@@ -87,6 +87,14 @@ namespace Graphics.Animation
         }
 
         /*Attribute management*/
+        public List<string> GetAttributeNames()
+        {
+            List<string> result = new List<string>();
+            foreach (var item in Attributes)
+                result.Add(item.Key);
+            return result;
+        }
+
         public object GetAttribute(string Name)
         {
             if (Attributes.ContainsKey(Name))
@@ -98,6 +106,42 @@ namespace Graphics.Animation
         {
             if (Attributes.ContainsKey(Name))
                 Attributes[Name] = Value;
+        }
+
+        public string GetFreeAttributeName()
+        {
+            string name = "attr_01";
+            int cnt = 2;
+            while (Attributes.ContainsKey(name))
+            {
+                name = "attr_" + cnt.ToString("00");
+                cnt++;
+            }
+            return name;
+        }
+
+        public void AddAttribute(string Name, object Value)
+        {
+            if (IsFreeAttributeName(Name))
+                Attributes.Add(Name, Value);
+        }
+
+        public void RemoveAttribute(string Name)
+        {
+            if (Attributes.ContainsKey(Name))
+                Attributes.Remove(Name);
+        }
+
+        public bool IsFreeAttributeName(string Name) => !Attributes.ContainsKey(Name);
+
+        public void UpdateAttributeName(string CurrentName, string NewName)
+        {
+            if (Attributes.ContainsKey(CurrentName) && !Attributes.ContainsKey(NewName))
+            {
+                object currentValue = Attributes[CurrentName];
+                Attributes.Remove(CurrentName);
+                Attributes.Add(NewName, currentValue);
+            }
         }
     }
 }

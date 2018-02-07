@@ -136,6 +136,7 @@ namespace Editor
                 {
                     collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
                     collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
+                    collectionDisplayTilesetAnimations.UpdateThumbnailText(Index, GameContent.TilesetAnimations[Index].Name);
                     Editor.Dispose();
                 };
             }

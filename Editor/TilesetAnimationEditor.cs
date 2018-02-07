@@ -89,6 +89,13 @@ namespace Editor
             numericUpDownRotation.ValueChanged += (s, e) => { TilesetAnimation.Rotation = (float)numericUpDownRotation.Value; };
             numericUpDownRotationX.ValueChanged += (s, e) => { TilesetAnimation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
             numericUpDownRotationY.ValueChanged += (s, e) => { TilesetAnimation.RotationOffset = new Vec2((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value); };
+            textBoxTilesetAnmationName.TextChanged += (s, e) =>
+            {
+                string newName = textBoxTilesetAnmationName.Text;
+                if (GameContent.GetRenderableObject<TilesetAnimation>(newName) == null)
+                    TilesetAnimation.Name = newName;
+            };
+            textBoxTilesetAnmationName.LostFocus += (s, e) => { textBoxTilesetAnmationName.Name = TilesetAnimation.Name; };
 
 
             /*allow the user to select stuff in the tileset*/
@@ -99,7 +106,7 @@ namespace Editor
             numericUpDownGridWidth.Value = LastGridWidth;
             numericUpDownGridHeight.Value = LastGridHeight;
 
-            textBox1.Text = TilesetAnimation.Name;
+            textBoxTilesetAnmationName.Text = TilesetAnimation.Name;
 
 
             /*update the windows controls*/

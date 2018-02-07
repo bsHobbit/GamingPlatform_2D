@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxTilesetAnmationName = new System.Windows.Forms.TextBox();
             this.labelAnimationName = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -78,12 +78,12 @@
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox1
+            // textBoxTilesetAnmationName
             // 
-            this.textBox1.Location = new System.Drawing.Point(44, 6);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 1;
+            this.textBoxTilesetAnmationName.Location = new System.Drawing.Point(44, 6);
+            this.textBoxTilesetAnmationName.Name = "textBoxTilesetAnmationName";
+            this.textBoxTilesetAnmationName.Size = new System.Drawing.Size(100, 20);
+            this.textBoxTilesetAnmationName.TabIndex = 1;
             // 
             // labelAnimationName
             // 
@@ -190,7 +190,7 @@
             this.panel1.Controls.Add(this.labelAnimationFPS);
             this.panel1.Controls.Add(this.numericUpDownAnimationFPS);
             this.panel1.Controls.Add(this.labelAnimationName);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.textBoxTilesetAnmationName);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
@@ -516,7 +516,7 @@
         #endregion
 
         private WinFormRenderer.cRenderTarget rendertargetTileset;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxTilesetAnmationName;
         private System.Windows.Forms.Label labelAnimationName;
         private WinFormRenderer.cRenderTarget renderTargetCurrentFrame;
         private WinFormRenderer.cRenderTarget renderTargetAnimation;

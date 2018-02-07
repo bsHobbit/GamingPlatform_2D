@@ -257,6 +257,12 @@ namespace Editor
             UpdateThumbnail(Items[ItemIndex]);
         }
 
+        public void UpdateThumbnailText(int ItemIndex, string Text)
+        {
+            Items[ItemIndex].RenderObject.ClearText();
+            Items[ItemIndex].RenderObject.AddText(new RenderableText(Text, new System.Drawing.Font("Arial", 12), System.Drawing.Color.Black, new Vec2(), true));
+        }
+
         /*Allow the user to scroll the collection*/
         private void RenderTarget_MouseWheel(object sender, MouseEventArgs e)
         {

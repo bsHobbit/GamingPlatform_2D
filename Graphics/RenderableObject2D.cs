@@ -281,6 +281,11 @@ namespace Graphics
                 TextToRender.Remove(hash);
         }
 
+        public void ClearText()
+        {
+            TextToRender.Clear();
+        }
+
         /*GDI Only-Stuff*/
 
         public static PointF[] ToPointFArray(List<Vec2> Vertices)

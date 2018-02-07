@@ -133,7 +133,7 @@ namespace WinFormRenderer
             renderTarget.MouseWheel     += RenderTarget_MouseWheel;
             renderTarget.MouseEnter     += (s, e) => 
             {
-                if (ParentForm != null && ParentForm.Focused)
+                if (ParentForm != null && ParentForm.ContainsFocus)
                     renderTarget.Focus();
             };
         }

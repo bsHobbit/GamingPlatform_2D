@@ -200,6 +200,7 @@ namespace Editor
         {
             /*Update the Trackbar so the user can scroll through the single frames*/
             int currentSelectedFrame = SelectedFrame;
+            trackBarFrameSelection.Maximum = 0;
             trackBarFrameSelection.Value = 0;
             trackBarFrameSelection.Maximum = TilesetAnimation.Frames.Count - 1;
             if (trackBarFrameSelection.Maximum >= currentSelectedFrame)

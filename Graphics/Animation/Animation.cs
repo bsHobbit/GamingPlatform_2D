@@ -65,6 +65,10 @@ namespace Graphics.Animation
                 else
                     entry = null;
             }
+
+            if (State == CurrentAnimationState)
+                CurrentAnimationState = Entry;
+
             return removedTransitions;
         }
 

@@ -45,25 +45,26 @@ namespace Graphics.Animation
         /*update the animationstate*/
         public AnimationState Update(float Elapsed, Animation Animation)
         {
-
-            TilesetAnimation.Update(Elapsed); /*Update the underlying tileset animation*/
-
-            /*check if a transition is possible*/
-            if (TilesetAnimation.AnimationTime >= MinStateTime)
+            if (TilesetAnimation != null)
             {
-                /*do i have to loop?*/
-                if (!IsFinalState && possibleTransitions.Count == 0 && this != Animation.Entry)
-                    return Animation.Entry.Update(0, Animation); /*maybe the entry loop doesnt have any mintime whatsoever and we need to progress to the next state immediatly?*/
+                TilesetAnimation.Update(Elapsed); /*Update the underlying tileset animation*/
 
-                /*check if the animstion has to be changed*/
-                for (int i = 0; i < possibleTransitions.Count; i++)
+                /*check if a transition is possible*/
+                if (TilesetAnimation.AnimationTime >= MinStateTime)
                 {
-                    /*hey, there is a new state i can translate into let's do this!*/
-                    if (possibleTransitions[i].CanTranslateInto(Animation))
-                        return possibleTransitions[i].TranslateInto;
+                    /*do i have to loop?*/
+                    if (!IsFinalState && possibleTransitions.Count == 0 && this != Animation.Entry)
+                        return Animation.Entry.Update(0, Animation); /*maybe the entry loop doesnt have any mintime whatsoever and we need to progress to the next state immediatly?*/
+
+                    /*check if the animstion has to be changed*/
+                    for (int i = 0; i < possibleTransitions.Count; i++)
+                    {
+                        /*hey, there is a new state i can translate into let's do this!*/
+                        if (possibleTransitions[i].CanTranslateInto(Animation))
+                            return possibleTransitions[i].TranslateInto;
+                    }
                 }
             }
-
             /*Animationstate did not change*/
             return this;
         }

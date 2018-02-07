@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.RenderTarget = new WinFormRenderer.cRenderTarget();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageAnimationManagement = new System.Windows.Forms.TabPage();
@@ -45,7 +46,9 @@
             this.panelAttributes = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.buttonAddAttribute = new System.Windows.Forms.Button();
-            this.RenderTarget = new WinFormRenderer.cRenderTarget();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBoxAnimationName = new System.Windows.Forms.TextBox();
+            this.checkBoxIsFinalState = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -73,6 +76,15 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(807, 592);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
+            // RenderTarget
+            // 
+            this.RenderTarget.Camera = null;
+            this.RenderTarget.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RenderTarget.Location = new System.Drawing.Point(203, 3);
+            this.RenderTarget.Name = "RenderTarget";
+            this.RenderTarget.Size = new System.Drawing.Size(601, 586);
+            this.RenderTarget.TabIndex = 0;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tabControl1);
@@ -95,6 +107,8 @@
             // 
             // tabPageAnimationManagement
             // 
+            this.tabPageAnimationManagement.Controls.Add(this.textBoxAnimationName);
+            this.tabPageAnimationManagement.Controls.Add(this.label2);
             this.tabPageAnimationManagement.Controls.Add(this.groupBoxState);
             this.tabPageAnimationManagement.Controls.Add(this.groupBoxTransitionSettings);
             this.tabPageAnimationManagement.Controls.Add(this.buttonAddState);
@@ -108,13 +122,14 @@
             // 
             // groupBoxState
             // 
+            this.groupBoxState.Controls.Add(this.checkBoxIsFinalState);
             this.groupBoxState.Controls.Add(this.label1);
             this.groupBoxState.Controls.Add(this.numericUpDownStateMinTime);
             this.groupBoxState.Controls.Add(this.buttonRemoveState);
             this.groupBoxState.Enabled = false;
-            this.groupBoxState.Location = new System.Drawing.Point(5, 112);
+            this.groupBoxState.Location = new System.Drawing.Point(5, 143);
             this.groupBoxState.Name = "groupBoxState";
-            this.groupBoxState.Size = new System.Drawing.Size(175, 68);
+            this.groupBoxState.Size = new System.Drawing.Size(175, 103);
             this.groupBoxState.TabIndex = 3;
             this.groupBoxState.TabStop = false;
             this.groupBoxState.Text = "State";
@@ -149,7 +164,7 @@
             // 
             // buttonRemoveState
             // 
-            this.buttonRemoveState.Location = new System.Drawing.Point(6, 39);
+            this.buttonRemoveState.Location = new System.Drawing.Point(6, 74);
             this.buttonRemoveState.Name = "buttonRemoveState";
             this.buttonRemoveState.Size = new System.Drawing.Size(160, 23);
             this.buttonRemoveState.TabIndex = 1;
@@ -163,7 +178,7 @@
             this.groupBoxTransitionSettings.Controls.Add(this.comboBoxTransitionCondition);
             this.groupBoxTransitionSettings.Controls.Add(this.comboBoxTransitionAttribute);
             this.groupBoxTransitionSettings.Enabled = false;
-            this.groupBoxTransitionSettings.Location = new System.Drawing.Point(6, 6);
+            this.groupBoxTransitionSettings.Location = new System.Drawing.Point(6, 37);
             this.groupBoxTransitionSettings.Name = "groupBoxTransitionSettings";
             this.groupBoxTransitionSettings.Size = new System.Drawing.Size(171, 100);
             this.groupBoxTransitionSettings.TabIndex = 2;
@@ -210,7 +225,7 @@
             // 
             // buttonAddState
             // 
-            this.buttonAddState.Location = new System.Drawing.Point(6, 186);
+            this.buttonAddState.Location = new System.Drawing.Point(6, 252);
             this.buttonAddState.Name = "buttonAddState";
             this.buttonAddState.Size = new System.Drawing.Size(171, 23);
             this.buttonAddState.TabIndex = 0;
@@ -259,14 +274,32 @@
             this.buttonAddAttribute.UseVisualStyleBackColor = true;
             this.buttonAddAttribute.Click += new System.EventHandler(this.buttonAddAttribute_Click);
             // 
-            // RenderTarget
+            // label2
             // 
-            this.RenderTarget.Camera = null;
-            this.RenderTarget.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RenderTarget.Location = new System.Drawing.Point(203, 3);
-            this.RenderTarget.Name = "RenderTarget";
-            this.RenderTarget.Size = new System.Drawing.Size(601, 586);
-            this.RenderTarget.TabIndex = 0;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Name";
+            // 
+            // textBoxAnimationName
+            // 
+            this.textBoxAnimationName.Location = new System.Drawing.Point(49, 11);
+            this.textBoxAnimationName.Name = "textBoxAnimationName";
+            this.textBoxAnimationName.Size = new System.Drawing.Size(128, 20);
+            this.textBoxAnimationName.TabIndex = 5;
+            // 
+            // checkBoxIsFinalState
+            // 
+            this.checkBoxIsFinalState.AutoSize = true;
+            this.checkBoxIsFinalState.Location = new System.Drawing.Point(10, 51);
+            this.checkBoxIsFinalState.Name = "checkBoxIsFinalState";
+            this.checkBoxIsFinalState.Size = new System.Drawing.Size(54, 17);
+            this.checkBoxIsFinalState.TabIndex = 6;
+            this.checkBoxIsFinalState.Text = "Final?";
+            this.checkBoxIsFinalState.UseVisualStyleBackColor = true;
+            this.checkBoxIsFinalState.CheckedChanged += new System.EventHandler(this.checkBoxIsFinalState_CheckedChanged);
             // 
             // AnimationEditor
             // 
@@ -281,6 +314,7 @@
             this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPageAnimationManagement.ResumeLayout(false);
+            this.tabPageAnimationManagement.PerformLayout();
             this.groupBoxState.ResumeLayout(false);
             this.groupBoxState.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStateMinTime)).EndInit();
@@ -312,5 +346,8 @@
         private System.Windows.Forms.GroupBox groupBoxState;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDownStateMinTime;
+        private System.Windows.Forms.TextBox textBoxAnimationName;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBoxIsFinalState;
     }
 }

@@ -57,6 +57,17 @@ namespace Editor
             UpdateAttributeList();
 
             FormClosing += (s, e) => { RenderTarget.StopRendering(); };
+
+            textBoxAnimationName.Text = Animation.Name;
+            /*allow the user to change the animation-name*/
+            textBoxAnimationName.TextChanged += (s, e) =>
+            {
+                string newName = textBoxAnimationName.Text;
+                if (GameContent.GetRenderableObject<Animation>(Name) == null)
+                    Animation.Name = newName;
+            };
+            textBoxAnimationName.LostFocus += (s, e) => { textBoxAnimationName.Text = Animation.Name; };
+
         }
 
         /*Manage states*/
@@ -89,6 +100,8 @@ namespace Editor
                 SelectedState.AddTransitition(new AnimationTransition(new AnimationTransition.Condition(AnimationTransition.Condition.eConditionType.Equal, "", 0f), newState));
                 SelectedState = newState;
             }
+            else
+                MessageBox.Show("Select a stat you want to start from.");
 
             UpdateVisuals();
         }
@@ -136,6 +149,7 @@ namespace Editor
                 var tmpState = selectedState;
                 selectedState = null;
                 numericUpDownStateMinTime.Value = (decimal)tmpState.MinStateTime;
+                checkBoxIsFinalState.Checked = tmpState.IsFinalState;
                 selectedState = tmpState;
             }
         }
@@ -307,6 +321,12 @@ namespace Editor
             {
                 selectedState.MinStateTime = (float)numericUpDownStateMinTime.Value;
             }
+        }
+
+        private void checkBoxIsFinalState_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (selectedState != null)
+                selectedState.IsFinalState = checkBoxIsFinalState.Checked;
         }
     }
 }

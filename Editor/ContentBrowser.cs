@@ -108,8 +108,9 @@ namespace Editor
                 /*Update the thumbnail in the contentbrowser to distinct it from the other animations visually*/
                 Editor.FormClosing += (s, e) =>
                 {
-                    collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.Animations[Index].TextureSegment);
-                    collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.Animations[Index].Texture);
+                    collectionDisplayAnimations.UpdateThumbnailSegment(Index, GameContent.Animations[Index].TextureSegment);
+                    collectionDisplayAnimations.UpdateThumbnailTexture(Index, GameContent.Animations[Index].Texture);
+                    collectionDisplayAnimations.UpdateThumbnailText(Index, GameContent.Animations[Index].Name);
                     Editor.Dispose();
                 };
             }

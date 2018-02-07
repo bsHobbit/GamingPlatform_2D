@@ -85,7 +85,8 @@ namespace GameCore
             {
                 Rotation = rotation,
                 RotationOffset = new Box2DX.Common.Vec2(rotationX, rotationY),
-                Scale = scale
+                Scale = scale,
+                Name = animationName
             };
 
             int totalAttributes = Convert.ToInt32(sr.ReadLine());

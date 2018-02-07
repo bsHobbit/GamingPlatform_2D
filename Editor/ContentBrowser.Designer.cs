@@ -38,13 +38,19 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayTilesetAnimations = new Editor.CollectionDisplay();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonRemoveTilesetAnimation = new System.Windows.Forms.Button();
             this.buttonAddTilesetAnimation = new System.Windows.Forms.Button();
             this.tabPageAnimations = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayAnimations = new Editor.CollectionDisplay();
             this.panel3 = new System.Windows.Forms.Panel();
             this.buttonAddAnimation = new System.Windows.Forms.Button();
-            this.buttonRemoveTilesetAnimation = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxFilterTilesetAnimations = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBoxFilterAnimations = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBoxFilterTexture = new System.Windows.Forms.TextBox();
             this.tabControlContent.SuspendLayout();
             this.tabPageTextures.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -55,6 +61,9 @@
             this.tabPageAnimations.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlContent
@@ -106,6 +115,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.buttonRemoveTexture);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -115,9 +125,9 @@
             // 
             // buttonRemoveTexture
             // 
-            this.buttonRemoveTexture.Location = new System.Drawing.Point(19, 20);
+            this.buttonRemoveTexture.Location = new System.Drawing.Point(12, 71);
             this.buttonRemoveTexture.Name = "buttonRemoveTexture";
-            this.buttonRemoveTexture.Size = new System.Drawing.Size(161, 23);
+            this.buttonRemoveTexture.Size = new System.Drawing.Size(169, 23);
             this.buttonRemoveTexture.TabIndex = 0;
             this.buttonRemoveTexture.Text = "Remove";
             this.buttonRemoveTexture.UseVisualStyleBackColor = true;
@@ -160,6 +170,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.buttonRemoveTilesetAnimation);
             this.panel2.Controls.Add(this.buttonAddTilesetAnimation);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -168,9 +179,19 @@
             this.panel2.Size = new System.Drawing.Size(194, 706);
             this.panel2.TabIndex = 1;
             // 
+            // buttonRemoveTilesetAnimation
+            // 
+            this.buttonRemoveTilesetAnimation.Location = new System.Drawing.Point(12, 100);
+            this.buttonRemoveTilesetAnimation.Name = "buttonRemoveTilesetAnimation";
+            this.buttonRemoveTilesetAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonRemoveTilesetAnimation.TabIndex = 1;
+            this.buttonRemoveTilesetAnimation.Text = "Remove";
+            this.buttonRemoveTilesetAnimation.UseVisualStyleBackColor = true;
+            this.buttonRemoveTilesetAnimation.Click += new System.EventHandler(this.buttonRemoveTilesetAnimation_Click);
+            // 
             // buttonAddTilesetAnimation
             // 
-            this.buttonAddTilesetAnimation.Location = new System.Drawing.Point(12, 15);
+            this.buttonAddTilesetAnimation.Location = new System.Drawing.Point(12, 71);
             this.buttonAddTilesetAnimation.Name = "buttonAddTilesetAnimation";
             this.buttonAddTilesetAnimation.Size = new System.Drawing.Size(169, 23);
             this.buttonAddTilesetAnimation.TabIndex = 0;
@@ -214,6 +235,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.groupBox2);
             this.panel3.Controls.Add(this.buttonAddAnimation);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(3, 3);
@@ -223,22 +245,63 @@
             // 
             // buttonAddAnimation
             // 
-            this.buttonAddAnimation.Location = new System.Drawing.Point(12, 15);
+            this.buttonAddAnimation.Location = new System.Drawing.Point(12, 72);
             this.buttonAddAnimation.Name = "buttonAddAnimation";
             this.buttonAddAnimation.Size = new System.Drawing.Size(169, 23);
             this.buttonAddAnimation.TabIndex = 0;
             this.buttonAddAnimation.Text = "Add";
             this.buttonAddAnimation.UseVisualStyleBackColor = true;
             // 
-            // buttonRemoveTilesetAnimation
+            // groupBox1
             // 
-            this.buttonRemoveTilesetAnimation.Location = new System.Drawing.Point(12, 44);
-            this.buttonRemoveTilesetAnimation.Name = "buttonRemoveTilesetAnimation";
-            this.buttonRemoveTilesetAnimation.Size = new System.Drawing.Size(169, 23);
-            this.buttonRemoveTilesetAnimation.TabIndex = 1;
-            this.buttonRemoveTilesetAnimation.Text = "Remove";
-            this.buttonRemoveTilesetAnimation.UseVisualStyleBackColor = true;
-            this.buttonRemoveTilesetAnimation.Click += new System.EventHandler(this.buttonRemoveTilesetAnimation_Click);
+            this.groupBox1.Controls.Add(this.textBoxFilterTilesetAnimations);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(169, 53);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Filter";
+            // 
+            // textBoxFilterTilesetAnimations
+            // 
+            this.textBoxFilterTilesetAnimations.Location = new System.Drawing.Point(6, 19);
+            this.textBoxFilterTilesetAnimations.Name = "textBoxFilterTilesetAnimations";
+            this.textBoxFilterTilesetAnimations.Size = new System.Drawing.Size(157, 20);
+            this.textBoxFilterTilesetAnimations.TabIndex = 0;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBoxFilterAnimations);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(169, 53);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Filter";
+            // 
+            // textBoxFilterAnimations
+            // 
+            this.textBoxFilterAnimations.Location = new System.Drawing.Point(6, 19);
+            this.textBoxFilterAnimations.Name = "textBoxFilterAnimations";
+            this.textBoxFilterAnimations.Size = new System.Drawing.Size(157, 20);
+            this.textBoxFilterAnimations.TabIndex = 0;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBoxFilterTexture);
+            this.groupBox3.Location = new System.Drawing.Point(12, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(169, 53);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Filter";
+            // 
+            // textBoxFilterTexture
+            // 
+            this.textBoxFilterTexture.Location = new System.Drawing.Point(6, 19);
+            this.textBoxFilterTexture.Name = "textBoxFilterTexture";
+            this.textBoxFilterTexture.Size = new System.Drawing.Size(157, 20);
+            this.textBoxFilterTexture.TabIndex = 0;
             // 
             // ContentBrowser
             // 
@@ -259,6 +322,12 @@
             this.tabPageAnimations.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -282,5 +351,11 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button buttonAddAnimation;
         private System.Windows.Forms.Button buttonRemoveTilesetAnimation;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox textBoxFilterTilesetAnimations;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox textBoxFilterTexture;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox textBoxFilterAnimations;
     }
 }

@@ -9,8 +9,8 @@ namespace Editor
     public partial class ContentBrowser : Form
     {
         const int TEXTURES_PER_ROW = 10;
-        const int TILESETANIMATIONS_PER_ROW = 15;
-        const int ANIMATIONS_PER_ROW = 15;
+        const int TILESETANIMATIONS_PER_ROW = 10;
+        const int ANIMATIONS_PER_ROW = 10;
 
         /*nested types*/
         [System.Flags]
@@ -70,6 +70,11 @@ namespace Editor
             collectionDisplayTextures.TextureSelected += (s, Index, doubleClicked) => { selectedTexture = GameContent.Textures[Index];  if (doubleClicked) NeedsClosingAfterSelection(); };
             collectionDisplayTilesetAnimations.TextureSelected += TilesetAnimationSelected;
             collectionDisplayAnimations.TextureSelected += AnimationSelected;
+
+            /*filter-events*/
+            textBoxFilterTilesetAnimations.TextChanged += (s, e) => { collectionDisplayTilesetAnimations.Filter = textBoxFilterTilesetAnimations.Text; };
+            textBoxFilterAnimations.TextChanged += (s, e) => { collectionDisplayAnimations.Filter = textBoxFilterAnimations.Text; };
+            textBoxFilterTexture.TextChanged += (s, e) => { collectionDisplayTextures.Filter = textBoxFilterTexture.Text; };
 
             buttonAddTilesetAnimation.Visible = !CloseOnSelection;
             buttonAddAnimation.Visible = !CloseOnSelection;

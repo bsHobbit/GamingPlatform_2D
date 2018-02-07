@@ -56,7 +56,12 @@ namespace Editor
         int ItemsPerRow;
         int TotalRows = 0;
         int TopMostRow = 0;
-        public string Filter { get; set; }
+        string filter;
+        public string Filter
+        {
+            get => filter;
+            set { filter = value; UpdateItems(); }
+        }
 
 
         /*ctor*/
@@ -201,36 +206,57 @@ namespace Editor
         }
 
         /*check filter*/
-        bool IsInFilter(string Text) => string.IsNullOrEmpty(Filter) || Filter.ToLower().Contains(Text.ToLower());
+        bool IsInFilter(string Text)
+        { 
+            bool simpleFilter = string.IsNullOrEmpty(Filter) || Text.ToLower().Contains(Filter.ToLower());
+            if (simpleFilter)
+                return true;
+
+            string[] possibleKeywords = Filter.ToLower().Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            string lowerText = Text.ToLower();
+            foreach (var word in possibleKeywords)
+                if (lowerText.Contains(word))
+                    return true;
+
+            return false;
+        }
 
         /*Rearrange items in the renderer to make them appear correct*/
         void UpdateItems()
         {
-            /*keep track of the current row and collumn might be a good idea
-             * Rows needs to be saved for user navigation
-             */
-            int currentCol = 0;
-            TotalRows = 0;
-
-            /*loop through every object that needs to be rendered*/
-            foreach (var item in Items)
+            if (Items != null)
             {
-                if (IsInFilter(item.Info)) /*ignore fake textures & filtered items*/
+                /*keep track of the current row and collumn might be a good idea
+                 * Rows needs to be saved for user navigation
+                 */
+                int currentCol = 0;
+                TotalRows = 0;
+
+                /*loop through every object that needs to be rendered*/
+                foreach (var item in Items)
                 {
-                    RenderableObject2D renderObject = item.RenderObject;
-                    renderObject.Location = new Vec2(currentCol * ItemWidth, TotalRows * itemHeight);
-
-                    /*make sure the next item is positioned properly*/
-                    currentCol++;
-                    if (currentCol == ItemsPerRow)
+                    if (IsInFilter(item.Info)) /*ignore fake textures & filtered items*/
                     {
-                        currentCol = 0;
-                        TotalRows++;
-                    }
-                }
-                
-            }
+                        RenderableObject2D renderObject = item.RenderObject;
+                        renderObject.Visible = true;
+                        renderObject.Location = new Vec2(currentCol * ItemWidth, TotalRows * itemHeight);
 
+                        /*make sure the next item is positioned properly*/
+                        currentCol++;
+                        if (currentCol == ItemsPerRow)
+                        {
+                            currentCol = 0;
+                            TotalRows++;
+                        }
+                    }
+                    else
+                    {
+                        if (item.RenderObject != null)
+                            item.RenderObject.Visible = false;
+                    }
+
+                }
+            }
         }
 
         /*Update the camera for it to view the correct row*/

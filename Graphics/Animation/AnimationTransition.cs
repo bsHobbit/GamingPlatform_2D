@@ -50,7 +50,7 @@
                 else if (TransitionCondition.ConditionType == Condition.eConditionType.Greater)
                     return (float)attributeValue > (float)TransitionCondition.Value;
                 else if (TransitionCondition.ConditionType == Condition.eConditionType.Lesser)
-                    return (float)attributeValue > (float)TransitionCondition.Value;
+                    return (float)attributeValue < (float)TransitionCondition.Value;
             }
 
             return false;

@@ -44,6 +44,7 @@
             this.collectionDisplayAnimations = new Editor.CollectionDisplay();
             this.panel3 = new System.Windows.Forms.Panel();
             this.buttonAddAnimation = new System.Windows.Forms.Button();
+            this.buttonRemoveTilesetAnimation = new System.Windows.Forms.Button();
             this.tabControlContent.SuspendLayout();
             this.tabPageTextures.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -159,6 +160,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.buttonRemoveTilesetAnimation);
             this.panel2.Controls.Add(this.buttonAddTilesetAnimation);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
@@ -228,6 +230,16 @@
             this.buttonAddAnimation.Text = "Add";
             this.buttonAddAnimation.UseVisualStyleBackColor = true;
             // 
+            // buttonRemoveTilesetAnimation
+            // 
+            this.buttonRemoveTilesetAnimation.Location = new System.Drawing.Point(12, 44);
+            this.buttonRemoveTilesetAnimation.Name = "buttonRemoveTilesetAnimation";
+            this.buttonRemoveTilesetAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonRemoveTilesetAnimation.TabIndex = 1;
+            this.buttonRemoveTilesetAnimation.Text = "Remove";
+            this.buttonRemoveTilesetAnimation.UseVisualStyleBackColor = true;
+            this.buttonRemoveTilesetAnimation.Click += new System.EventHandler(this.buttonRemoveTilesetAnimation_Click);
+            // 
             // ContentBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -269,5 +281,6 @@
         private CollectionDisplay collectionDisplayAnimations;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button buttonAddAnimation;
+        private System.Windows.Forms.Button buttonRemoveTilesetAnimation;
     }
 }

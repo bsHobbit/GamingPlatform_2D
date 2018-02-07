@@ -11,7 +11,7 @@ namespace Editor
     {
 
         /*events*/
-        public delegate void CollectionDisplaySelectionEventHandler(CollectionDisplay Sender, int Index);
+        public delegate void CollectionDisplaySelectionEventHandler(CollectionDisplay Sender, int Index, bool DoubleClick);
         public event CollectionDisplaySelectionEventHandler TextureSelected;
 
         /*nested types*/
@@ -119,7 +119,8 @@ namespace Editor
                 renderRect.MouseLeave += (s, e) => { s.OutlineColor = System.Drawing.Color.Gray; s.ZLocation = 0; };
 
                 /*Auswahl durch den Benutzer*/
-                renderRect.DoubleClick += (s, e) => { TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s)); };
+                renderRect.Click += (s, e) => { TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s), false); };
+                renderRect.DoubleClick += (s, e) => { TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s), true); };
                 UpdateItems();
                 UpdateCamera();
             }

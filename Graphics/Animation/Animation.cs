@@ -90,6 +90,22 @@ namespace Graphics.Animation
             }
         }
 
+        /*remove tileset-animation reference*/
+        public void RemoveTilesetReference(AnimationState CurrentState, TilesetAnimation TilesetAnimation)
+        {
+            if (CurrentState != null)
+            {
+                if (CurrentState.TilesetAnimation == TilesetAnimation)
+                    CurrentState.TilesetAnimation = null;
+                for (int i = 0; i < CurrentState.PossibleTransitions.Count; i++)
+                    RemoveTilesetReference(CurrentState.PossibleTransitions[i].TranslateInto, TilesetAnimation);
+            }
+        }
+        public void RemoveTilesetReference(TilesetAnimation TilesetAnimation)
+        {
+            RemoveTilesetReference(Entry, TilesetAnimation);
+        }
+
         /*Attribute management*/
         public List<string> GetAttributeNames()
         {

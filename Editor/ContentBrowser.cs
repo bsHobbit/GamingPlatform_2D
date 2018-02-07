@@ -67,7 +67,7 @@ namespace Editor
 
 
             /*Register events*/
-            collectionDisplayTextures.TextureSelected += (s, Index) => { selectedTexture = GameContent.Textures[Index];  NeedsClosingAfterSelection(); };
+            collectionDisplayTextures.TextureSelected += (s, Index, doubleClicked) => { selectedTexture = GameContent.Textures[Index];  if (doubleClicked) NeedsClosingAfterSelection(); };
             collectionDisplayTilesetAnimations.TextureSelected += TilesetAnimationSelected;
             collectionDisplayAnimations.TextureSelected += AnimationSelected;
 
@@ -97,9 +97,9 @@ namespace Editor
         }
 
         /*Handle-Animation-Selection*/
-        private void AnimationSelected(CollectionDisplay Sender, int Index)
+        private void AnimationSelected(CollectionDisplay Sender, int Index, bool doubleClicked)
         {
-            if (!NeedsClosingAfterSelection())
+            if (doubleClicked && !NeedsClosingAfterSelection())
             {
                 var animation = GameContent.Animations[Index];
                 AnimationEditor Editor = new AnimationEditor(animation, GameContent);
@@ -117,10 +117,10 @@ namespace Editor
         }
 
         /*Handle tilesetanimation selection*/
-        private void TilesetAnimationSelected(CollectionDisplay Sender, int Index)
+        private void TilesetAnimationSelected(CollectionDisplay Sender, int Index, bool doubleClicked)
         {
             SelectedTilesetAnimation = GameContent.TilesetAnimations[Index];
-            if (!NeedsClosingAfterSelection())
+            if (doubleClicked && !NeedsClosingAfterSelection())
             {
                 /*Allow the user to edit the animation*/
 
@@ -221,7 +221,19 @@ namespace Editor
                 UpdateTextures();
                 UpdateTilesetAnimations();
             }
+        }
 
+        /*Remove tilesetanimation*/
+        private void buttonRemoveTilesetAnimation_Click(object sender, System.EventArgs e)
+        {
+            if (selectedTilesetAnimation != null)
+            {
+                GameContent.RemoveRenderableObject(selectedTilesetAnimation);
+                GameContent.RemoveReferences(selectedTilesetAnimation);
+                selectedTilesetAnimation = null;
+                UpdateTilesetAnimations();
+                UpdateAnimations();
+            }
         }
 
         /*Static helpers*/

@@ -92,6 +92,14 @@ namespace GameCore
             }
         }
 
+        /*remove all references to a tileset animation*/
+        public void RemoveReferences(TilesetAnimation TilesetAnimation)
+        {
+            var animations = Animations;
+            for (int i = 0; i < animations.Count; i++)
+                animations[i].RemoveTilesetReference(TilesetAnimation);
+        }
+
         /*Manage Renderable Objects*/
         public void AddRenderableObject<T>(T Object) where T: RenderableObject2D
         {

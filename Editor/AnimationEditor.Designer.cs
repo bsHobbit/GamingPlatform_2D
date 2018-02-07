@@ -33,7 +33,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageAnimationManagement = new System.Windows.Forms.TabPage();
+            this.textBoxAnimationName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBoxState = new System.Windows.Forms.GroupBox();
+            this.checkBoxIsFinalState = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDownStateMinTime = new System.Windows.Forms.NumericUpDown();
             this.buttonRemoveState = new System.Windows.Forms.Button();
@@ -46,9 +49,7 @@
             this.panelAttributes = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.buttonAddAttribute = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxAnimationName = new System.Windows.Forms.TextBox();
-            this.checkBoxIsFinalState = new System.Windows.Forms.CheckBox();
+            this.buttonUpdateTilesetAnimation = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -120,8 +121,25 @@
             this.tabPageAnimationManagement.Text = "States";
             this.tabPageAnimationManagement.UseVisualStyleBackColor = true;
             // 
+            // textBoxAnimationName
+            // 
+            this.textBoxAnimationName.Location = new System.Drawing.Point(49, 11);
+            this.textBoxAnimationName.Name = "textBoxAnimationName";
+            this.textBoxAnimationName.Size = new System.Drawing.Size(128, 20);
+            this.textBoxAnimationName.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Name";
+            // 
             // groupBoxState
             // 
+            this.groupBoxState.Controls.Add(this.buttonUpdateTilesetAnimation);
             this.groupBoxState.Controls.Add(this.checkBoxIsFinalState);
             this.groupBoxState.Controls.Add(this.label1);
             this.groupBoxState.Controls.Add(this.numericUpDownStateMinTime);
@@ -129,10 +147,21 @@
             this.groupBoxState.Enabled = false;
             this.groupBoxState.Location = new System.Drawing.Point(5, 143);
             this.groupBoxState.Name = "groupBoxState";
-            this.groupBoxState.Size = new System.Drawing.Size(175, 103);
+            this.groupBoxState.Size = new System.Drawing.Size(175, 139);
             this.groupBoxState.TabIndex = 3;
             this.groupBoxState.TabStop = false;
             this.groupBoxState.Text = "State";
+            // 
+            // checkBoxIsFinalState
+            // 
+            this.checkBoxIsFinalState.AutoSize = true;
+            this.checkBoxIsFinalState.Location = new System.Drawing.Point(10, 51);
+            this.checkBoxIsFinalState.Name = "checkBoxIsFinalState";
+            this.checkBoxIsFinalState.Size = new System.Drawing.Size(54, 17);
+            this.checkBoxIsFinalState.TabIndex = 6;
+            this.checkBoxIsFinalState.Text = "Final?";
+            this.checkBoxIsFinalState.UseVisualStyleBackColor = true;
+            this.checkBoxIsFinalState.CheckedChanged += new System.EventHandler(this.checkBoxIsFinalState_CheckedChanged);
             // 
             // label1
             // 
@@ -164,7 +193,7 @@
             // 
             // buttonRemoveState
             // 
-            this.buttonRemoveState.Location = new System.Drawing.Point(6, 74);
+            this.buttonRemoveState.Location = new System.Drawing.Point(6, 101);
             this.buttonRemoveState.Name = "buttonRemoveState";
             this.buttonRemoveState.Size = new System.Drawing.Size(160, 23);
             this.buttonRemoveState.TabIndex = 1;
@@ -225,7 +254,7 @@
             // 
             // buttonAddState
             // 
-            this.buttonAddState.Location = new System.Drawing.Point(6, 252);
+            this.buttonAddState.Location = new System.Drawing.Point(6, 288);
             this.buttonAddState.Name = "buttonAddState";
             this.buttonAddState.Size = new System.Drawing.Size(171, 23);
             this.buttonAddState.TabIndex = 0;
@@ -274,32 +303,15 @@
             this.buttonAddAttribute.UseVisualStyleBackColor = true;
             this.buttonAddAttribute.Click += new System.EventHandler(this.buttonAddAttribute_Click);
             // 
-            // label2
+            // buttonUpdateTilesetAnimation
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Name";
-            // 
-            // textBoxAnimationName
-            // 
-            this.textBoxAnimationName.Location = new System.Drawing.Point(49, 11);
-            this.textBoxAnimationName.Name = "textBoxAnimationName";
-            this.textBoxAnimationName.Size = new System.Drawing.Size(128, 20);
-            this.textBoxAnimationName.TabIndex = 5;
-            // 
-            // checkBoxIsFinalState
-            // 
-            this.checkBoxIsFinalState.AutoSize = true;
-            this.checkBoxIsFinalState.Location = new System.Drawing.Point(10, 51);
-            this.checkBoxIsFinalState.Name = "checkBoxIsFinalState";
-            this.checkBoxIsFinalState.Size = new System.Drawing.Size(54, 17);
-            this.checkBoxIsFinalState.TabIndex = 6;
-            this.checkBoxIsFinalState.Text = "Final?";
-            this.checkBoxIsFinalState.UseVisualStyleBackColor = true;
-            this.checkBoxIsFinalState.CheckedChanged += new System.EventHandler(this.checkBoxIsFinalState_CheckedChanged);
+            this.buttonUpdateTilesetAnimation.Location = new System.Drawing.Point(6, 74);
+            this.buttonUpdateTilesetAnimation.Name = "buttonUpdateTilesetAnimation";
+            this.buttonUpdateTilesetAnimation.Size = new System.Drawing.Size(160, 23);
+            this.buttonUpdateTilesetAnimation.TabIndex = 7;
+            this.buttonUpdateTilesetAnimation.Text = "Select Tileset-Animation";
+            this.buttonUpdateTilesetAnimation.UseVisualStyleBackColor = true;
+            this.buttonUpdateTilesetAnimation.Click += new System.EventHandler(this.buttonUpdateTilesetAnimation_Click);
             // 
             // AnimationEditor
             // 
@@ -349,5 +361,6 @@
         private System.Windows.Forms.TextBox textBoxAnimationName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBoxIsFinalState;
+        private System.Windows.Forms.Button buttonUpdateTilesetAnimation;
     }
 }

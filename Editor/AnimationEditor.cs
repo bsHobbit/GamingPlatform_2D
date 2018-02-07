@@ -205,12 +205,13 @@ namespace Editor
             if (State != null)
             {
                 System.Drawing.Color outlineColor = State == Animation.Entry ? System.Drawing.Color.LimeGreen : System.Drawing.Color.White;
+                string text = State.TilesetAnimation == null ? "ERROR" : State.TilesetAnimation.Name;
+                RenderableText description = new RenderableText(text, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
 
                 if (!RenderObjects_States.ContainsKey(State))
                 {
                     /*create new render-object*/
-                    string text = State.TilesetAnimation == null ? "ERROR" : State.TilesetAnimation.Name;
-                    RenderableText description = new RenderableText(text, new System.Drawing.Font("Arial", 12), System.Drawing.Color.White, new Vec2(), true);
+                    
                     Rectangle2D stateRenderRect = new Rectangle2D((int)description.GetSize().X, (int)description.GetSize().Y, State.WindowLocation, 0, System.Drawing.Color.Gray, outlineColor);
                     stateRenderRect.AddText(description);
                     stateRenderRect.Tag = State;
@@ -226,7 +227,12 @@ namespace Editor
                     RenderTarget.AddRenderObject(stateRenderRect);
                 }
                 else
-                    RenderObjects_States[State].OutlineColor = outlineColor; 
+                {
+                    RenderObjects_States[State].OutlineColor = outlineColor;
+                    RenderObjects_States[State].ClearText();
+                    RenderObjects_States[State].AddText(description);
+                    RenderObjects_States[State].Update(RenderObjects_States[State].Location, (int)description.GetSize().X, (int)description.GetSize().Y);
+                }
 
                 for (int i = 0; i < State.PossibleTransitions.Count; i++)
                     UpdateAnimationState_RenderObjects(State.PossibleTransitions[i].TranslateInto);
@@ -239,51 +245,53 @@ namespace Editor
             {
                 for (int i = 0; i < State.PossibleTransitions.Count; i++)
                 {
-
                     /*make sure the arrow starts and finishes at the correct locations*/
-                    float xDiff = Math.Abs(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.X - RenderObjects_States[State].Location.X);
-                    float yDiff = Math.Abs(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.Y - RenderObjects_States[State].Location.Y);
-                    Vec2 startLocation;
-                    Vec2 targetLocation;
-                    if (yDiff > xDiff)
+                    if (RenderObjects_States.ContainsKey(State.PossibleTransitions[i].TranslateInto) && RenderObjects_States.ContainsKey(State))
                     {
-                        startLocation = RenderObjects_States[State].Location + new Vec2(RenderObjects_States[State].Width / 2, RenderObjects_States[State].Height);
-                        targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width / 2, 0);
-                        if (RenderObjects_States[State].Location.Y > RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.Y)
+                        float xDiff = Math.Abs(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.X - RenderObjects_States[State].Location.X);
+                        float yDiff = Math.Abs(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.Y - RenderObjects_States[State].Location.Y);
+                        Vec2 startLocation;
+                        Vec2 targetLocation;
+                        if (yDiff > xDiff)
                         {
-                            startLocation = RenderObjects_States[State].Location + new Vec2(RenderObjects_States[State].Width / 2, 0);
-                            targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width / 2, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height);
+                            startLocation = RenderObjects_States[State].Location + new Vec2(RenderObjects_States[State].Width / 2, RenderObjects_States[State].Height);
+                            targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width / 2, 0);
+                            if (RenderObjects_States[State].Location.Y > RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.Y)
+                            {
+                                startLocation = RenderObjects_States[State].Location + new Vec2(RenderObjects_States[State].Width / 2, 0);
+                                targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width / 2, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height);
+                            }
                         }
-                    }
-                    else
-                    {
-                        startLocation = RenderObjects_States[State].Location + new Vec2(RenderObjects_States[State].Width, RenderObjects_States[State].Height / 2);
-                        targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(0, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height / 2);
-                        if (RenderObjects_States[State].Location.X > RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.X)
+                        else
                         {
-                            startLocation = RenderObjects_States[State].Location + new Vec2(0, RenderObjects_States[State].Height / 2);
-                            targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height / 2);
+                            startLocation = RenderObjects_States[State].Location + new Vec2(RenderObjects_States[State].Width, RenderObjects_States[State].Height / 2);
+                            targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(0, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height / 2);
+                            if (RenderObjects_States[State].Location.X > RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location.X)
+                            {
+                                startLocation = RenderObjects_States[State].Location + new Vec2(0, RenderObjects_States[State].Height / 2);
+                                targetLocation = RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Location + new Vec2(RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Width, RenderObjects_States[State.PossibleTransitions[i].TranslateInto].Height / 2);
+                            }
                         }
+
+                        /*create the transition arrow visually for the user*/
+                        if (!RenderObjects_Transitions.ContainsKey(State.PossibleTransitions[i]))
+                        {
+                            Line2D transitionLine = new Line2D(startLocation, targetLocation, new Vec2(), 1, System.Drawing.Color.Black, 2, true);
+                            transitionLine.Tag = State.PossibleTransitions[i];
+                            RenderObjects_Transitions.Add(State.PossibleTransitions[i], transitionLine);
+                            RenderTarget.AddRenderObject(transitionLine);
+                            transitionLine.MouseEnter += (s, e) => { s.Color = System.Drawing.Color.Blue; };
+                            transitionLine.MouseLeave += (s, e) => { s.Color = System.Drawing.Color.Black; };
+
+                            transitionLine.MouseDown += (s, e) => { SelectedTransition = (AnimationTransition)s.Tag; SelectedState = null; };
+
+                        }
+                        else
+                            RenderObjects_Transitions[State.PossibleTransitions[i]].Update(startLocation, targetLocation);
+
+
+                        UpdateAnimationTransition_RenderObjects(State.PossibleTransitions[i].TranslateInto);
                     }
-
-                    /*create the transition arrow visually for the user*/
-                    if (!RenderObjects_Transitions.ContainsKey(State.PossibleTransitions[i]))
-                    {
-                        Line2D transitionLine = new Line2D(startLocation, targetLocation, new Vec2(), 1, System.Drawing.Color.Black, 2, true);
-                        transitionLine.Tag = State.PossibleTransitions[i];
-                        RenderObjects_Transitions.Add(State.PossibleTransitions[i], transitionLine);
-                        RenderTarget.AddRenderObject(transitionLine);
-                        transitionLine.MouseEnter += (s, e) => { s.Color = System.Drawing.Color.Blue; };
-                        transitionLine.MouseLeave += (s, e) => { s.Color = System.Drawing.Color.Black; };
-
-                        transitionLine.MouseDown += (s, e) => { SelectedTransition = (AnimationTransition)s.Tag; SelectedState = null; };
-
-                    }
-                    else
-                        RenderObjects_Transitions[State.PossibleTransitions[i]].Update(startLocation, targetLocation);
-                        
-
-                    UpdateAnimationTransition_RenderObjects(State.PossibleTransitions[i].TranslateInto);
                 }
             }
         }
@@ -327,6 +335,17 @@ namespace Editor
         {
             if (selectedState != null)
                 selectedState.IsFinalState = checkBoxIsFinalState.Checked;
+        }
+
+        private void buttonUpdateTilesetAnimation_Click(object sender, System.EventArgs e)
+        {
+            if (selectedState != null)
+            {
+                TilesetAnimation newTSA = ContentBrowser.SelectTilesetAnimation(GameContent);
+                if (newTSA != null)
+                    selectedState.TilesetAnimation = newTSA;
+                UpdateVisuals();
+            }
         }
     }
 }

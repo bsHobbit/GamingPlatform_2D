@@ -6,7 +6,7 @@ namespace Graphics
 {
     public class Texture2D : Component 
     {
-        Bitmap Bitmap;
+        public Bitmap Bitmap;
         Dictionary<int, Bitmap> Thumbnails;
         public int Width;
         public int Height;

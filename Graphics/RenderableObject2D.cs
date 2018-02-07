@@ -326,9 +326,19 @@ namespace Graphics
                     /*Draw Texture*/
                     if (Texture != null && Texture.IsValid && VerticeInterpretation == VerticeInterpretation.Solid)
                     {
-                        g.SetClip(path);
-                        Texture.Draw(g, boundingBox.X, boundingBox.Y, boundingBox.Width, boundingBox.Height, TextureSegment);
-                        g.ResetClip();
+                        if (!TextureSegment.IsEmpty)
+                        {
+                            TextureBrush tbrush = new TextureBrush(Texture.Bitmap, WrapMode.Tile, TextureSegment);
+                            g.FillPath(tbrush, path);
+                        }
+                        else
+                        {
+                            TextureBrush tbrush = new TextureBrush(Texture.Bitmap,  WrapMode.Tile);
+                            g.FillPath(tbrush, path);
+                        }
+                        //g.SetClip(path);
+                        //Texture.Draw(g, boundingBox.X, boundingBox.Y, boundingBox.Width, boundingBox.Height, TextureSegment);
+                        //g.ResetClip();
                     }
 
                     /*Draw Text*/

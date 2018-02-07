@@ -69,6 +69,13 @@ namespace WinFormRenderer
 
         private void RenderTarget_Paint(object sender, PaintEventArgs e)
         {
+            /*faster rendering*/
+            e.Graphics.InterpolationMode = InterpolationMode.Low; // or NearestNeighbour
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.None;
+            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+
             /*Reset everthing*/
             e.Graphics.Clear(Color.CornflowerBlue);
             e.Graphics.ResetTransform();

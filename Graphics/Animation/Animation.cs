@@ -22,7 +22,8 @@ namespace Graphics.Animation
         }
 
         AnimationState CurrentAnimationState;
-        
+
+
         /*ctor*/
         public Animation(Vec2 Location, int Z)
         {
@@ -162,6 +163,15 @@ namespace Graphics.Animation
                 Attributes.Remove(CurrentName);
                 Attributes.Add(NewName, currentValue);
             }
+        }
+
+        /*make a copy of the animation*/
+        public override RenderableObject2D Clone(bool DeepCopy = false)
+        {
+            Animation result = new Animation(Location, ZLocation);
+            CopyBaseInfo(ref result);
+            result.Entry = Entry.Clone(DeepCopy);
+            return result;
         }
     }
 }

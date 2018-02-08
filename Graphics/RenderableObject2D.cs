@@ -286,6 +286,32 @@ namespace Graphics
             TextToRender.Clear();
         }
 
+        /*make clones available, deepcopy only for the gamestate since u want each animation to be unique u dont need that extra data in the editor*/
+        public virtual RenderableObject2D Clone(bool DeepCopy = false) { return null; }
+        internal void CopyBaseInfo<T>(ref T Result) where T : RenderableObject2D
+        {
+
+            for (int i = 0; i < vertices.Count; i++)
+                Result.vertices.Add(vertices[i]);
+            for (int i = 0; i < TextToRender.Count; i++)
+                Result.AddText(TextToRender[i].Clone());
+
+            Result.Color = Color;
+            Result.Enabled = Enabled;
+            Result.Location = Location;
+            Result.Name = Name;
+            Result.OutlineColor = OutlineColor;
+            Result.OutlineWidth = OutlineWidth;
+            Result.Rotation = Rotation;
+            Result.RotationOffset = RotationOffset;
+            Result.Scale = Scale;
+            Result.Texture = Texture;
+            Result.TextureSegment = TextureSegment;
+            Result.Visible = Visible;
+            Result.ZLocation = ZLocation;
+
+        }
+
         /*GDI Only-Stuff*/
 
         public static PointF[] ToPointFArray(List<Vec2> Vertices)

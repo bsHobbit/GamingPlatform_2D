@@ -25,6 +25,11 @@
                 this.Value = Value;
             }
 
+            public Condition Clone()
+            {
+                return new Condition(ConditionType, Attribute, Value);
+            }
+
         }
 
         /*member*/

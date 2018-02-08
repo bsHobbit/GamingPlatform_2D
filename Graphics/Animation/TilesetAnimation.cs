@@ -181,6 +181,23 @@ namespace Graphics.Animation
             }
             return false;
         }
+
+        public override RenderableObject2D Clone(bool DeepCopy = false) 
+        {
+            
+            TilesetAnimation result = new TilesetAnimation(Texture, FPS, ZLocation)
+            {
+                FPS = FPS,
+                Loop = Loop,
+                IsReverseLoop = IsReverseLoop
+            };
+
+            for (int i = 0; i < frames.Count; i++)
+                result.AddFrame(frames[i].StartX, frames[i].StartY, frames[i].Width, frames[i].Height);
+            CopyBaseInfo(ref result);
+            return result;
+        }
+
         /*helper*/
         public static float SpeedFromFPS(float FPS) => 1000f / FPS; 
 

@@ -20,6 +20,7 @@ namespace Graphics.Animation
         public Vec2 WindowLocation { get; set; }
 
 
+
         /*ctor*/
         public AnimationState()
         {
@@ -40,6 +41,25 @@ namespace Graphics.Animation
         }
 
 
+        /*Make a copy of the state*/
+        public AnimationState Clone(bool DeepCopy = false)
+        {
+            AnimationState result = new AnimationState()
+            {
+                MinStateTime = MinStateTime,
+                IsFinalState = IsFinalState,
+                WindowLocation = WindowLocation
+            };
+            if (DeepCopy)
+                result.TilesetAnimation = (TilesetAnimation)TilesetAnimation.Clone();
+            else
+                result.TilesetAnimation = TilesetAnimation;
+
+            for (int i = 0; i < possibleTransitions.Count; i++)
+                result.AddTransitition(new AnimationTransition(possibleTransitions[i].TransitionCondition.Clone(), possibleTransitions[i].TranslateInto.Clone()));
+
+            return result;
+        }
 
 
         /*update the animationstate*/

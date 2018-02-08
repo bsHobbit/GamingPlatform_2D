@@ -14,5 +14,10 @@
             this.Width = Width;
             this.Height = Height;
         }
+
+        public Frame Clone()
+        {
+            return new Frame(StartX, StartY, Width, Height);
+        }
     }
 }

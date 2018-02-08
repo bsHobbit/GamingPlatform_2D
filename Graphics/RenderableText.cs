@@ -49,5 +49,10 @@ namespace Graphics
             tmpImage.Dispose();
             return new Vec2(tmpSize.Width, tmpSize.Height);
         }
+
+        public RenderableText Clone()
+        {
+            return new RenderableText(Text, Font, Color, Offset, ClipWithObject);
+        }
     }
 }

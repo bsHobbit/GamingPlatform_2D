@@ -122,6 +122,11 @@ namespace GameCore
             }
         }
 
+        public bool ContainsRenderableObject<T>(T Object) where T : RenderableObject2D
+        {
+            return RenderableObjects.Contains(Object);
+        }
+
         /*manage names*/
         public T GetRenderableObject<T>(string Name) where T: RenderableObject2D
         {

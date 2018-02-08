@@ -41,6 +41,13 @@ namespace Editor
             set { selectedTilesetAnimation = value; }
         }
 
+        Animation selectedAnimation;
+        public Animation SelectedAnimation
+        {
+            get => selectedAnimation;
+            set { selectedAnimation = value; }
+        }
+
 
         /*ctor*/
         public ContentBrowser()
@@ -76,8 +83,15 @@ namespace Editor
             textBoxFilterAnimations.TextChanged += (s, e) => { collectionDisplayAnimations.Filter = textBoxFilterAnimations.Text; };
             textBoxFilterTexture.TextChanged += (s, e) => { collectionDisplayTextures.Filter = textBoxFilterTexture.Text; };
 
+            /*making stuff inivisible that should not be visible if in selectionmode*/
             buttonAddTilesetAnimation.Visible = !CloseOnSelection;
             buttonAddAnimation.Visible = !CloseOnSelection;
+            buttonRemoveTexture.Visible = !CloseOnSelection;
+            buttonRemoveTilesetAnimation.Visible = !CloseOnSelection;
+            buttonCopyTilesetAnimation.Visible = !CloseOnSelection;
+            buttonRemoveAnimation.Visible = !CloseOnSelection;
+            buttonCopyAnimation.Visible = !CloseOnSelection;
+
             if (!CloseOnSelection)
             {
                 buttonAddTilesetAnimation.Click += (s, e) => 
@@ -104,6 +118,7 @@ namespace Editor
         /*Handle-Animation-Selection*/
         private void AnimationSelected(CollectionDisplay Sender, int Index, bool doubleClicked)
         {
+            selectedAnimation = GameContent.Animations[Index];
             if (doubleClicked && !NeedsClosingAfterSelection())
             {
                 var animation = GameContent.Animations[Index];
@@ -113,9 +128,12 @@ namespace Editor
                 /*Update the thumbnail in the contentbrowser to distinct it from the other animations visually*/
                 Editor.FormClosing += (s, e) =>
                 {
-                    collectionDisplayAnimations.UpdateThumbnailSegment(Index, GameContent.Animations[Index].TextureSegment);
-                    collectionDisplayAnimations.UpdateThumbnailTexture(Index, GameContent.Animations[Index].Texture);
-                    collectionDisplayAnimations.UpdateThumbnailText(Index, GameContent.Animations[Index].Name);
+                    if (GameContent.ContainsRenderableObject(Editor.Animation)) /*make sure it's not already deleted*/
+                    {
+                        collectionDisplayAnimations.UpdateThumbnailSegment(Index, Editor.Animation.TextureSegment);
+                        collectionDisplayAnimations.UpdateThumbnailTexture(Index, Editor.Animation.Texture);
+                        collectionDisplayAnimations.UpdateThumbnailText(Index, Editor.Animation.Name);
+                    }
                     Editor.Dispose();
                 };
             }
@@ -140,9 +158,13 @@ namespace Editor
                 /*Update the thumbnail in the contentbrowser to distinct it from the other tilesetanimations visually*/
                 Editor.FormClosing += (s, e) =>
                 {
-                    collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, GameContent.TilesetAnimations[Index].GetSegment(0));
-                    collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, GameContent.TilesetAnimations[Index].Texture);
-                    collectionDisplayTilesetAnimations.UpdateThumbnailText(Index, GameContent.TilesetAnimations[Index].Name);
+                    /*make sure the object has not been deleted*/
+                    if (GameContent.ContainsRenderableObject(Editor.TilesetAnimation))
+                    {
+                        collectionDisplayTilesetAnimations.UpdateThumbnailSegment(Index, Editor.TilesetAnimation.GetSegment(0));
+                        collectionDisplayTilesetAnimations.UpdateThumbnailTexture(Index, Editor.TilesetAnimation.Texture);
+                        collectionDisplayTilesetAnimations.UpdateThumbnailText(Index, Editor.TilesetAnimation.Name);
+                    }
                     Editor.Dispose();
                 };
             }
@@ -246,13 +268,36 @@ namespace Editor
         {
             if (selectedTilesetAnimation != null)
             {
-                TilesetAnimation newAnimation = selectedTilesetAnimation.Clone() as TilesetAnimation;
-                newAnimation.Name = GameContent.GetFreeName<TilesetAnimation>();
-                GameContent.AddRenderableObject(newAnimation);
+                TilesetAnimation newTilesetAnimation = selectedTilesetAnimation.Clone() as TilesetAnimation;
+                newTilesetAnimation.Name = GameContent.GetFreeName<TilesetAnimation>();
+                GameContent.AddRenderableObject(newTilesetAnimation);
                 UpdateTilesetAnimations();
             }
         }
 
+        /*remove animation*/
+        private void buttonRemoveAnimation_Click(object sender, System.EventArgs e)
+        {
+            if (selectedAnimation != null)
+            {
+                GameContent.RemoveRenderableObject(selectedAnimation);
+                UpdateAnimations();
+                selectedAnimation = null;
+            }
+            
+        }
+
+        /*make a copy of the selected animation*/
+        private void buttonCopyAnimation_Click(object sender, System.EventArgs e)
+        {
+            if (selectedAnimation != null)
+            {
+                var newAnimation = selectedAnimation.Clone();
+                newAnimation.Name = GameContent.GetFreeName<Animation>();
+                GameContent.AddRenderableObject(newAnimation);
+                UpdateAnimations();
+            }
+        }
 
         /*Static helpers*/
         public static Texture2D SelectTexture(ContentManager ContentManager)

@@ -171,6 +171,10 @@ namespace Graphics.Animation
             Animation result = new Animation(Location, ZLocation);
             CopyBaseInfo(ref result);
             result.Entry = Entry.Clone(DeepCopy);
+
+            foreach (var item in Attributes)
+                result.AddAttribute(item.Key, item.Value);
+
             return result;
         }
     }

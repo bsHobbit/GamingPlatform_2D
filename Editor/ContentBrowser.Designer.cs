@@ -40,6 +40,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayTilesetAnimations = new Editor.CollectionDisplay();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonCopyTilesetAnimation = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxFilterTilesetAnimations = new System.Windows.Forms.TextBox();
             this.buttonRemoveTilesetAnimation = new System.Windows.Forms.Button();
@@ -48,10 +49,11 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayAnimations = new Editor.CollectionDisplay();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.buttonCopyAnimation = new System.Windows.Forms.Button();
+            this.buttonRemoveAnimation = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxFilterAnimations = new System.Windows.Forms.TextBox();
             this.buttonAddAnimation = new System.Windows.Forms.Button();
-            this.buttonCopyTilesetAnimation = new System.Windows.Forms.Button();
             this.tabControlContent.SuspendLayout();
             this.tabPageTextures.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -198,6 +200,16 @@
             this.panel2.Size = new System.Drawing.Size(194, 706);
             this.panel2.TabIndex = 1;
             // 
+            // buttonCopyTilesetAnimation
+            // 
+            this.buttonCopyTilesetAnimation.Location = new System.Drawing.Point(12, 129);
+            this.buttonCopyTilesetAnimation.Name = "buttonCopyTilesetAnimation";
+            this.buttonCopyTilesetAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonCopyTilesetAnimation.TabIndex = 3;
+            this.buttonCopyTilesetAnimation.Text = "Copy";
+            this.buttonCopyTilesetAnimation.UseVisualStyleBackColor = true;
+            this.buttonCopyTilesetAnimation.Click += new System.EventHandler(this.buttonCopyTilesetAnimation_Click);
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxFilterTilesetAnimations);
@@ -271,6 +283,8 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.buttonCopyAnimation);
+            this.panel3.Controls.Add(this.buttonRemoveAnimation);
             this.panel3.Controls.Add(this.groupBox2);
             this.panel3.Controls.Add(this.buttonAddAnimation);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -278,6 +292,26 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(194, 706);
             this.panel3.TabIndex = 1;
+            // 
+            // buttonCopyAnimation
+            // 
+            this.buttonCopyAnimation.Location = new System.Drawing.Point(12, 130);
+            this.buttonCopyAnimation.Name = "buttonCopyAnimation";
+            this.buttonCopyAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonCopyAnimation.TabIndex = 5;
+            this.buttonCopyAnimation.Text = "Copy";
+            this.buttonCopyAnimation.UseVisualStyleBackColor = true;
+            this.buttonCopyAnimation.Click += new System.EventHandler(this.buttonCopyAnimation_Click);
+            // 
+            // buttonRemoveAnimation
+            // 
+            this.buttonRemoveAnimation.Location = new System.Drawing.Point(12, 101);
+            this.buttonRemoveAnimation.Name = "buttonRemoveAnimation";
+            this.buttonRemoveAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonRemoveAnimation.TabIndex = 4;
+            this.buttonRemoveAnimation.Text = "Remove";
+            this.buttonRemoveAnimation.UseVisualStyleBackColor = true;
+            this.buttonRemoveAnimation.Click += new System.EventHandler(this.buttonRemoveAnimation_Click);
             // 
             // groupBox2
             // 
@@ -304,16 +338,6 @@
             this.buttonAddAnimation.TabIndex = 0;
             this.buttonAddAnimation.Text = "Add";
             this.buttonAddAnimation.UseVisualStyleBackColor = true;
-            // 
-            // buttonCopyTilesetAnimation
-            // 
-            this.buttonCopyTilesetAnimation.Location = new System.Drawing.Point(12, 129);
-            this.buttonCopyTilesetAnimation.Name = "buttonCopyTilesetAnimation";
-            this.buttonCopyTilesetAnimation.Size = new System.Drawing.Size(169, 23);
-            this.buttonCopyTilesetAnimation.TabIndex = 3;
-            this.buttonCopyTilesetAnimation.Text = "Copy";
-            this.buttonCopyTilesetAnimation.UseVisualStyleBackColor = true;
-            this.buttonCopyTilesetAnimation.Click += new System.EventHandler(this.buttonCopyTilesetAnimation_Click);
             // 
             // ContentBrowser
             // 
@@ -370,5 +394,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox textBoxFilterAnimations;
         private System.Windows.Forms.Button buttonCopyTilesetAnimation;
+        private System.Windows.Forms.Button buttonCopyAnimation;
+        private System.Windows.Forms.Button buttonRemoveAnimation;
     }
 }

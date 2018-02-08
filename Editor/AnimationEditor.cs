@@ -12,7 +12,7 @@ namespace Editor
 {
     public partial class AnimationEditor : Form
     {
-        Animation Animation;
+        public Animation Animation { get; private set; }
         AnimationState selectedState;
         AnimationState SelectedState
         {

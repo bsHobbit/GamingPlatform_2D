@@ -14,7 +14,7 @@ namespace Editor
         static int LastGridWidth = 32;
         static int LastGridHeight = 32;
 
-        TilesetAnimation TilesetAnimation;
+        public TilesetAnimation TilesetAnimation { get; private set; }
         Rectangle2D TilesetRect;
         Rectangle2D SelectionRect;
         Rectangle2D FrameRect;

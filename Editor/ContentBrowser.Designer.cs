@@ -33,37 +33,38 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayTextures = new Editor.CollectionDisplay();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBoxFilterTexture = new System.Windows.Forms.TextBox();
             this.buttonRemoveTexture = new System.Windows.Forms.Button();
             this.tabPageTilesetAnimations = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayTilesetAnimations = new Editor.CollectionDisplay();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxFilterTilesetAnimations = new System.Windows.Forms.TextBox();
             this.buttonRemoveTilesetAnimation = new System.Windows.Forms.Button();
             this.buttonAddTilesetAnimation = new System.Windows.Forms.Button();
             this.tabPageAnimations = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.collectionDisplayAnimations = new Editor.CollectionDisplay();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.buttonAddAnimation = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxFilterTilesetAnimations = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxFilterAnimations = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBoxFilterTexture = new System.Windows.Forms.TextBox();
+            this.buttonAddAnimation = new System.Windows.Forms.Button();
+            this.buttonCopyTilesetAnimation = new System.Windows.Forms.Button();
             this.tabControlContent.SuspendLayout();
             this.tabPageTextures.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.tabPageTilesetAnimations.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabPageAnimations.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlContent
@@ -123,6 +124,23 @@
             this.panel1.Size = new System.Drawing.Size(194, 706);
             this.panel1.TabIndex = 1;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBoxFilterTexture);
+            this.groupBox3.Location = new System.Drawing.Point(12, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(169, 53);
+            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Filter";
+            // 
+            // textBoxFilterTexture
+            // 
+            this.textBoxFilterTexture.Location = new System.Drawing.Point(6, 19);
+            this.textBoxFilterTexture.Name = "textBoxFilterTexture";
+            this.textBoxFilterTexture.Size = new System.Drawing.Size(157, 20);
+            this.textBoxFilterTexture.TabIndex = 0;
+            // 
             // buttonRemoveTexture
             // 
             this.buttonRemoveTexture.Location = new System.Drawing.Point(12, 71);
@@ -170,6 +188,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.buttonCopyTilesetAnimation);
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.buttonRemoveTilesetAnimation);
             this.panel2.Controls.Add(this.buttonAddTilesetAnimation);
@@ -178,6 +197,23 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(194, 706);
             this.panel2.TabIndex = 1;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBoxFilterTilesetAnimations);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(169, 53);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Filter";
+            // 
+            // textBoxFilterTilesetAnimations
+            // 
+            this.textBoxFilterTilesetAnimations.Location = new System.Drawing.Point(6, 19);
+            this.textBoxFilterTilesetAnimations.Name = "textBoxFilterTilesetAnimations";
+            this.textBoxFilterTilesetAnimations.Size = new System.Drawing.Size(157, 20);
+            this.textBoxFilterTilesetAnimations.TabIndex = 0;
             // 
             // buttonRemoveTilesetAnimation
             // 
@@ -243,32 +279,6 @@
             this.panel3.Size = new System.Drawing.Size(194, 706);
             this.panel3.TabIndex = 1;
             // 
-            // buttonAddAnimation
-            // 
-            this.buttonAddAnimation.Location = new System.Drawing.Point(12, 72);
-            this.buttonAddAnimation.Name = "buttonAddAnimation";
-            this.buttonAddAnimation.Size = new System.Drawing.Size(169, 23);
-            this.buttonAddAnimation.TabIndex = 0;
-            this.buttonAddAnimation.Text = "Add";
-            this.buttonAddAnimation.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.textBoxFilterTilesetAnimations);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(169, 53);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Filter";
-            // 
-            // textBoxFilterTilesetAnimations
-            // 
-            this.textBoxFilterTilesetAnimations.Location = new System.Drawing.Point(6, 19);
-            this.textBoxFilterTilesetAnimations.Name = "textBoxFilterTilesetAnimations";
-            this.textBoxFilterTilesetAnimations.Size = new System.Drawing.Size(157, 20);
-            this.textBoxFilterTilesetAnimations.TabIndex = 0;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.textBoxFilterAnimations);
@@ -286,22 +296,24 @@
             this.textBoxFilterAnimations.Size = new System.Drawing.Size(157, 20);
             this.textBoxFilterAnimations.TabIndex = 0;
             // 
-            // groupBox3
+            // buttonAddAnimation
             // 
-            this.groupBox3.Controls.Add(this.textBoxFilterTexture);
-            this.groupBox3.Location = new System.Drawing.Point(12, 12);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(169, 53);
-            this.groupBox3.TabIndex = 4;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Filter";
+            this.buttonAddAnimation.Location = new System.Drawing.Point(12, 72);
+            this.buttonAddAnimation.Name = "buttonAddAnimation";
+            this.buttonAddAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonAddAnimation.TabIndex = 0;
+            this.buttonAddAnimation.Text = "Add";
+            this.buttonAddAnimation.UseVisualStyleBackColor = true;
             // 
-            // textBoxFilterTexture
+            // buttonCopyTilesetAnimation
             // 
-            this.textBoxFilterTexture.Location = new System.Drawing.Point(6, 19);
-            this.textBoxFilterTexture.Name = "textBoxFilterTexture";
-            this.textBoxFilterTexture.Size = new System.Drawing.Size(157, 20);
-            this.textBoxFilterTexture.TabIndex = 0;
+            this.buttonCopyTilesetAnimation.Location = new System.Drawing.Point(12, 129);
+            this.buttonCopyTilesetAnimation.Name = "buttonCopyTilesetAnimation";
+            this.buttonCopyTilesetAnimation.Size = new System.Drawing.Size(169, 23);
+            this.buttonCopyTilesetAnimation.TabIndex = 3;
+            this.buttonCopyTilesetAnimation.Text = "Copy";
+            this.buttonCopyTilesetAnimation.UseVisualStyleBackColor = true;
+            this.buttonCopyTilesetAnimation.Click += new System.EventHandler(this.buttonCopyTilesetAnimation_Click);
             // 
             // ContentBrowser
             // 
@@ -316,18 +328,18 @@
             this.tabPageTextures.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.tabPageTilesetAnimations.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPageAnimations.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -357,5 +369,6 @@
         private System.Windows.Forms.TextBox textBoxFilterTexture;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox textBoxFilterAnimations;
+        private System.Windows.Forms.Button buttonCopyTilesetAnimation;
     }
 }

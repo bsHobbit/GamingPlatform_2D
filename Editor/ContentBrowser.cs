@@ -241,6 +241,19 @@ namespace Editor
             }
         }
 
+        /*copy tilesetanimation*/
+        private void buttonCopyTilesetAnimation_Click(object sender, System.EventArgs e)
+        {
+            if (selectedTilesetAnimation != null)
+            {
+                TilesetAnimation newAnimation = selectedTilesetAnimation.Clone() as TilesetAnimation;
+                newAnimation.Name = GameContent.GetFreeName<TilesetAnimation>();
+                GameContent.AddRenderableObject(newAnimation);
+                UpdateTilesetAnimations();
+            }
+        }
+
+
         /*Static helpers*/
         public static Texture2D SelectTexture(ContentManager ContentManager)
         {

@@ -291,10 +291,12 @@ namespace Graphics
         internal void CopyBaseInfo<T>(ref T Result) where T : RenderableObject2D
         {
 
-            for (int i = 0; i < vertices.Count; i++)
-                Result.vertices.Add(vertices[i]);
-            for (int i = 0; i < TextToRender.Count; i++)
-                Result.AddText(TextToRender[i].Clone());
+            if (vertices != null)
+                for (int i = 0; i < vertices.Count; i++)
+                    Result.vertices.Add(vertices[i]);
+            if (TextToRender != null)
+                for (int i = 0; i < TextToRender.Count; i++)
+                    Result.AddText(TextToRender[i].Clone());
 
             Result.Color = Color;
             Result.Enabled = Enabled;

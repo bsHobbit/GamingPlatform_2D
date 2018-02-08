@@ -22,6 +22,7 @@ namespace Editor
             public RenderableObject2D RenderObject { get; set; }
             public int Index { get; private set; }
             public System.Drawing.RectangleF Segment { get; set; }
+            public bool IsHighlighted { get; set; }
 
             public TextureInfo(Texture2D OriginalTexture, string Info, Rectangle2D RenderRect, System.Drawing.RectangleF Segment, int Index)
             {
@@ -29,6 +30,7 @@ namespace Editor
                 this.Segment = Segment;
                 this.Info = Info;
                 RenderObject = RenderRect;
+                IsHighlighted = false;
                 this.Index = Index;
             }
 
@@ -121,15 +123,29 @@ namespace Editor
 
                 /*highlight mouse-over object*/
                 renderRect.MouseEnter += (s, e) => { s.OutlineColor = System.Drawing.Color.White; s.ZLocation = 1; };
-                renderRect.MouseLeave += (s, e) => { s.OutlineColor = System.Drawing.Color.Gray; s.ZLocation = 0; };
+                renderRect.MouseLeave += (s, e) => { UpdateHighLight(null); s.ZLocation = 0; };
 
                 /*Auswahl durch den Benutzer*/
-                renderRect.Click += (s, e) => { TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s), false); };
-                renderRect.DoubleClick += (s, e) => { TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s), true); };
+                renderRect.Click += (s, e) => { UpdateHighLight(s); TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s), false); };
+                renderRect.DoubleClick += (s, e) => { UpdateHighLight(s); TextureSelected?.Invoke(this, GetIndex((Rectangle2D)s), true); };
                 UpdateItems();
                 UpdateCamera();
             }
             
+        }
+
+        /*update the highlighted object*/
+        void UpdateHighLight(RenderableObject2D Highlight)
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Highlight != null) /*if it's null it means mouseleave event is fired!*/
+                    Items[i].IsHighlighted = Items[i].RenderObject == Highlight;
+                if (Items[i].IsHighlighted)
+                    Items[i].RenderObject.OutlineColor = System.Drawing.Color.Green;
+                else
+                    Items[i].RenderObject.OutlineColor = System.Drawing.Color.Gray;
+            }
         }
 
         /*Get the texture by it's renderobject for the event ;)*/
